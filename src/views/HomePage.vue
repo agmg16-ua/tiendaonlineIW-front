@@ -1,5 +1,4 @@
 <template>
-    <ion-content>
       <!-- 1. Carrusel -->
       <ion-slides>
         <ion-slide v-for="(image, index) in carouselImages" :key="index">
@@ -97,7 +96,6 @@
       <div class="buy-now-button-container">
         <ion-button color="danger" class="buy-now-button">Comprar YA</ion-button>
       </div>
-    </ion-content>
   </template>
   
   <script setup lang="ts">

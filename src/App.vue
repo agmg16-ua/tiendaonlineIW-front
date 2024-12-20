@@ -20,16 +20,19 @@
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
+      
 
     <ion-content>
       <RouterView/>
-    </ion-content>
 
     <ion-footer>
       <ion-toolbar>
         <ion-title>© 2021 L E W K I N</ion-title>
       </ion-toolbar>
     </ion-footer>
+
+
+    </ion-content>
   </ion-app>
 </template>
 

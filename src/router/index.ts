@@ -4,6 +4,7 @@ import TabsPage from '../views/TabsPage.vue'
 import HomePage from '../views/HomePage.vue'
 import AboutPage from '../views/AboutPage.vue'
 import ContactPage from '../views/ContactPage.vue'
+import AuthPage from '../views/AuthPage.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -20,6 +21,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/contact',
     component: ContactPage,
     name: 'contact'
+  },
+  {
+    path: '/auth',
+    component: () => AuthPage,
+    name: 'auth'
   },
   {
     path: '/tabs/',
