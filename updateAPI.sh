@@ -7,9 +7,10 @@ curl http://localhost:8080/v3/api-docs -o app_config/swagger.json
 rm -rf src/generated/lewkin/models
 rm -rf src/generated/lewkin/services
 
-# Navegar al directorio de node_modules/.bin y ejecutar ng-openapi-gen
-pushd node_modules/.bin/
-./ng-openapi-gen -i ../../app_config/swagger.json -o ../../src/generated/lewkin/
+# Generar modelos y servicios para Vue con openapi-generator-cli
+npx openapi-generator-cli generate \
+  -i app_config/swagger.json \
+  -g javascript \
+  -o src/generated/
 
 # Regresar al directorio raíz del proyecto
-popd
