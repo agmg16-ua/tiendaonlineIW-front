@@ -1,13 +1,24 @@
 <template>
-      <!-- 1. Carrusel -->
-      <ion-slides>
-        <ion-slide v-for="(image, index) in carouselImages" :key="index">
-          <div class="carousel-container">
-            <img :src="image.src" :alt="`Imagen ${index + 1}`" class="carousel-image" />
-            <ion-button class="carousel-button" color="primary">Comprar</ion-button>
-          </div>
-        </ion-slide>
-      </ion-slides>
+      <!-- Carrusel utilizando Vue -->
+    <div class="carousel">
+      <div class="carousel-wrapper">
+        <!-- Renderiza la imagen activa -->
+        <img
+          v-for="(image, index) in carouselImages"
+          :key="index"
+          :src="image.src"
+          :alt="`Imagen ${index + 1}`"
+          class="carousel-image"
+          :class="{ active: index === activeIndex, hidden: index !== activeIndex }"
+        />
+        <button class="carousel-button" >Comprar</button>
+      </div>
+      <!-- Controles de navegación -->
+      <div class="carousel-controls">
+        <button @click="prevSlide">⬅️</button>
+        <button @click="nextSlide">➡️</button>
+      </div>
+    </div>
   
       <!-- 2. Elementos destacados -->
       <ion-title class="section-title">Elementos Destacados</ion-title>
@@ -99,6 +110,8 @@
   </template>
   
   <script setup lang="ts">
+  import { ref } from 'vue';
+
   interface Product {
     id: number;
     name: string;
@@ -114,8 +127,26 @@
   
   // Carrusel de imágenes
   const carouselImages = [
-    { src: 'https://via.placeholder.com/800x400?text=Imagen+1' }
-  ];
+  { src: 'https://via.placeholder.com/800x400?text=Imagen+1' },
+  { src: 'https://via.placeholder.com/800x400?text=Imagen+2' },
+  { src: 'https://via.placeholder.com/800x400?text=Imagen+3' },
+  { src: 'https://via.placeholder.com/800x400?text=Imagen+4' },
+  { src: 'https://via.placeholder.com/800x400?text=Imagen+5' },
+];
+
+  const activeIndex = ref(0);
+
+  // Función para cambiar al siguiente slide
+  const nextSlide = () => {
+    activeIndex.value = (activeIndex.value + 1) % carouselImages.length;
+  };
+
+  // Función para cambiar al slide anterior
+  const prevSlide = () => {
+    activeIndex.value =
+      (activeIndex.value - 1 + carouselImages.length) % carouselImages.length;
+  };
+
   
   // Productos destacados y más vendidos
   const products: Product[] = [
@@ -142,25 +173,84 @@
   </script>
   
   <style scoped>
-  .carousel-container {
+  .carousel {
+    position: relative;
+    width: 100vw; /* Ancho completo del viewport */
+    margin: 0 auto;
+    overflow: hidden;
+  }
+
+  .carousel-wrapper {
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 350px;
-    margin-bottom: 250px; /* Espaciado para evitar solapamiento */
+    height: 550px; /* Ajusta la altura según sea necesario */
+    width: 100vw; /* Asegúrate de que ocupe todo el ancho del viewport */
   }
-  
+
   .carousel-image {
-    width: 100%;
-    height: auto;
+    position: absolute;
+    width: 100vw; /* Ocupa todo el ancho de la pantalla */
+    height: 100%; /* Altura relativa al contenedor */
+    object-fit: cover; /* Escala y recorta la imagen si es necesario */
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
   }
-  
+
+  .carousel-image.active {
+    opacity: 1;
+  }
+
+
+  .carousel-image.hidden {
+    opacity: 0;
+  }
+
   .carousel-button {
     position: absolute;
     bottom: 20px;
-    z-index: 10;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
   }
+
+  .carousel-controls {
+    position: absolute; /* Ubica los botones dentro de la imagen */
+    top: 50%; /* Centra verticalmente */
+    left: 0; /* Alinea el primer botón al borde izquierdo */
+    right: 0; /* Alinea el segundo botón al borde derecho */
+    display: flex;
+    justify-content: space-between; /* Coloca los botones a los extremos */
+    width: 100%; /* Asegura que los botones estén en los extremos del contenedor */
+    transform: translateY(-50%); /* Ajusta para centrar correctamente */
+    pointer-events: none; /* Permite que los eventos pasen a los botones */
+  }
+
+  .carousel-controls button {
+    pointer-events: auto; /* Activa los eventos en los botones */
+    color: white; /* Color del texto */
+    background: transparent; /* Elimina cualquier fondo gris oscuro */
+    border: none; /* Sin bordes */
+    font-size: 2rem; /* Tamaño del ícono o texto */
+    padding: 10px; /* Espaciado interno */
+    cursor: pointer; /* Cambia el cursor a "mano" */
+    z-index: 2; /* Asegura que los botones estén por encima de la imagen */
+  }
+
+  .carousel-controls button:first-of-type {
+    position: absolute;
+    left: 10px; /* Espaciado desde el borde izquierdo */
+  }
+
+  .carousel-controls button:last-of-type {
+    position: absolute;
+    right: 10px; /* Espaciado desde el borde derecho */
+  }
+
   
   .section-title {
     text-align: center;
