@@ -44,20 +44,31 @@ function submitForm() {
 <template>
     <h3>SECCIÓN 3: CREDENCIALES DE LA CUENTA</h3>
     <form @submit.prevent="submitForm">
-        <ion-input v-model="localData.username" label="Nombre de Usuario" label-placement="floating" fill="outline"
-            placeholder="Enter your username" required></ion-input>
-
-        <ion-input v-model="localData.password" label="Contraseña" label-placement="floating" fill="outline"
-            placeholder="Enter your password" type="password" required></ion-input>
-        
-        <ion-input v-model="localData.confirmPassword" label="Confirma Contraseña" label-placement="floating" fill="outline"
-            placeholder="Enter your password" type="password" required></ion-input>
-
-        <ion-row>
-            <ion-col>
-                <ion-button expand="block" type="submit">Siguiente</ion-button>
-            </ion-col>
-        </ion-row>
+        <ion-grid>
+            <ion-row>
+                <ion-col>
+                    <ion-input v-model="localData.username" label="Nombre de Usuario" label-placement="floating" fill="outline"
+                        placeholder="Enter your username" required></ion-input>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col>
+                    <ion-input v-model="localData.password" label="Contraseña" label-placement="floating" fill="outline"
+                        placeholder="Enter your password" type="password" required></ion-input>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col>
+                    <ion-input v-model="localData.confirmPassword" label="Confirma Contraseña" label-placement="floating" fill="outline"
+                        placeholder="Enter your password" type="password" required></ion-input>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col>
+                    <ion-button expand="block" type="submit">Siguiente</ion-button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
     </form>
 
 </template>
