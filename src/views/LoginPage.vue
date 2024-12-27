@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
 import { LoginRequest, RegisterRequest, AuthenticationControllerImplApi } from '@/generated/api';
-import { IonGrid, IonRow, IonCol, IonInput, IonButton } from '@ionic/vue';
+import { IonGrid, IonRow, IonCol, IonInput, IonButton, IonLabel } from '@ionic/vue';
 
 // Definir las propiedades del formulario usando ref
 let register = reactive<RegisterRequest>({
@@ -51,25 +51,13 @@ const handleLogin = () => {
                         <ion-input v-model="login.password" label="Password" label-placement="floating" fill="outline"
                             placeholder="Enter your password" type="password" required></ion-input>
 
+                        <RouterLink to="/login">He olvidado mi contraseña</RouterLink>
+
                         <ion-button type="submit" expand="full">Inciar Sesión</ion-button>
-                    </form>
-                </ion-col>
-                <ion-col sizeSm="4">
-                    <h2>Registro</h2>
-                    <form @submit.prevent="handleRegister">
-                        <ion-input v-model="register.name" label="Name" label-placement="floating" fill="outline"
-                            placeholder="Enter your name" required></ion-input>
 
-                        <ion-input v-model="register.email" label="Email" label-placement="floating" fill="outline"
-                            placeholder="Enter your email" type="email" required></ion-input>
-
-                        <ion-input v-model="register.password" label="Password" label-placement="floating"
-                            fill="outline" placeholder="Enter your password" type="password" required></ion-input>
-
-                        <ion-input v-model="register.username" label="UserName" label-placement="floating"
-                            fill="outline" placeholder="Enter your username" required></ion-input>
-
-                        <ion-button type="submit" expand="full">Crear Cuenta</ion-button>
+                        <ion-label>
+                            ¿No tienes cuenta? <RouterLink to="/register">Regístrate</RouterLink>
+                        </ion-label>
                     </form>
                 </ion-col>
             </ion-row>
