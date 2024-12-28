@@ -50,25 +50,25 @@ function submitForm() {
         <ion-grid>
             <ion-row>
                 <ion-col>
-                    <ion-input v-model="localData.name" label="Nombre" label-placement="floating" fill="outline"
+                    <ion-input v-model="localData.name" label="Nombre" label-placement="stacked" fill="outline"
                         placeholder="Enter your name" required></ion-input>
                 </ion-col>
                 </ion-row>
             <ion-row>
                 <ion-col>
-                    <ion-input v-model="localData.lastName" label="Apellidos" label-placement="floating" fill="outline"
+                    <ion-input v-model="localData.lastName" label="Apellidos" label-placement="stacked" fill="outline"
                         placeholder="Enter your last name" required></ion-input>
                 </ion-col>
             </ion-row>
             <ion-row>
                 <ion-col>
-                    <ion-input v-model="localData.birthDate" label="Fecha de Nacimiento" label-placement="floating"
+                    <ion-input v-model="localData.birthDate" label="Fecha de Nacimiento" label-placement="stacked"
                         fill="outline" placeholder="Enter your birth date" type="date" required></ion-input>
                 </ion-col>
             </ion-row>
             <ion-row>
                 <ion-col>
-                    <ion-input v-model="localData.gender" label="Género" label-placement="floating"
+                    <ion-input v-model="localData.gender" label="Género" label-placement="stacked"
                         fill="outline" placeholder="Enter your gender" required></ion-input>
                 </ion-col>
             </ion-row>

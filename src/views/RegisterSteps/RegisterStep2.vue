@@ -44,13 +44,13 @@ function submitForm() {
         <ion-grid>
            <ion-row>
                 <ion-col>
-                    <ion-input v-model="localData.email" label="Email" label-placement="floating" fill="outline"
+                    <ion-input v-model="localData.email" label="Email" label-placement="stacked" fill="outline"
                         placeholder="Enter your email" type="email" required></ion-input>
                 </ion-col>
             </ion-row>
             <ion-row>
                 <ion-col>
-                    <ion-input v-model="localData.phone" label="Teléfono" label-placement="floating" fill="outline"
+                    <ion-input v-model="localData.phone" label="Teléfono" label-placement="stacked" fill="outline"
                         placeholder="Enter your phone number" required></ion-input>
                 </ion-col>
             </ion-row> 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref, watch, onMounted } from 'vue';
 import { LoginRequest, RegisterRequest, AuthenticationControllerImplApi } from '@/generated/api';
-import { IonGrid, IonRow, IonCol, IonInput, IonButton } from '@ionic/vue';
+import { IonGrid, IonRow, IonCol, IonInput, IonButton, IonInputPasswordToggle } from '@ionic/vue';
 
 const props = defineProps({
     formData: Object
@@ -47,20 +47,24 @@ function submitForm() {
         <ion-grid>
             <ion-row>
                 <ion-col>
-                    <ion-input v-model="localData.username" label="Nombre de Usuario" label-placement="floating" fill="outline"
+                    <ion-input v-model="localData.username" label="Nombre de Usuario" label-placement="stacked" fill="outline"
                         placeholder="Enter your username" required></ion-input>
                 </ion-col>
             </ion-row>
             <ion-row>
                 <ion-col>
-                    <ion-input v-model="localData.password" label="Contraseña" label-placement="floating" fill="outline"
-                        placeholder="Enter your password" type="password" required></ion-input>
+                    <ion-input v-model="localData.password" label="Contraseña" label-placement="stacked" fill="outline"
+                        placeholder="Enter your password" type="password" required>
+                        <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+                    </ion-input>
                 </ion-col>
             </ion-row>
             <ion-row>
                 <ion-col>
-                    <ion-input v-model="localData.confirmPassword" label="Confirma Contraseña" label-placement="floating" fill="outline"
-                        placeholder="Enter your password" type="password" required></ion-input>
+                    <ion-input v-model="localData.confirmPassword" label="Confirma Contraseña" label-placement="stacked" fill="outline"
+                        placeholder="Enter your password" type="password" required>
+                        <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+                    </ion-input>
                 </ion-col>
             </ion-row>
             <ion-row>

@@ -84,52 +84,52 @@ function submitForm() {
         <ion-grid>
             <ion-row>
                 <ion-col size="10">
-                    <ion-input v-model="localData.street" label="Calle" label-placement="floating" fill="outline"
+                    <ion-input v-model="localData.street" label="Calle" label-placement="stacked" fill="outline"
                         placeholder="C/ Gran Vía" required></ion-input>
                 </ion-col>
                 <ion-col size="2">
-                    <ion-input v-model="localData.number" label="Num" label-placement="floating" fill="outline"
+                    <ion-input v-model="localData.number" label="Num" label-placement="stacked" fill="outline"
                         placeholder="12" required></ion-input>
                 </ion-col>
             </ion-row>
 
             <ion-row>
                 <ion-col size="3">
-                    <ion-input v-model="localData.building" label="Bloque" label-placement="floating" fill="outline"
+                    <ion-input v-model="localData.building" label="Bloque" label-placement="stacked" fill="outline"
                         placeholder="2"></ion-input>
                 </ion-col>
                 <ion-col size="3">
-                    <ion-input v-model="localData.stair" label="Escalera" label-placement="floating" fill="outline"
+                    <ion-input v-model="localData.stair" label="Escalera" label-placement="stacked" fill="outline"
                         placeholder="3"></ion-input>
                 </ion-col>
                 <ion-col size="3">
-                    <ion-input v-model="localData.floor" label="Piso" label-placement="floating" fill="outline"
+                    <ion-input v-model="localData.floor" label="Piso" label-placement="stacked" fill="outline"
                         placeholder="1"></ion-input>
                 </ion-col>
                 <ion-col size="3">
-                    <ion-input v-model="localData.door" label="Puerta" label-placement="floating" fill="outline"
+                    <ion-input v-model="localData.door" label="Puerta" label-placement="stacked" fill="outline"
                         placeholder="B"></ion-input>
                 </ion-col>
             </ion-row>
         
             <ion-row>
                 <ion-col>
-                    <ion-input v-model="localData.city" label="Ciudad" label-placement="floating" fill="outline"
+                    <ion-input v-model="localData.city" label="Ciudad" label-placement="stacked" fill="outline"
                         placeholder="Madrid" required></ion-input>
                 </ion-col>
                 <ion-col>
-                    <ion-input v-model="localData.province" label="Provincia" label-placement="floating" fill="outline"
+                    <ion-input v-model="localData.province" label="Provincia" label-placement="stacked" fill="outline"
                         placeholder="Madrid" required></ion-input>
                 </ion-col>
             </ion-row>
             
             <ion-row>
                 <ion-col>
-                    <ion-input v-model="localData.postalCode" label="Código Postal" label-placement="floating" fill="outline"
+                    <ion-input v-model="localData.postalCode" label="Código Postal" label-placement="stacked" fill="outline"
                         placeholder="45675" required></ion-input>
                 </ion-col>
                 <ion-col>
-                    <ion-input v-model="localData.country" label="Pais" label-placement="floating" fill="outline"
+                    <ion-input v-model="localData.country" label="Pais" label-placement="stacked" fill="outline"
                         placeholder="España" required></ion-input>
                 </ion-col>
             </ion-row>
