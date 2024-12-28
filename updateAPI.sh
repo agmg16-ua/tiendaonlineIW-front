@@ -11,6 +11,7 @@ rm -rf src/generated/lewkin/services
 npx openapi-generator-cli generate \
   -i app_config/swagger.json \
   -g javascript \
-  -o src/generated/
+  -o src/generated/ \
+  --skip-validate-spec
 
 # Regresar al directorio raíz del proyecto

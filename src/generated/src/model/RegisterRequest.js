@@ -22,14 +22,25 @@ class RegisterRequest {
     /**
      * Constructs a new <code>RegisterRequest</code>.
      * @alias module:model/RegisterRequest
-     * @param username {String} 
-     * @param name {String} 
+     * @param nombre {String} 
+     * @param apellidos {String} 
+     * @param fechaNacimiento {Date} 
+     * @param genero {module:model/RegisterRequest.GeneroEnum} 
      * @param email {String} 
+     * @param telefonoCodPais {Number} 
+     * @param telefono {Number} 
+     * @param nombreUsuario {String} 
      * @param password {String} 
+     * @param calle {String} 
+     * @param numero {Number} 
+     * @param ciudad {String} 
+     * @param provincia {String} 
+     * @param cp {Number} 
+     * @param pais {String} 
      */
-    constructor(username, name, email, password) { 
+    constructor(nombre, apellidos, fechaNacimiento, genero, email, telefonoCodPais, telefono, nombreUsuario, password, calle, numero, ciudad, provincia, cp, pais) { 
         
-        RegisterRequest.initialize(this, username, name, email, password);
+        RegisterRequest.initialize(this, nombre, apellidos, fechaNacimiento, genero, email, telefonoCodPais, telefono, nombreUsuario, password, calle, numero, ciudad, provincia, cp, pais);
     }
 
     /**
@@ -37,11 +48,22 @@ class RegisterRequest {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj, username, name, email, password) { 
-        obj['username'] = username;
-        obj['name'] = name;
+    static initialize(obj, nombre, apellidos, fechaNacimiento, genero, email, telefonoCodPais, telefono, nombreUsuario, password, calle, numero, ciudad, provincia, cp, pais) { 
+        obj['nombre'] = nombre;
+        obj['apellidos'] = apellidos;
+        obj['fechaNacimiento'] = fechaNacimiento;
+        obj['genero'] = genero;
         obj['email'] = email;
+        obj['telefonoCodPais'] = telefonoCodPais;
+        obj['telefono'] = telefono;
+        obj['nombreUsuario'] = nombreUsuario;
         obj['password'] = password;
+        obj['calle'] = calle;
+        obj['numero'] = numero;
+        obj['ciudad'] = ciudad;
+        obj['provincia'] = provincia;
+        obj['cp'] = cp;
+        obj['pais'] = pais;
     }
 
     /**
@@ -55,17 +77,56 @@ class RegisterRequest {
         if (data) {
             obj = obj || new RegisterRequest();
 
-            if (data.hasOwnProperty('username')) {
-                obj['username'] = ApiClient.convertToType(data['username'], 'String');
+            if (data.hasOwnProperty('nombre')) {
+                obj['nombre'] = ApiClient.convertToType(data['nombre'], 'String');
             }
-            if (data.hasOwnProperty('name')) {
-                obj['name'] = ApiClient.convertToType(data['name'], 'String');
+            if (data.hasOwnProperty('apellidos')) {
+                obj['apellidos'] = ApiClient.convertToType(data['apellidos'], 'String');
+            }
+            if (data.hasOwnProperty('fechaNacimiento')) {
+                obj['fechaNacimiento'] = ApiClient.convertToType(data['fechaNacimiento'], 'Date');
+            }
+            if (data.hasOwnProperty('genero')) {
+                obj['genero'] = ApiClient.convertToType(data['genero'], 'String');
             }
             if (data.hasOwnProperty('email')) {
                 obj['email'] = ApiClient.convertToType(data['email'], 'String');
             }
+            if (data.hasOwnProperty('telefonoCodPais')) {
+                obj['telefonoCodPais'] = ApiClient.convertToType(data['telefonoCodPais'], 'Number');
+            }
+            if (data.hasOwnProperty('telefono')) {
+                obj['telefono'] = ApiClient.convertToType(data['telefono'], 'Number');
+            }
+            if (data.hasOwnProperty('nombreUsuario')) {
+                obj['nombreUsuario'] = ApiClient.convertToType(data['nombreUsuario'], 'String');
+            }
             if (data.hasOwnProperty('password')) {
                 obj['password'] = ApiClient.convertToType(data['password'], 'String');
+            }
+            if (data.hasOwnProperty('calle')) {
+                obj['calle'] = ApiClient.convertToType(data['calle'], 'String');
+            }
+            if (data.hasOwnProperty('numero')) {
+                obj['numero'] = ApiClient.convertToType(data['numero'], 'Number');
+            }
+            if (data.hasOwnProperty('piso')) {
+                obj['piso'] = ApiClient.convertToType(data['piso'], 'Number');
+            }
+            if (data.hasOwnProperty('puerta')) {
+                obj['puerta'] = ApiClient.convertToType(data['puerta'], 'String');
+            }
+            if (data.hasOwnProperty('ciudad')) {
+                obj['ciudad'] = ApiClient.convertToType(data['ciudad'], 'String');
+            }
+            if (data.hasOwnProperty('provincia')) {
+                obj['provincia'] = ApiClient.convertToType(data['provincia'], 'String');
+            }
+            if (data.hasOwnProperty('cp')) {
+                obj['cp'] = ApiClient.convertToType(data['cp'], 'Number');
+            }
+            if (data.hasOwnProperty('pais')) {
+                obj['pais'] = ApiClient.convertToType(data['pais'], 'String');
             }
         }
         return obj;
@@ -84,20 +145,48 @@ class RegisterRequest {
             }
         }
         // ensure the json data is a string
-        if (data['username'] && !(typeof data['username'] === 'string' || data['username'] instanceof String)) {
-            throw new Error("Expected the field `username` to be a primitive type in the JSON string but got " + data['username']);
+        if (data['nombre'] && !(typeof data['nombre'] === 'string' || data['nombre'] instanceof String)) {
+            throw new Error("Expected the field `nombre` to be a primitive type in the JSON string but got " + data['nombre']);
         }
         // ensure the json data is a string
-        if (data['name'] && !(typeof data['name'] === 'string' || data['name'] instanceof String)) {
-            throw new Error("Expected the field `name` to be a primitive type in the JSON string but got " + data['name']);
+        if (data['apellidos'] && !(typeof data['apellidos'] === 'string' || data['apellidos'] instanceof String)) {
+            throw new Error("Expected the field `apellidos` to be a primitive type in the JSON string but got " + data['apellidos']);
+        }
+        // ensure the json data is a string
+        if (data['genero'] && !(typeof data['genero'] === 'string' || data['genero'] instanceof String)) {
+            throw new Error("Expected the field `genero` to be a primitive type in the JSON string but got " + data['genero']);
         }
         // ensure the json data is a string
         if (data['email'] && !(typeof data['email'] === 'string' || data['email'] instanceof String)) {
             throw new Error("Expected the field `email` to be a primitive type in the JSON string but got " + data['email']);
         }
         // ensure the json data is a string
+        if (data['nombreUsuario'] && !(typeof data['nombreUsuario'] === 'string' || data['nombreUsuario'] instanceof String)) {
+            throw new Error("Expected the field `nombreUsuario` to be a primitive type in the JSON string but got " + data['nombreUsuario']);
+        }
+        // ensure the json data is a string
         if (data['password'] && !(typeof data['password'] === 'string' || data['password'] instanceof String)) {
             throw new Error("Expected the field `password` to be a primitive type in the JSON string but got " + data['password']);
+        }
+        // ensure the json data is a string
+        if (data['calle'] && !(typeof data['calle'] === 'string' || data['calle'] instanceof String)) {
+            throw new Error("Expected the field `calle` to be a primitive type in the JSON string but got " + data['calle']);
+        }
+        // ensure the json data is a string
+        if (data['puerta'] && !(typeof data['puerta'] === 'string' || data['puerta'] instanceof String)) {
+            throw new Error("Expected the field `puerta` to be a primitive type in the JSON string but got " + data['puerta']);
+        }
+        // ensure the json data is a string
+        if (data['ciudad'] && !(typeof data['ciudad'] === 'string' || data['ciudad'] instanceof String)) {
+            throw new Error("Expected the field `ciudad` to be a primitive type in the JSON string but got " + data['ciudad']);
+        }
+        // ensure the json data is a string
+        if (data['provincia'] && !(typeof data['provincia'] === 'string' || data['provincia'] instanceof String)) {
+            throw new Error("Expected the field `provincia` to be a primitive type in the JSON string but got " + data['provincia']);
+        }
+        // ensure the json data is a string
+        if (data['pais'] && !(typeof data['pais'] === 'string' || data['pais'] instanceof String)) {
+            throw new Error("Expected the field `pais` to be a primitive type in the JSON string but got " + data['pais']);
         }
 
         return true;
@@ -106,17 +195,27 @@ class RegisterRequest {
 
 }
 
-RegisterRequest.RequiredProperties = ["username", "name", "email", "password"];
+RegisterRequest.RequiredProperties = ["nombre", "apellidos", "fechaNacimiento", "genero", "email", "telefonoCodPais", "telefono", "nombreUsuario", "password", "calle", "numero", "ciudad", "provincia", "cp", "pais"];
 
 /**
- * @member {String} username
+ * @member {String} nombre
  */
-RegisterRequest.prototype['username'] = undefined;
+RegisterRequest.prototype['nombre'] = undefined;
 
 /**
- * @member {String} name
+ * @member {String} apellidos
  */
-RegisterRequest.prototype['name'] = undefined;
+RegisterRequest.prototype['apellidos'] = undefined;
+
+/**
+ * @member {Date} fechaNacimiento
+ */
+RegisterRequest.prototype['fechaNacimiento'] = undefined;
+
+/**
+ * @member {module:model/RegisterRequest.GeneroEnum} genero
+ */
+RegisterRequest.prototype['genero'] = undefined;
 
 /**
  * @member {String} email
@@ -124,12 +223,100 @@ RegisterRequest.prototype['name'] = undefined;
 RegisterRequest.prototype['email'] = undefined;
 
 /**
+ * @member {Number} telefonoCodPais
+ */
+RegisterRequest.prototype['telefonoCodPais'] = undefined;
+
+/**
+ * @member {Number} telefono
+ */
+RegisterRequest.prototype['telefono'] = undefined;
+
+/**
+ * @member {String} nombreUsuario
+ */
+RegisterRequest.prototype['nombreUsuario'] = undefined;
+
+/**
  * @member {String} password
  */
 RegisterRequest.prototype['password'] = undefined;
 
+/**
+ * @member {String} calle
+ */
+RegisterRequest.prototype['calle'] = undefined;
+
+/**
+ * @member {Number} numero
+ */
+RegisterRequest.prototype['numero'] = undefined;
+
+/**
+ * @member {Number} piso
+ */
+RegisterRequest.prototype['piso'] = undefined;
+
+/**
+ * @member {String} puerta
+ */
+RegisterRequest.prototype['puerta'] = undefined;
+
+/**
+ * @member {String} ciudad
+ */
+RegisterRequest.prototype['ciudad'] = undefined;
+
+/**
+ * @member {String} provincia
+ */
+RegisterRequest.prototype['provincia'] = undefined;
+
+/**
+ * @member {Number} cp
+ */
+RegisterRequest.prototype['cp'] = undefined;
+
+/**
+ * @member {String} pais
+ */
+RegisterRequest.prototype['pais'] = undefined;
 
 
+
+
+
+/**
+ * Allowed values for the <code>genero</code> property.
+ * @enum {String}
+ * @readonly
+ */
+RegisterRequest['GeneroEnum'] = {
+
+    /**
+     * value: "HOMBRE"
+     * @const
+     */
+    "HOMBRE": "HOMBRE",
+
+    /**
+     * value: "MUJER"
+     * @const
+     */
+    "MUJER": "MUJER",
+
+    /**
+     * value: "OTRO"
+     * @const
+     */
+    "OTRO": "OTRO",
+
+    /**
+     * value: "PREFIERO_NO_DECIR"
+     * @const
+     */
+    "PREFIERO_NO_DECIR": "PREFIERO_NO_DECIR"
+};
 
 
 
