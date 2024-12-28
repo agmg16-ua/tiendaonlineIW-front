@@ -2,6 +2,7 @@
 import { reactive, ref, watch, onMounted } from 'vue';
 import { LoginRequest, RegisterRequest, AuthenticationControllerImplApi } from '@/generated/api';
 import { IonGrid, IonRow, IonCol, IonInput, IonButton, IonLabel } from '@ionic/vue';
+import { build } from 'ionicons/icons';
 
 const props = defineProps({
     formData: Object
@@ -23,6 +24,10 @@ let localData = ref({
     province: '',
     postalCode: '',
     country: '',
+    building: undefined,
+    stair: undefined,
+    floor: undefined,
+    door: undefined,
     captcha: undefined
 });
 
@@ -34,6 +39,10 @@ onMounted(() => {
     localData.value.province = data.province;
     localData.value.postalCode = data.postalCode;
     localData.value.country = data.country;
+    localData.value.building = data.building;
+    localData.value.stair = data.stair;
+    localData.value.floor = data.floor;
+    localData.value.door = data.door;
 });
 
 watch(
@@ -46,6 +55,10 @@ watch(
         localData.value.province = data.province;
         localData.value.postalCode = data.postalCode;
         localData.value.country = data.country;
+        localData.value.building = data.building;
+        localData.value.stair = data.stair;
+        localData.value.floor = data.floor;
+        localData.value.door = data.door;
     },
     { immediate: true }
 );
@@ -71,12 +84,31 @@ function submitForm() {
         <ion-grid>
             <ion-row>
                 <ion-col size="10">
-                    <ion-input v-model="localData.street" label="Street" label-placement="floating" fill="outline"
+                    <ion-input v-model="localData.street" label="Calle" label-placement="floating" fill="outline"
                         placeholder="C/ Gran Vía" required></ion-input>
                 </ion-col>
                 <ion-col size="2">
                     <ion-input v-model="localData.number" label="Num" label-placement="floating" fill="outline"
                         placeholder="12" required></ion-input>
+                </ion-col>
+            </ion-row>
+
+            <ion-row>
+                <ion-col size="3">
+                    <ion-input v-model="localData.building" label="Bloque" label-placement="floating" fill="outline"
+                        placeholder="2"></ion-input>
+                </ion-col>
+                <ion-col size="3">
+                    <ion-input v-model="localData.stair" label="Escalera" label-placement="floating" fill="outline"
+                        placeholder="3"></ion-input>
+                </ion-col>
+                <ion-col size="3">
+                    <ion-input v-model="localData.floor" label="Piso" label-placement="floating" fill="outline"
+                        placeholder="1"></ion-input>
+                </ion-col>
+                <ion-col size="3">
+                    <ion-input v-model="localData.door" label="Puerta" label-placement="floating" fill="outline"
+                        placeholder="B"></ion-input>
                 </ion-col>
             </ion-row>
         
