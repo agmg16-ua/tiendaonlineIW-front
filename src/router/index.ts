@@ -5,6 +5,7 @@ import HomePage from '../views/HomePage.vue'
 import AboutPage from '../views/AboutPage.vue'
 import ContactPage from '../views/ContactPage.vue'
 import AuthPage from '../views/AuthPage.vue'
+import CatalogPage from '@/views/CatalogPage.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -21,6 +22,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/contact',
     component: ContactPage,
     name: 'contact'
+  },
+  {
+    path: '/catalog',
+    component: CatalogPage,
+    name: 'catalog'
   },
   {
     path: '/auth',
