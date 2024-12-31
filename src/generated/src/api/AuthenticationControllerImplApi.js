@@ -65,7 +65,7 @@ export default class AuthenticationControllerImplApi {
       let formParams = {
       };
 
-      let authNames = [];
+      let authNames = ['Bearer Authentication'];
       let contentTypes = [];
       let accepts = ['application/json'];
       let returnType = null;
@@ -106,7 +106,7 @@ export default class AuthenticationControllerImplApi {
       let formParams = {
       };
 
-      let authNames = [];
+      let authNames = ['Bearer Authentication'];
       let contentTypes = ['application/json'];
       let accepts = ['application/json'];
       let returnType = AuthenticationResponse;

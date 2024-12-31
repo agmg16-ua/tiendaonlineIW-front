@@ -19,7 +19,7 @@
         </ion-buttons>
         <ion-buttons slot="end">
           <ion-button>Carrito</ion-button>
-          <ion-button>Iniciar Sesión</ion-button>
+          <ion-button href="/login">Iniciar Sesión</ion-button>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>

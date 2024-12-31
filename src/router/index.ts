@@ -4,8 +4,8 @@ import TabsPage from '../views/TabsPage.vue'
 import HomePage from '../views/HomePage.vue'
 import AboutPage from '../views/AboutPage.vue'
 import ContactPage from '../views/ContactPage.vue'
-import AuthPage from '../views/AuthPage.vue'
-import CatalogPage from '@/views/CatalogPage.vue';
+import LoginPage from '../views/LoginPage.vue'
+import RegisterPage from '../views/RegisterPage.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -24,14 +24,14 @@ const routes: Array<RouteRecordRaw> = [
     name: 'contact'
   },
   {
-    path: '/catalog',
-    component: CatalogPage,
-    name: 'catalog'
+    path: '/login',
+    component: () => LoginPage,
+    name: 'login'
   },
   {
-    path: '/auth',
-    component: () => AuthPage,
-    name: 'auth'
+    path: '/register',
+    component: () => RegisterPage,
+    name: 'register'
   },
   {
     path: '/tabs/',

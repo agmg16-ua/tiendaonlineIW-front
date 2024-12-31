@@ -101,6 +101,10 @@ Please follow the [installation](#installation) instruction and execute the foll
 ```javascript
 var LewkinTiendaOnline = require('lewkin_tienda_online');
 
+var defaultClient = LewkinTiendaOnline.ApiClient.instance;
+// Configure Bearer (JWT) access token for authorization: Bearer Authentication
+var Bearer Authentication = defaultClient.authentications['Bearer Authentication'];
+Bearer Authentication.accessToken = "YOUR ACCESS TOKEN"
 
 var api = new LewkinTiendaOnline.AuthenticationControllerImplApi()
 var callback = function(error, data, response) {
@@ -130,6 +134,8 @@ Class | Method | HTTP request | Description
 *LewkinTiendaOnline.DemoControllerImplApi* | [**demoHasAdminRole**](docs/DemoControllerImplApi.md#demoHasAdminRole) | **GET** /api/v1/auth/demo/role/admin | Checks if user has ADMIN role
 *LewkinTiendaOnline.DemoControllerImplApi* | [**demoHasUserRole**](docs/DemoControllerImplApi.md#demoHasUserRole) | **GET** /api/v1/demo/role/user | Checks if user has USER role
 *LewkinTiendaOnline.DemoControllerImplApi* | [**demoNoAuthentication**](docs/DemoControllerImplApi.md#demoNoAuthentication) | **GET** /demo | Test an endpoint without authentication
+*LewkinTiendaOnline.ProductoControllerApi* | [**listadoColeccionGimnasio**](docs/ProductoControllerApi.md#listadoColeccionGimnasio) | **GET** /lewkin/api/gimnasio | 
+*LewkinTiendaOnline.ProductoControllerApi* | [**listadoColeccionHotel**](docs/ProductoControllerApi.md#listadoColeccionHotel) | **GET** /lewkin/api/hotel | 
 
 
 ## Documentation for Models
@@ -139,6 +145,7 @@ Class | Method | HTTP request | Description
  - [LewkinTiendaOnline.ErrorResponse](docs/ErrorResponse.md)
  - [LewkinTiendaOnline.LoginRequest](docs/LoginRequest.md)
  - [LewkinTiendaOnline.PasswordRecoveryRequest](docs/PasswordRecoveryRequest.md)
+ - [LewkinTiendaOnline.ProductoData](docs/ProductoData.md)
  - [LewkinTiendaOnline.RegisterRequest](docs/RegisterRequest.md)
  - [LewkinTiendaOnline.ResendVerificationResponse](docs/ResendVerificationResponse.md)
  - [LewkinTiendaOnline.SendPasswordRecoverMailResponse](docs/SendPasswordRecoverMailResponse.md)
@@ -148,7 +155,7 @@ Class | Method | HTTP request | Description
 
 
 Authentication schemes defined for the API:
-### BearerAuthentication
+### Bearer Authentication
 
 - **Type**: Bearer authentication (JWT)
 

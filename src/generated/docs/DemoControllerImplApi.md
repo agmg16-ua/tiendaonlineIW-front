@@ -20,6 +20,10 @@ Checks if user has ADMIN role
 
 ```javascript
 import LewkinTiendaOnline from 'lewkin_tienda_online';
+let defaultClient = LewkinTiendaOnline.ApiClient.instance;
+// Configure Bearer (JWT) access token for authorization: Bearer Authentication
+let Bearer Authentication = defaultClient.authentications['Bearer Authentication'];
+Bearer Authentication.accessToken = "YOUR ACCESS TOKEN"
 
 let apiInstance = new LewkinTiendaOnline.DemoControllerImplApi();
 apiInstance.demoHasAdminRole((error, data, response) => {
@@ -41,7 +45,7 @@ null (empty response body)
 
 ### Authorization
 
-No authorization required
+[Bearer Authentication](../README.md#Bearer Authentication)
 
 ### HTTP request headers
 
@@ -59,6 +63,10 @@ Checks if user has USER role
 
 ```javascript
 import LewkinTiendaOnline from 'lewkin_tienda_online';
+let defaultClient = LewkinTiendaOnline.ApiClient.instance;
+// Configure Bearer (JWT) access token for authorization: Bearer Authentication
+let Bearer Authentication = defaultClient.authentications['Bearer Authentication'];
+Bearer Authentication.accessToken = "YOUR ACCESS TOKEN"
 
 let apiInstance = new LewkinTiendaOnline.DemoControllerImplApi();
 apiInstance.demoHasUserRole((error, data, response) => {
@@ -80,7 +88,7 @@ null (empty response body)
 
 ### Authorization
 
-No authorization required
+[Bearer Authentication](../README.md#Bearer Authentication)
 
 ### HTTP request headers
 
