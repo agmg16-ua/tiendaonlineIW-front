@@ -13,6 +13,9 @@
           <ion-button>
             <Router-Link to="/contact">Contacta con Nosotros</Router-Link>
           </ion-button>
+          <ion-button>
+            <Router-Link to="/catalog">Catálogo</Router-Link>
+          </ion-button>
         </ion-buttons>
         <ion-buttons slot="end">
           <ion-button>Carrito</ion-button>
