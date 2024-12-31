@@ -6,6 +6,7 @@ import AboutPage from '../views/AboutPage.vue'
 import ContactPage from '../views/ContactPage.vue'
 import LoginPage from '../views/LoginPage.vue'
 import RegisterPage from '../views/RegisterPage.vue'
+import CatalogPage from '@/views/CatalogPage.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -32,6 +33,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/register',
     component: () => RegisterPage,
     name: 'register'
+  },
+  {
+    path: '/catalog',
+    component: CatalogPage,
+    name: 'catalog'
   },
   {
     path: '/tabs/',
