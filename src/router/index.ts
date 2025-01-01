@@ -7,6 +7,7 @@ import ContactPage from '../views/ContactPage.vue'
 import LoginPage from '../views/LoginPage.vue'
 import RegisterPage from '../views/RegisterPage.vue'
 import CatalogPage from '@/views/CatalogPage.vue';
+import ProductDetails from '@/views/ProductDetails.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -38,6 +39,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/catalog',
     component: CatalogPage,
     name: 'catalog'
+  },
+  {
+    path: '/productos/:id',
+    component: ProductDetails,
+    name: 'DetallesProducto'
   },
   {
     path: '/tabs/',

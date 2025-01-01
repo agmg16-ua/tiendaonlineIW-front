@@ -36,9 +36,9 @@
     <IonGrid>
       <IonRow>
         <IonCol size="12" size-md="4" size-lg="2" v-for="producto in productosFiltrados" :key="producto.id">
-          <IonCard class="product-card">
+          <IonCard class="product-card" @click="$router.push({ name: 'DetallesProducto', params: { id: producto.id } })">
             <!-- Imagen del producto en la parte superior -->
-            <IonImg v-if="producto.foto_portada" :src="producto.foto_portada"  alt="Foto del producto" class="product-image-container"/>
+            <Img v-if="producto.foto_portada" :src="producto.foto_portada"  alt="Foto del producto" class="product-image-container"/>
             <!-- Imagen de ejemplo si no hay foto disponible -->
             <IonImg v-else src="https://via.placeholder.com/80x80?text=Producto" alt="Foto de ejemplo" class="product-image"/>
             <IonCardContent>
@@ -249,8 +249,9 @@ onMounted(() => {
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 200px;
+  height: 350px;
   background-color: rgb(52, 50, 50);
+  overflow: hidden;
 }
 
 .product-image-container img {
