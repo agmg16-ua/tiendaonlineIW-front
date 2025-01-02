@@ -35,7 +35,6 @@ watch(
         localData.value.lastName = data.lastName;
         localData.value.birthDate = data.birthDate;
         localData.value.gender = data.gender;
-        console.log(data.gender)
     },
     { immediate: true }
 );
