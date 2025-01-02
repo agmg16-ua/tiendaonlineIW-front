@@ -66,7 +66,7 @@ watch(
 
 function submitForm() {
     if (localData.value.captcha == correctAnswer) {
-        console.log('Submitting form from childcomponent:', localData.value);
+        //console.log('Submitting form from childcomponent:', localData.value);
         emit('nextStep', localData.value);
     }
     else {

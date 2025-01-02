@@ -27,12 +27,12 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/login',
-    component: () => LoginPage,
+    component: LoginPage,
     name: 'login'
   },
   {
     path: '/register',
-    component: () => RegisterPage,
+    component: RegisterPage,
     name: 'register'
   },
   {
