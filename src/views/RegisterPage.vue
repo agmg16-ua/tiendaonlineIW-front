@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { reactive, ref, computed } from 'vue';
+import { ref, computed } from 'vue';
+import { useRouter } from 'vue-router';
 import RegisterRequest from '@/generated/src/model/RegisterRequest';
 import { IonGrid, IonRow, IonCol, IonInput, IonButton } from '@ionic/vue';
 import RegisterStep1 from './RegisterSteps/RegisterStep1.vue';
@@ -10,6 +11,9 @@ import { useUserStore } from '@/stores/store'
 
 // Store
 const userStore = useUserStore();
+
+// Router
+const router = useRouter();
 
 // Definir las propiedades del formulario usando ref
 let registerStep1Data = ref({})
@@ -49,22 +53,33 @@ const previousForm = () => {
     }
 };
 
-const handleRegister = (data: any) => {
+const handleRegister = async (data: any) => {
 
     formDataMap[currentFormIndex.value].value = data;
 
-    console.log('Current form data:', currentFormData.value);
+    console.log('Form Data Filled:', currentFormIndex.value+1);
 
     if (currentFormIndex.value < forms.length - 1) {
         currentFormIndex.value++;
     }
     else {
-        console.log('Registering user with data:', formDataMap);
+        //console.log('Registering user with data:', formDataMap);
         const registerRequest = mapDataToRegisterRequest();
 
-        console.log(registerRequest)
+        //console.log(registerRequest)
 
-        const response = userStore.register(registerRequest);
+        const response = await userStore.register(registerRequest);
+        
+        console.log('Response:', response);
+        /*
+        if (response.status === 200) {
+            console.log('User registered successfully')
+            router.push('/login')
+        }
+        else {
+            console.log('Error registering user');
+        }
+        */
     }
 };
 

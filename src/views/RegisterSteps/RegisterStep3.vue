@@ -35,7 +35,7 @@ watch(
 
 
 function submitForm() {
-    console.log('Submitting form from childcomponent:', localData.value);
+    //console.log('Submitting form from childcomponent:', localData.value);
     emit('nextStep', localData.value);
 }
 
