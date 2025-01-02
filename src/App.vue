@@ -40,5 +40,5 @@
 </template>
 
 <script setup lang="ts">
-  import { IonApp } from '@ionic/vue';
+  import { IonApp, IonToolbar, IonTitle, IonFooter, IonHeader, IonButton, IonButtons, IonContent } from '@ionic/vue';
 </script>
