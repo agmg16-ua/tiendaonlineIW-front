@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref, watch, onMounted } from 'vue';
-import { LoginRequest, RegisterRequest, AuthenticationControllerImplApi } from '@/generated/api';
-import { IonGrid, IonRow, IonCol, IonInput, IonButton } from '@ionic/vue';
+import { IonGrid, IonRow, IonCol, IonInput, IonButton, IonSelect, IonSelectOption } from '@ionic/vue';
+import RegisterRequest, { GeneroEnum } from '@/generated/src/model/RegisterRequest';
 
 const props = defineProps({
     formData: Object
@@ -15,6 +15,9 @@ let localData = ref({
     birthDate: '',
     gender: ''
 });
+
+//Ignorar si muestra error indicando que GeneroEnum no esta definido. Funciona correctamente
+const gender = RegisterRequest.GeneroEnum
 
 onMounted(() => {
     let data = { ...props.formData };
@@ -32,6 +35,7 @@ watch(
         localData.value.lastName = data.lastName;
         localData.value.birthDate = data.birthDate;
         localData.value.gender = data.gender;
+        console.log(data.gender)
     },
     { immediate: true }
 );
@@ -68,8 +72,10 @@ function submitForm() {
             </ion-row>
             <ion-row>
                 <ion-col>
-                    <ion-input v-model="localData.gender" label="Género" label-placement="stacked"
-                        fill="outline" placeholder="Enter your gender" required></ion-input>
+                    <ion-select v-model="localData.gender" label="Género" label-placement="stacked"
+                        fill="outline" placeholder="Enter your gender" required>
+                        <ion-select-option v-for="item in gender" :key="item" :value="item">{{ item }}</ion-select-option>
+                    </ion-select>
                 </ion-col>
             </ion-row>
             <ion-row>
