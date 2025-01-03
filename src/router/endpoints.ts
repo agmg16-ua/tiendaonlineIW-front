@@ -20,7 +20,7 @@ export const authEndpoints = {
 }
 
 //Products Endpoints
-export const ProductsEndpoint = baseUrl + '/lewkin/api/products';
+export const ProductsEndpoint = baseUrl + '/lewkin/api/productos';
 
 export const productEndpoints = {
     ProductsEndpoint
