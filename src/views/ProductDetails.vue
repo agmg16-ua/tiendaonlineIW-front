@@ -50,7 +50,7 @@ const productId = route.params.id;
 // Función para obtener el producto desde la API
 const obtenerProducto = async () => {
   try {
-    const response = await axios.get(`http://localhost:8080/lewkin/api/productos/${productId}`);
+    const response = await axios.get(`http://localhost:8080/lewkin/api/producto/${productId}`);
     producto.value = response.data; // Aquí se asigna el objeto producto
   } catch (error) {
     console.error('Error al obtener el producto:', error);
