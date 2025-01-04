@@ -7,17 +7,20 @@ export const useProductStore = defineStore('product', {
     }),
     actions: {
         async fetchProducts() {
-            const response = await fetch(productEndpoints.ProductsEndpoint, {
+            await fetch(productEndpoints.ProductsEndpoint, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                 }
             })
-            console.log(response)
-            const data = await response.json()
-            console.log(data)
-
-            return response
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                this.allProducts = data
+            })
+            .catch(error => {
+                console.error('Error en la solicitud de productos:', error)
+            })
         }
     }
 })
