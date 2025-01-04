@@ -90,8 +90,11 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
 import axios from 'axios';
+import { useProductStore } from '@/stores/productStore';
 import { IonCard, IonCardContent, IonText, IonGrid, IonRow, IonCol, IonImg, IonRange, IonButton, IonIcon } from '@ionic/vue';
 import { funnelOutline } from 'ionicons/icons';
+
+const productStore = useProductStore();
 
 // Definir la interfaz del producto
 interface ProductoData {
@@ -103,7 +106,7 @@ interface ProductoData {
   color: string;
   foto_portada: string | null;
   idTalla: number;
-  idMaterial: number;
+  materialId: number;
   idLinPedido: number | null;
   idLinCarrito: number | null;
 }
@@ -127,8 +130,8 @@ const materialSeleccionado = ref<number | null>(null);
 // Función para obtener los productos
 const fetchProductos = async () => {
   try {
-    const response = await axios.get<ProductoData[]>('http://localhost:8080/lewkin/api/productos');
-    productosHotel.value = response.data;
+    await productStore.fetchProducts(); // Cargar los productos desde la store
+    productosHotel.value = productStore.allProducts;
     aplicarFiltros(); // Aplicar los filtros después de cargar los productos
   } catch (error) {
     console.error('Error al obtener los productos del hotel:', error);
@@ -141,7 +144,7 @@ const aplicarFiltros = () => {
 
   // Aplicar filtro de material si está seleccionado
   if (materialSeleccionado.value !== null) {
-    productos = productos.filter(producto => producto.idMaterial === materialSeleccionado.value);
+    productos = productos.filter(producto => producto.materialId === materialSeleccionado.value);
   }
 
   // Aplicar filtro de precio
@@ -214,7 +217,7 @@ watch(precioRango, () => {
 // Ejecutar la función al montar el componente
 onMounted(() => {
   fetchProductos();
-  aplicarFiltrosDesdeLocalStorage();
+  aplicarFiltrosDesdeLocalStorage(); // Aplicar filtros iniciales
 });
 </script>
 
