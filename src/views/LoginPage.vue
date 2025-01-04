@@ -1,41 +1,39 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
-import { LoginRequest, RegisterRequest, AuthenticationControllerImplApi } from '@/generated/api';
+import LoginRequest from '@/generated/src/model/LoginRequest';
 import { IonGrid, IonRow, IonCol, IonInput, IonButton, IonLabel, IonInputPasswordToggle } from '@ionic/vue';
+import { useUserStore } from '@/stores/userStore';
+import { useProductStore } from '@/stores/productStore';  
+
+const userStore = useUserStore();
 
 // Definir las propiedades del formulario usando ref
-let register = reactive<RegisterRequest>({
-    name: '',
-    email: '',
-    password: '',
-    username: ''
-});
-
-let login = reactive<LoginRequest>({
+let login = ref({
     email: '',
     password: ''
 });
 
-const authApi = new AuthenticationControllerImplApi();
-
-// Función para manejar el registro
-const handleRegister = () => {
-    console.log('Registering user:', register);
-    // Aquí puedes hacer la lógica de registro, como llamar a un API
-    authApi.register(register).then(response => {
-        console.log('User registered:', response);
-    })
-
-/*
-    api.register(register).then((response: any) => {
-        console.log('User registered:', response);
-    })*/
-};
+function mapDataToLoginRequest() {
+    return new LoginRequest(
+        login.value.email, 
+        login.value.password
+    );
+}
 
 const handleLogin = () => {
-    console.log('Login user:', register);
+    console.log('Login user:', login.value);
     // Aquí puedes hacer la lógica de login, como llamar a un API
+
+    const loginRequest = mapDataToLoginRequest();
+
+    userStore.login(loginRequest)
 }
+
+const doaction = async () => {
+    const productStore = useProductStore();
+    const response = await productStore.fetchProducts();
+}
+
 </script>
 
 <template>
@@ -69,14 +67,17 @@ const handleLogin = () => {
                                 <ion-button type="submit" expand="full">Inciar Sesión</ion-button>
                             </ion-col>
                         </ion-row>
-                        <ion-row>
+                    </form>
+                    <ion-row>
                             <ion-col>
                                 <ion-label>
                                     ¿No tienes cuenta? <RouterLink to="/register">Regístrate</RouterLink>
                                 </ion-label>
                             </ion-col>
                         </ion-row>
-                    </form>
+                    <ion-button :onclick="doaction">
+                        Hola
+                    </ion-button>
                 </ion-col>
             </ion-row>
         </ion-grid>
