@@ -7,7 +7,7 @@ export const useProductStore = defineStore('product', {
     }),
     actions: {
         async fetchProducts() {
-            await fetch(productEndpoints.ProductsEndpoint, {
+            await fetch(productEndpoints.GETProductsEndpoint, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
