@@ -24,6 +24,7 @@
     "ionicons": "^7.4.0",
     "ng-openapi-gen": "^0.52.0",
     "pinia": "^2.3.0",
+    "superagent": "^10.1.1",
     "swiper": "^11.1.15",
     "vue": "^3.3.0",
     "vue-router": "^4.2.0"
