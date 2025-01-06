@@ -40,13 +40,21 @@ export const POSTUpdateProductEndpoint = baseUrl + '/lewkin/api/producto/{id}/ac
 export const GETProductsEndpoint = baseUrl + '/lewkin/api/productos';
 export const GETProductEndpoint = baseUrl +  '/lewkin/api/producto/{id}';
 export const DELETEProductEndpoint = baseUrl + '/lewkin/api/producto/{id}/eliminar';
+export const GETMenProductsEndpoint = baseUrl + '/lewkin/api/productos/hombre';
+export const GETWomenProductsEndpoint = baseUrl + '/lewkin/api/productos/mujer';
+export const GETNinoProductsEndpoint = baseUrl + '/lewkin/api/productos/nino';
+export const GETNinaProductsEndpoint = baseUrl + '/lewkin/api/productos/nina';
 
 export const productEndpoints = {
     POSTProductEndpoint,
     POSTUpdateProductEndpoint,
     GETProductsEndpoint,
     GETProductEndpoint,
-    DELETEProductEndpoint
+    DELETEProductEndpoint,
+    GETMenProductsEndpoint,
+    GETWomenProductsEndpoint,
+    GETNinoProductsEndpoint,
+    GETNinaProductsEndpoint,
 }
 
 //Direccion Endpoints

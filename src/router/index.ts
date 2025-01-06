@@ -8,6 +8,11 @@ import LoginPage from '../views/LoginPage.vue'
 import RegisterPage from '../views/RegisterPage.vue'
 import CatalogPage from '@/views/CatalogPage.vue';
 import ProductDetails from '@/views/ProductDetails.vue';
+import MenCatalog from '@/views/MenCatalog.vue';
+import WomenCatalog from '@/views/WomenCatalog.vue';
+import AllCatalog from '@/views/AllCatalog.vue';
+import NinoCatalog from '@/views/NinaCatalog.vue';
+import NinaCatalog from '@/views/NinaCatalog.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -37,8 +42,28 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/catalog',
-    component: CatalogPage,
-    name: 'catalog'
+    component: AllCatalog,
+    name: 'Catalog'
+  },
+  {
+    path: '/catalog/mujer',
+    component: WomenCatalog,
+    name: 'womenCatalog'
+  },
+  {
+    path: '/catalog/hombre',
+    component: MenCatalog,
+    name: 'menCatalog'
+  },
+  {
+    path: '/catalog/nino',
+    component: NinoCatalog,
+    name: 'ninoCatalog'
+  },
+  {
+    path: '/catalog/nina',
+    component: NinaCatalog,
+    name: 'ninaCatalog'
   },
   {
     path: '/productos/:id',
