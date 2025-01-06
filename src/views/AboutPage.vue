@@ -85,8 +85,9 @@
 </template>
 
 <script setup lang="ts">
-  
+  import { IonContent, IonGrid, IonRow, IonCol, IonImg, IonText } from '@ionic/vue';
 </script>
+
 
 <style scoped>
 /* Imagen superior que ocupa todo el ancho */

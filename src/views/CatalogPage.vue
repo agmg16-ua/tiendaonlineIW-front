@@ -82,19 +82,15 @@
   </IonGrid>
   <!-- Mostrar mensaje si no hay productos -->
   <div v-if="productosFiltrados.length === 0">
-    <p>No se encontraron productos en el rango seleccionado.</p>
+    <p>No hay productos disponibles.</p>
   </div>
   
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
-import axios from 'axios';
-import { useProductStore } from '@/stores/productStore';
 import { IonCard, IonCardContent, IonText, IonGrid, IonRow, IonCol, IonImg, IonRange, IonButton, IonIcon } from '@ionic/vue';
 import { funnelOutline } from 'ionicons/icons';
-
-const productStore = useProductStore();
 
 // Definir la interfaz del producto
 interface ProductoData {
@@ -111,8 +107,12 @@ interface ProductoData {
   idLinCarrito: number | null;
 }
 
+
+// Recibir la lista de productos como prop
+const props = defineProps<{
+  listaProductos: ProductoData[]; // Definir correctamente el tipo del array
+}>();
 // Variables reactivas
-const productosHotel = ref<ProductoData[]>([]);
 const productosFiltrados = ref<ProductoData[]>([]);
 const mostrarFiltro = ref(false);
 const mostrarOrden = ref(false);
@@ -127,20 +127,9 @@ const materialesDisponibles = ref([
 ]);
 const materialSeleccionado = ref<number | null>(null);
 
-// Función para obtener los productos
-const fetchProductos = async () => {
-  try {
-    await productStore.fetchProducts(); // Cargar los productos desde la store
-    productosHotel.value = productStore.allProducts;
-    aplicarFiltros(); // Aplicar los filtros después de cargar los productos
-  } catch (error) {
-    console.error('Error al obtener los productos del hotel:', error);
-  }
-};
-
 // Función para aplicar todos los filtros acumulativamente
 const aplicarFiltros = () => {
-  let productos = [...productosHotel.value];
+  let productos = [...props.listaProductos];
 
   // Aplicar filtro de material si está seleccionado
   if (materialSeleccionado.value !== null) {
@@ -156,8 +145,9 @@ const aplicarFiltros = () => {
   if (ordenActual.value) {
     productos.sort((a, b) => ordenActual.value === 'asc' ? a.precio - b.precio : b.precio - a.precio);
   }
-
+  
   productosFiltrados.value = productos;
+  console.log(productosFiltrados)
 };
 
 // Función para filtrar por material
@@ -204,8 +194,6 @@ const aplicarFiltrosDesdeLocalStorage = () => {
   if (savedMaterialSeleccionado) {
     materialSeleccionado.value = savedMaterialSeleccionado === 'null' ? null : parseInt(savedMaterialSeleccionado, 10);
   }
-
-  aplicarFiltros(); // Aplicar todos los filtros acumulativamente
 };
 
 // Guardar el rango de precios en localStorage y aplicar filtros
@@ -214,11 +202,13 @@ watch(precioRango, () => {
   aplicarFiltros();
 });
 
-// Ejecutar la función al montar el componente
 onMounted(() => {
-  fetchProductos();
-  aplicarFiltrosDesdeLocalStorage(); // Aplicar filtros iniciales
+  // Aplicar filtros desde localStorage si existen
+  aplicarFiltrosDesdeLocalStorage();
+  console.log("vndfovboboibivoe")
+  aplicarFiltros();
 });
+
 </script>
 
 
