@@ -16,6 +16,18 @@
           <ion-button>
             <Router-Link to="/catalog">Catálogo</Router-Link>
           </ion-button>
+          <ion-button>
+            <Router-Link to="/catalog/hombre">Hombre</Router-Link>
+          </ion-button>
+          <ion-button>
+            <Router-Link to="/catalog/mujer">Mujer</Router-Link>
+          </ion-button>
+          <ion-button>
+            <Router-Link to="/catalog/nino">Niño</Router-Link>
+          </ion-button>
+          <ion-button>
+            <Router-Link to="/catalog/nina">Niña</Router-Link>
+          </ion-button>
         </ion-buttons>
         <ion-buttons slot="end">
           <ion-button>Carrito</ion-button>
