@@ -32,6 +32,9 @@ import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import { useRoute } from 'vue-router';
 import { IonContent, IonGrid, IonRow, IonCol, IonSpinner, IonButton } from '@ionic/vue';
+import { useProductStore } from '@/stores/productStore';
+
+const productStore = useProductStore();
 
 // Definir la interfaz para Producto
 interface Producto {
@@ -48,14 +51,24 @@ const route = useRoute();
 const productId = route.params.id;
 
 // Función para obtener el producto desde la API
+// Función para obtener el producto desde la API
 const obtenerProducto = async () => {
   try {
-    const response = await axios.get(`http://localhost:8080/lewkin/api/producto/${productId}`);
-    producto.value = response.data; // Aquí se asigna el objeto producto
+    // Convertir el productId (string) a number
+    const id = parseInt(productId as string, 10); // Forzamos que productId sea string y lo convertimos a número
+
+    if (isNaN(id)) {
+      throw new Error('El ID del producto no es un número válido.');
+    }
+
+    // Llamar al método del store con el ID convertido
+    await productStore.fetchSingleProduct(id);
+    producto.value = productStore.singleProduct; // Asignar el producto al valor reactivo
   } catch (error) {
     console.error('Error al obtener el producto:', error);
   }
 };
+
 
 // Función para añadir el producto al carrito
 const añadirAlCarrito = async () => {
