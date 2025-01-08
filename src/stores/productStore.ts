@@ -4,6 +4,7 @@ import { productEndpoints } from '@/router/endpoints'
 export const useProductStore = defineStore('product', {
     state: () => ({
         allProducts: [],
+        singleProduct: null,
     }),
     actions: {
         async fetchProducts() {
@@ -84,6 +85,23 @@ export const useProductStore = defineStore('product', {
             })
             .catch(error => {
                 console.error('Error en la solicitud de productos:', error)
+            })
+        },
+        async fetchSingleProduct(productId: number) {
+            const url = productEndpoints.GETProductEndpoint.replace('{id}', productId.toString());
+            await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                this.singleProduct = data
+            })
+            .catch(error => {
+                console.error('Error al obtener el producto individual:', error)
             })
         }
     }
