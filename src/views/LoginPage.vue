@@ -3,7 +3,9 @@ import { reactive, ref } from 'vue';
 import LoginRequest from '@/generated/src/model/LoginRequest';
 import { IonGrid, IonRow, IonCol, IonInput, IonButton, IonLabel, IonInputPasswordToggle } from '@ionic/vue';
 import { useUserStore } from '@/stores/userStore';
-import { useProductStore } from '@/stores/productStore';  
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const userStore = useUserStore();
 
@@ -20,18 +22,22 @@ function mapDataToLoginRequest() {
     );
 }
 
-const handleLogin = () => {
-    console.log('Login user:', login.value);
-    // Aquí puedes hacer la lógica de login, como llamar a un API
+const handleLogin = async () => {
+    try {
+        console.log(userStore.isAuthenticated)
+        const loginRequest = mapDataToLoginRequest();
+        const response = await userStore.login(loginRequest)
 
-    const loginRequest = mapDataToLoginRequest();
+        if (response.status === 200) {
+            router.push('/')
+        } else {
+            console.log(response.message)
+        }
+    } catch (error) {
+        console.error(error)
+    }
 
-    userStore.login(loginRequest)
-}
 
-const doaction = async () => {
-    const productStore = useProductStore();
-    const response = await productStore.fetchProducts();
 }
 
 </script>
@@ -75,9 +81,6 @@ const doaction = async () => {
                                 </ion-label>
                             </ion-col>
                         </ion-row>
-                    <ion-button :onclick="doaction">
-                        Hola
-                    </ion-button>
                 </ion-col>
             </ion-row>
         </ion-grid>

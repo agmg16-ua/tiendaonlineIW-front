@@ -63,23 +63,16 @@ const handleRegister = async (data: any) => {
         currentFormIndex.value++;
     }
     else {
-        //console.log('Registering user with data:', formDataMap);
-        const registerRequest = mapDataToRegisterRequest();
+        try {
+            const registerRequest = mapDataToRegisterRequest();
 
-        //console.log(registerRequest)
+            await userStore.register(registerRequest);
 
-        const response = await userStore.register(registerRequest);
-        
-        console.log('Response:', response);
-        /*
-        if (response.status === 200) {
-            console.log('User registered successfully')
-            router.push('/login')
+            router.push('/')
+            
+        } catch (error) {
+            console.error("ERROR:", error)
         }
-        else {
-            console.log('Error registering user');
-        }
-        */
     }
 };
 
