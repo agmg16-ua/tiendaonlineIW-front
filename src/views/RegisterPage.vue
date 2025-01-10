@@ -1,19 +1,25 @@
 <script setup lang="ts">
-import { reactive, ref, computed } from 'vue';
-import { LoginRequest, RegisterRequest, AuthenticationControllerImplApi } from '@/generated/api';
+import { ref, computed } from 'vue';
+import { useRouter } from 'vue-router';
+import RegisterRequest from '@/generated/src/model/RegisterRequest';
 import { IonGrid, IonRow, IonCol, IonInput, IonButton } from '@ionic/vue';
 import RegisterStep1 from './RegisterSteps/RegisterStep1.vue';
 import RegisterStep2 from './RegisterSteps/RegisterStep2.vue';
 import RegisterStep3 from './RegisterSteps/RegisterStep3.vue';
 import RegisterStep4 from './RegisterSteps/RegisterStep4.vue';
+import { useUserStore } from '@/stores/store'
+
+// Store
+const userStore = useUserStore();
+
+// Router
+const router = useRouter();
 
 // Definir las propiedades del formulario usando ref
 let registerStep1Data = ref({})
 let registerStep2Data = ref({})
 let registerStep3Data = ref({})
 let registerStep4Data = ref({})
-
-const authApi = new AuthenticationControllerImplApi();
 
 const forms = [ RegisterStep1, RegisterStep2, RegisterStep3, RegisterStep4];
 const formDataMap = [registerStep1Data, registerStep2Data, registerStep3Data, registerStep4Data];
@@ -22,23 +28,58 @@ let currentFormIndex = ref(0);
 const currentFormComponent = computed(() => forms[currentFormIndex.value]);
 const currentFormData = computed(() => formDataMap[currentFormIndex.value].value);
 
+function mapDataToRegisterRequest() {
+    return new RegisterRequest(formDataMap[0].value.name, 
+        formDataMap[0].value.lastName,
+        formDataMap[0].value.birthDate,
+        formDataMap[0].value.gender,
+        formDataMap[1].value.email,
+        34,
+        Number(formDataMap[1].value.phone),
+        formDataMap[2].value.username,
+        formDataMap[2].value.password,
+        formDataMap[3].value.street,
+        Number(formDataMap[3].value.number),
+        formDataMap[3].value.city,
+        formDataMap[3].value.province,
+        Number(formDataMap[3].value.postalCode),
+        formDataMap[3].value.country
+    )
+}
+
 const previousForm = () => {
     if (currentFormIndex.value > 0) {
         currentFormIndex.value--;
     }
 };
 
-const handleRegister = (data) => {
+const handleRegister = async (data: any) => {
 
     formDataMap[currentFormIndex.value].value = data;
 
-    console.log('Current form data:', currentFormData.value);
+    console.log('Form Data Filled:', currentFormIndex.value+1);
 
     if (currentFormIndex.value < forms.length - 1) {
         currentFormIndex.value++;
     }
     else {
-        console.log('Registering user with data:', formDataMap);
+        //console.log('Registering user with data:', formDataMap);
+        const registerRequest = mapDataToRegisterRequest();
+
+        //console.log(registerRequest)
+
+        const response = await userStore.register(registerRequest);
+        
+        console.log('Response:', response);
+        /*
+        if (response.status === 200) {
+            console.log('User registered successfully')
+            router.push('/login')
+        }
+        else {
+            console.log('Error registering user');
+        }
+        */
     }
 };
 

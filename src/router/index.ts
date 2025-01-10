@@ -6,6 +6,13 @@ import AboutPage from '../views/AboutPage.vue'
 import ContactPage from '../views/ContactPage.vue'
 import LoginPage from '../views/LoginPage.vue'
 import RegisterPage from '../views/RegisterPage.vue'
+import CatalogPage from '@/views/CatalogPage.vue';
+import ProductDetails from '@/views/ProductDetails.vue';
+import MenCatalog from '@/views/MenCatalog.vue';
+import WomenCatalog from '@/views/WomenCatalog.vue';
+import AllCatalog from '@/views/AllCatalog.vue';
+import NinoCatalog from '@/views/NinaCatalog.vue';
+import NinaCatalog from '@/views/NinaCatalog.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -25,13 +32,43 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/login',
-    component: () => LoginPage,
+    component: LoginPage,
     name: 'login'
   },
   {
     path: '/register',
-    component: () => RegisterPage,
+    component: RegisterPage,
     name: 'register'
+  },
+  {
+    path: '/catalog',
+    component: AllCatalog,
+    name: 'Catalog'
+  },
+  {
+    path: '/catalog/mujer',
+    component: WomenCatalog,
+    name: 'womenCatalog'
+  },
+  {
+    path: '/catalog/hombre',
+    component: MenCatalog,
+    name: 'menCatalog'
+  },
+  {
+    path: '/catalog/nino',
+    component: NinoCatalog,
+    name: 'ninoCatalog'
+  },
+  {
+    path: '/catalog/nina',
+    component: NinaCatalog,
+    name: 'ninaCatalog'
+  },
+  {
+    path: '/productos/:id',
+    component: ProductDetails,
+    name: 'DetallesProducto'
   },
   {
     path: '/tabs/',

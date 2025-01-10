@@ -24,6 +24,10 @@ Log out a user
 
 ```javascript
 import LewkinTiendaOnline from 'lewkin_tienda_online';
+let defaultClient = LewkinTiendaOnline.ApiClient.instance;
+// Configure Bearer (JWT) access token for authorization: Bearer Authentication
+let Bearer Authentication = defaultClient.authentications['Bearer Authentication'];
+Bearer Authentication.accessToken = "YOUR ACCESS TOKEN"
 
 let apiInstance = new LewkinTiendaOnline.AuthenticationControllerImplApi();
 apiInstance.fakeLogout((error, data, response) => {
@@ -45,7 +49,7 @@ null (empty response body)
 
 ### Authorization
 
-No authorization required
+[Bearer Authentication](../README.md#Bearer Authentication)
 
 ### HTTP request headers
 
@@ -63,6 +67,10 @@ Log in a user
 
 ```javascript
 import LewkinTiendaOnline from 'lewkin_tienda_online';
+let defaultClient = LewkinTiendaOnline.ApiClient.instance;
+// Configure Bearer (JWT) access token for authorization: Bearer Authentication
+let Bearer Authentication = defaultClient.authentications['Bearer Authentication'];
+Bearer Authentication.accessToken = "YOUR ACCESS TOKEN"
 
 let apiInstance = new LewkinTiendaOnline.AuthenticationControllerImplApi();
 let loginRequest = new LewkinTiendaOnline.LoginRequest(); // LoginRequest | 
@@ -88,7 +96,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-No authorization required
+[Bearer Authentication](../README.md#Bearer Authentication)
 
 ### HTTP request headers
 

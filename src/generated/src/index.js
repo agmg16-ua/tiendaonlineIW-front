@@ -18,11 +18,13 @@ import AuthenticationResponse from './model/AuthenticationResponse';
 import ErrorResponse from './model/ErrorResponse';
 import LoginRequest from './model/LoginRequest';
 import PasswordRecoveryRequest from './model/PasswordRecoveryRequest';
+import ProductoData from './model/ProductoData';
 import RegisterRequest from './model/RegisterRequest';
 import ResendVerificationResponse from './model/ResendVerificationResponse';
 import SendPasswordRecoverMailResponse from './model/SendPasswordRecoverMailResponse';
 import AuthenticationControllerImplApi from './api/AuthenticationControllerImplApi';
 import DemoControllerImplApi from './api/DemoControllerImplApi';
+import ProductoControllerApi from './api/ProductoControllerApi';
 
 
 /**
@@ -94,6 +96,12 @@ export {
     PasswordRecoveryRequest,
 
     /**
+     * The ProductoData model constructor.
+     * @property {module:model/ProductoData}
+     */
+    ProductoData,
+
+    /**
      * The RegisterRequest model constructor.
      * @property {module:model/RegisterRequest}
      */
@@ -121,5 +129,11 @@ export {
     * The DemoControllerImplApi service constructor.
     * @property {module:api/DemoControllerImplApi}
     */
-    DemoControllerImplApi
+    DemoControllerImplApi,
+
+    /**
+    * The ProductoControllerApi service constructor.
+    * @property {module:api/ProductoControllerApi}
+    */
+    ProductoControllerApi
 };

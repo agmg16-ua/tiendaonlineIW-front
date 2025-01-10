@@ -13,6 +13,21 @@
           <ion-button>
             <Router-Link to="/contact">Contacta con Nosotros</Router-Link>
           </ion-button>
+          <ion-button>
+            <Router-Link to="/catalog">Catálogo</Router-Link>
+          </ion-button>
+          <ion-button>
+            <Router-Link to="/catalog/hombre">Hombre</Router-Link>
+          </ion-button>
+          <ion-button>
+            <Router-Link to="/catalog/mujer">Mujer</Router-Link>
+          </ion-button>
+          <ion-button>
+            <Router-Link to="/catalog/nino">Niño</Router-Link>
+          </ion-button>
+          <ion-button>
+            <Router-Link to="/catalog/nina">Niña</Router-Link>
+          </ion-button>
         </ion-buttons>
         <ion-buttons slot="end">
           <ion-button>Carrito</ion-button>
@@ -37,5 +52,5 @@
 </template>
 
 <script setup lang="ts">
-  import { IonApp } from '@ionic/vue';
+  import { IonApp, IonToolbar, IonTitle, IonFooter, IonHeader, IonButton, IonButtons, IonContent } from '@ionic/vue';
 </script>
