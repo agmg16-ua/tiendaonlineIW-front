@@ -1,9 +1,27 @@
+<script setup lang="ts">
+  import { IonApp, IonToolbar, IonTitle, IonFooter, IonHeader, IonButton, IonButtons, IonContent } from '@ionic/vue';
+  import { useUserStore } from '@/stores/store'
+  import { computed } from 'vue'
+
+  const userStore = useUserStore()
+
+  userStore.initialize()
+  
+  const isAuthenticated = computed(() => userStore.isAuthenticated)
+
+  const do_logout = (async () => {
+    await userStore.logout()
+  })
+
+</script>
+
 <template>
   <ion-app>
     <ion-header>
       <ion-toolbar>
         <ion-buttons slot="start">
           <ion-title>L E W K I N</ion-title>
+          <h2>{{ userStore.isAuthenticated }}</h2>
           <ion-button>
             <Router-Link to="/">Inicio</Router-Link>
           </ion-button>
@@ -31,7 +49,13 @@
         </ion-buttons>
         <ion-buttons slot="end">
           <ion-button>Carrito</ion-button>
-          <ion-button href="/login">Iniciar Sesión</ion-button>
+
+          <!--Botones para sesion cerrada-->
+          <ion-button v-if="!isAuthenticated" href="/login">Iniciar Sesión</ion-button>
+
+          <!--Botones para sesion iniciada-->
+          <ion-button v-if="isAuthenticated" @click="do_logout">Cerrar Sesión</ion-button>
+          <ion-button v-if="isAuthenticated" href="/account">Cuenta</ion-button>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
@@ -50,7 +74,3 @@
     </ion-content>
   </ion-app>
 </template>
-
-<script setup lang="ts">
-  import { IonApp, IonToolbar, IonTitle, IonFooter, IonHeader, IonButton, IonButtons, IonContent } from '@ionic/vue';
-</script>
