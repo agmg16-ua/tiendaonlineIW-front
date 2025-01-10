@@ -3,7 +3,10 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router';
 
-import { IonicVue } from '@ionic/vue';
+import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonGrid, IonIcon, IonicVue, IonRow, IonTitle } from '@ionic/vue';
+
+import { addIcons } from 'ionicons';
+import { carOutline, headsetOutline, lockClosedOutline, refreshOutline } from 'ionicons/icons';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/vue/css/core.css';
@@ -39,6 +42,25 @@ const app = createApp(App)
   .use(IonicVue)
   .use(createPinia())
   .use(router);
+
+
+app.component('ion-title', IonTitle)
+  .component('ion-card-content', IonCardContent)
+  .component('ion-card', IonCard)
+  .component('ion-card-title', IonCardTitle)
+  .component('ion-card-header', IonCardHeader)
+  .component('ion-col', IonCol)
+  .component('ion-row', IonRow)
+  .component('ion-icon', IonIcon)
+  .component('ion-grid', IonGrid)
+  .component('ion-button', IonButton)
+
+addIcons({
+  'car-outline': carOutline,
+  'headset-outline': headsetOutline,
+  'refresh-outline': refreshOutline,
+  'lock-closed-outline': lockClosedOutline
+})
 
 router.isReady().then(() => {
   app.mount('#app');
