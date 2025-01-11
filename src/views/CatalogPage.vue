@@ -53,8 +53,22 @@
           </div>
         </div>
       </IonCol>
-
-      
+      <IonCol size="auto" class="filter-col">
+        <div>
+          <IonButton @click="mostrarSubcategoriaFiltro = !mostrarSubcategoriaFiltro" size="small" class="filter-button">
+            <IonIcon :icon="funnelOutline" slot="start" />
+            Subcategoría
+          </IonButton>
+          <div v-if="mostrarSubcategoriaFiltro" class="filter-options">
+            <IonButton v-for="subcategoria in subcategoriasDisponibles" :key="subcategoria.id" size="small" @click="filtrarPorSubcategoria(subcategoria.id)" :class="['filter-option-button', { 'active': subcategoriaSeleccionada === subcategoria.id }]" color="transparent">
+              {{ subcategoria.nombre }}
+            </IonButton>
+            <IonButton size="small" @click="limpiarFiltroSubcategoria" :class="['filter-option-button', { 'active': subcategoriaSeleccionada === null }]" color="transparent">
+              Ninguno
+            </IonButton>
+          </div>
+        </div>
+      </IonCol>
     </IonRow>
   </IonGrid>
   <!-- Verifica si hay productos -->
@@ -122,10 +136,18 @@ const ordenActual = ref<'asc' | 'desc' | null>(null);
 const mostrarMaterialFiltro = ref(false);
 const materialesDisponibles = ref<{ id: number; nombre: string }[]>([]);
 const materialSeleccionado = ref<number | null>(null);
+const mostrarSubcategoriaFiltro = ref(false);
+const subcategoriasDisponibles = ref<{ id: number; nombre: string }[]>([]);
+const subcategoriaSeleccionada = ref<number | null>(null);
 
 // Función para aplicar todos los filtros acumulativamente
 const aplicarFiltros = () => {
   let productos = [...props.listaProductos];
+
+  // Filtrar por subcategoría
+  if (subcategoriaSeleccionada.value !== null) {
+    productos = productos.filter(producto => producto.subcategoriaData.id === subcategoriaSeleccionada.value);
+  }
 
   // Aplicar filtro de material si está seleccionado
   if (materialSeleccionado.value !== null) {
@@ -157,6 +179,33 @@ const calcularMaterialesUnicos = () => {
   });
 
   materialesDisponibles.value = Array.from(materialesMap, ([id, nombre]) => ({ id, nombre }));
+};
+
+const calcularSubcategoriasUnicas = () => {
+  const subcategoriasMap = new Map<number, string>();
+
+  props.listaProductos.forEach(producto => {
+    const subcategoria = producto.subcategoriaData;
+    if (subcategoria && !subcategoriasMap.has(subcategoria.id)) {
+      subcategoriasMap.set(subcategoria.id, subcategoria.subcategoria);
+    }
+  });
+
+  subcategoriasDisponibles.value = Array.from(subcategoriasMap, ([id, nombre]) => ({ id, nombre }));
+};
+
+// Función para filtrar por subcategoría
+const filtrarPorSubcategoria = (idSubcategoria: number) => {
+  subcategoriaSeleccionada.value = idSubcategoria;
+  localStorage.setItem('subcategoriaSeleccionada', idSubcategoria.toString());
+  aplicarFiltros();
+};
+
+// Función para limpiar el filtro de subcategoría
+const limpiarFiltroSubcategoria = () => {
+  subcategoriaSeleccionada.value = null;
+  localStorage.setItem('subcategoriaSeleccionada', 'null');
+  aplicarFiltros();
 };
 
 // Función para filtrar por material
@@ -201,7 +250,22 @@ const aplicarFiltrosDesdeLocalStorage = () => {
 
   const savedMaterialSeleccionado = localStorage.getItem('materialSeleccionado');
   if (savedMaterialSeleccionado) {
-    materialSeleccionado.value = savedMaterialSeleccionado === 'null' ? null : parseInt(savedMaterialSeleccionado, 10);
+    // Convertir el valor de localStorage en un número
+    const materialId = parseInt(savedMaterialSeleccionado, 10);
+    // Comprobar si el id del material está en la lista de materiales disponibles
+    const materialExistente = materialesDisponibles.value.find(material => material.id === materialId);
+    // Si el material no existe en la lista, se pone a null
+    materialSeleccionado.value = materialExistente ? materialId : null;
+  }
+
+  const savedSubcategoriaSeleccionada = localStorage.getItem('subcategoriaSeleccionada');
+  if (savedSubcategoriaSeleccionada) {
+    // Convertir el valor de localStorage en un número
+    const subcategoriaId = parseInt(savedSubcategoriaSeleccionada, 10);
+    // Comprobar si el id de la subcategoría está en la lista de subcategorías disponibles
+    const subcategoriaExistente = subcategoriasDisponibles.value.find(subcategoria => subcategoria.id === subcategoriaId);
+    // Si la subcategoría no existe en la lista, se pone a null
+    subcategoriaSeleccionada.value = subcategoriaExistente ? subcategoriaId : null;
   }
 };
 
@@ -214,7 +278,7 @@ watch(precioRango, () => {
 onMounted(() => {
   // Calcular materiales únicos dinámicamente
   calcularMaterialesUnicos();
-
+  calcularSubcategoriasUnicas();
   // Aplicar filtros desde localStorage si existen
   aplicarFiltrosDesdeLocalStorage();
   aplicarFiltros();
