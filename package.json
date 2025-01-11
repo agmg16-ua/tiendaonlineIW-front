@@ -21,6 +21,7 @@
     "@ionic/vue": "^8.4.1",
     "@ionic/vue-router": "^8.0.0",
     "axios": "^1.7.9",
+    "cors": "^2.8.5",
     "ionicons": "^7.4.0",
     "ng-openapi-gen": "^0.52.0",
     "pinia": "^2.3.0",
