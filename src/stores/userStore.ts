@@ -8,7 +8,33 @@ export const useUserStore = defineStore('user', {
     state: () => ({
         isAuthenticated: false,
         jwt: '',
-        userEmail: ''
+        userEmail: '',
+        direcciones: [
+            {
+                id: 1,
+                calle: "Calle 1",
+                numero: "1",
+                localidad: "Localidad 1",
+                provincia: "Provincia 1",
+                codigoPostal: "1234"
+            },
+            {
+                id: 2,
+                calle: "Calle 2",
+                numero: "2",
+                localidad: "Localidad 2",
+                provincia: "Provincia 2",
+                codigoPostal: "5678"
+            },
+            {
+                id: 3,
+                calle: "Calle 3",
+                numero: "3",
+                localidad: "Localidad 3",
+                provincia: "Provincia 3",
+                codigoPostal: "9012"
+            }
+        ]
     }),
     actions: {
         async register(userData: RegisterRequest) {
