@@ -11,7 +11,7 @@ import ProductDetails from '@/views/ProductDetails.vue';
 import MenCatalog from '@/views/MenCatalog.vue';
 import WomenCatalog from '@/views/WomenCatalog.vue';
 import AllCatalog from '@/views/AllCatalog.vue';
-import NinoCatalog from '@/views/NinaCatalog.vue';
+import NinoCatalog from '@/views/NinoCatalog.vue';
 import NinaCatalog from '@/views/NinaCatalog.vue';
 
 const routes: Array<RouteRecordRaw> = [
