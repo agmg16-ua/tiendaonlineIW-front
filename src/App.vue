@@ -30,6 +30,8 @@
   const do_logout = (async () => {
     popoverOpen.value = false
     await userStore.logout()
+
+    router.push('/')
   })
 
 </script>

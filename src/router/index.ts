@@ -13,6 +13,8 @@ import WomenCatalog from '@/views/WomenCatalog.vue';
 import AllCatalog from '@/views/AllCatalog.vue';
 import NinoCatalog from '@/views/NinaCatalog.vue';
 import NinaCatalog from '@/views/NinaCatalog.vue';
+import CarritoPage from '@/views/CarritoPage.vue'
+import TramitarPedido from '@/views/TramitarPedido.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -33,12 +35,22 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/login',
     component: LoginPage,
-    name: 'login'
+    name: 'login',
+    beforeEnter: (to) => {
+      if (localStorage.getItem('isAuthenticated') === 'true') {
+        return { name: 'home'}
+      }
+    }
   },
   {
     path: '/register',
     component: RegisterPage,
-    name: 'register'
+    name: 'register',
+    beforeEnter: (to) => {
+      if (localStorage.getItem('isAuthenticated') === 'true') {
+        return { name: 'home'}
+      }
+    }
   },
   {
     path: '/catalog',
@@ -69,6 +81,17 @@ const routes: Array<RouteRecordRaw> = [
     path: '/productos/:id',
     component: ProductDetails,
     name: 'DetallesProducto'
+  },
+  {
+    path: '/carrito',
+    component: CarritoPage,
+    name: 'carrito'
+  },
+  {
+    path: '/tramitarPedido',
+    component: TramitarPedido,
+    name: 'tramitarPedido',
+    meta: {requiresAuth: true}
   },
   {
     path: '/tabs/',
@@ -102,9 +125,17 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true'
 
+  if (to.meta.requiresAuth && !isAuthenticated) {
+    return next({
+      name: 'login',
+      query: { redirect: to.fullPath}
+    })
+  }
+  /*
   if ((to.path === '/login' || to.path === '/register') && isAuthenticated) {
     return next({ name: 'home'})
   }
+  */
 
   next()
 })

@@ -86,3 +86,18 @@ export const comentarioEndpoints = {
     GETComentarioEndpoint,
     DELETEComentarioEndpoint
 }
+
+//Carrito Endpoints
+export const PUTIncrementProductEndpoint = baseUrl + '/lewkin/api/carrito/linCarrito/{idLinCarrito}/increment'
+export const PUTDecrementProductEndpoint = baseUrl + '/lewkin/api/carrito/linCarrito/{idLinCarrito}/decrement'
+export const POSTAddProductEndpoint = baseUrl + '/lewkin/api/carrito/linCarrito'
+export const GETCarritoEndpoint = baseUrl + '/lewkin/api/carrito'
+export const DELETECarritoEndpoint = baseUrl + '/lewkin/api/carrito/linCarrito/{idLinCarrito}'
+
+export const carritoEndpoints = {
+    PUTIncrementProductEndpoint,
+    PUTDecrementProductEndpoint,
+    POSTAddProductEndpoint,
+    GETCarritoEndpoint,
+    DELETECarritoEndpoint
+}

@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import RegisterRequest from '@/generated/src/model/RegisterRequest'
 import LoginRequest from '@/generated/src/model/LoginRequest'
 import { authEndpoints } from '@/router/endpoints'
+import { useCarritoStore } from '@/stores/store'
 
 export const useUserStore = defineStore('user', {
     state: () => ({
@@ -59,6 +60,9 @@ export const useUserStore = defineStore('user', {
                     this.jwt = data.jwt
                     this.isAuthenticated = true
                     this.userEmail = userData.email
+
+                    //... y cargamos otros recursos del usuario
+                    useCarritoStore().fetchCarrito()
                 }
 
                 return {
@@ -79,6 +83,7 @@ export const useUserStore = defineStore('user', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('tokenJWT')}`
                     },
                     mode: 'no-cors'
                 })
@@ -92,6 +97,9 @@ export const useUserStore = defineStore('user', {
                 this.jwt = ""
                 this.isAuthenticated = false
                 this.userEmail = ""
+
+                //...y se eliminan otros datos del usuario
+                useCarritoStore().clearCarritoLogout()
             } catch (error) {
                 throw new Error()
             }
