@@ -75,14 +75,13 @@ export const useUserStore = defineStore('user', {
 
         async logout() {
             try {
-                const response = await fetch(authEndpoints.LogoutEndpoint, {
+                await fetch(authEndpoints.LogoutEndpoint, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
-                    }
+                        'Content-Type': 'application/json',
+                    },
+                    mode: 'no-cors'
                 })
-
-                console.log(await response.json())
 
                 //Se eliminan las credenciales de localStotage
                 localStorage.removeItem('email')
