@@ -6,7 +6,7 @@ import router from './router';
 import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonGrid, IonIcon, IonicVue, IonRow, IonTitle } from '@ionic/vue';
 
 import { addIcons } from 'ionicons';
-import { carOutline, headsetOutline, lockClosedOutline, refreshOutline } from 'ionicons/icons';
+import { carOutline, cartOutline, headsetOutline, lockClosedOutline, refreshOutline } from 'ionicons/icons';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/vue/css/core.css';
@@ -59,7 +59,8 @@ addIcons({
   'car-outline': carOutline,
   'headset-outline': headsetOutline,
   'refresh-outline': refreshOutline,
-  'lock-closed-outline': lockClosedOutline
+  'lock-closed-outline': lockClosedOutline,
+  'cart-outline': cartOutline
 })
 
 router.isReady().then(() => {
