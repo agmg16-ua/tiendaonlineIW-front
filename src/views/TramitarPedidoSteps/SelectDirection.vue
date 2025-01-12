@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-    import { ref, computed } from 'vue'
+    import { ref, computed, onMounted } from 'vue'
     import { useUserStore } from '@/stores/store'
 
     const emit = defineEmits(['next_step'])
@@ -8,6 +8,10 @@
     const userStore = useUserStore()
 
     const addresses = computed(() => userStore.direcciones)
+
+    onMounted(async () => {
+        await userStore.fetchDirecciones()
+    })
 
     const direccion = ref({
         id: '',
@@ -17,8 +21,6 @@
         province: '',
         postalCode: '',
         country: '',
-        building: '',
-        stair: '',
         floor: '',
         door: '',
     });
@@ -29,9 +31,12 @@
             direccion.value.id = selectedAddress.id.toString() || ""
             direccion.value.street = selectedAddress.calle || ""
             direccion.value.number = selectedAddress.numero || ""
-            direccion.value.city = selectedAddress.localidad || ""
+            direccion.value.floor = selectedAddress.piso || ""
+            direccion.value.door = selectedAddress.puerta || ""
+            direccion.value.city = selectedAddress.ciudad || ""
             direccion.value.province = selectedAddress.provincia || ""
-            direccion.value.postalCode = selectedAddress.codigoPostal || ""
+            direccion.value.postalCode = selectedAddress.cp || ""
+            direccion.value.country = selectedAddress.pais || ""
         }
     }
 
@@ -41,7 +46,7 @@
             return
         }
         
-        emit('next_step', direccion.value)
+        emit('next_step', direccion.value.id)
     }
 </script>
 
@@ -65,35 +70,25 @@
                     </ion-col>
                 </ion-row>
                 <ion-row>
-                    <ion-col size="10">
+                    <ion-col size="12">
                         <ion-item>
                             <ion-label class="ion-text-nowrap">Calle: {{ direccion.street }}</ion-label>
-                        </ion-item>
-                    </ion-col>
-                    <ion-col size="2">
-                        <ion-item>
-                            <ion-label class="ion-text-nowrap">Número: {{ direccion.number }}</ion-label>
                         </ion-item>
                     </ion-col>
                 </ion-row>
 
                 <ion-row>
-                    <ion-col size="3">
+                    <ion-col size="4">
                         <ion-item>
-                            <ion-label class="ion-text-nowrap">Bloque: {{ direccion.building }}</ion-label>
+                            <ion-label class="ion-text-nowrap">Número: {{ direccion.number }}</ion-label>
                         </ion-item>
                     </ion-col>
-                    <ion-col size="3">
-                        <ion-item>
-                            <ion-label class="ion-text-nowrap">Escalera: {{ direccion.stair }}</ion-label>
-                        </ion-item>
-                    </ion-col>
-                    <ion-col size="3">
+                    <ion-col size="4">
                         <ion-item>
                             <ion-label class="ion-text-nowrap">Piso: {{ direccion.floor }}</ion-label>
                         </ion-item>
                     </ion-col>
-                    <ion-col size="3">
+                    <ion-col size="4">
                         <ion-item>
                             <ion-label class="ion-text-nowrap">Puerta: {{ direccion.door }}</ion-label>
                         </ion-item>

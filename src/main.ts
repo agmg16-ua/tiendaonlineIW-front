@@ -3,7 +3,7 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router';
 
-import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonGrid, IonIcon, IonicVue, IonItem, IonLabel, IonRow, IonTitle } from '@ionic/vue';
+import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonGrid, IonIcon, IonicVue, IonItem, IonLabel, IonList, IonRow, IonTitle } from '@ionic/vue';
 
 import { addIcons } from 'ionicons';
 import { carOutline, cartOutline, headsetOutline, lockClosedOutline, refreshOutline } from 'ionicons/icons';
@@ -57,6 +57,7 @@ app.component('ion-title', IonTitle)
   .component('ion-content', IonContent)
   .component('ion-label', IonLabel)
   .component('ion-item', IonItem)
+  .component('ion-list', IonList)
 
 addIcons({
   'car-outline': carOutline,

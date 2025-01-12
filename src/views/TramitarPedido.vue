@@ -10,7 +10,7 @@
 
     const router = useRouter();
 
-    let direccionEnvio = ref({})
+    let direccionEnvio = ref()
 
     const steps = [SelectDirection, ViewResume, OrderConfirmation]
 
@@ -26,7 +26,7 @@
         }
 
         if (currentStepIndex.value === 1) {
-
+            userStore.newPedido(direccionEnvio.value)
         }
     }
 

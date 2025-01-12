@@ -15,6 +15,7 @@ import NinoCatalog from '@/views/NinaCatalog.vue';
 import NinaCatalog from '@/views/NinaCatalog.vue';
 import CarritoPage from '@/views/CarritoPage.vue'
 import TramitarPedido from '@/views/TramitarPedido.vue';
+import { useCarritoStore } from '@/stores/carritoStore';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -131,11 +132,12 @@ router.beforeEach((to, from, next) => {
       query: { redirect: to.fullPath}
     })
   }
-  /*
-  if ((to.path === '/login' || to.path === '/register') && isAuthenticated) {
-    return next({ name: 'home'})
+
+  if (to.path === '/tramitarPedido' && useCarritoStore().carrito.length === 0) {
+    return next({
+      name: 'carrito'
+    })
   }
-  */
 
   next()
 })

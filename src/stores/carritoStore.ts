@@ -21,7 +21,7 @@ export const useCarritoStore = defineStore('carrito', {
 
                 localStorage.setItem('carrito', JSON.stringify(data.linCarritos))
 
-                this.carrito = data.linCarritos
+                this.carrito = data
             }
 
             console.log(this.carrito)
