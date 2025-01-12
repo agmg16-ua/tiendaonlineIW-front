@@ -3,9 +3,10 @@
     <div v-if="producto" class="producto-detalle">
       <ion-grid>
         <ion-row>
-          <!-- Imagen del producto -->
+          <!-- Carousel del producto -->
           <ion-col size="4" size-md="3" class="imagen-col">
-            <img class="imagen-producto" :src="producto.foto_portada" alt="Foto del producto" />
+            <!-- Usar el componente ImageCarousel -->
+            <ImageCarousel :imagenes="[producto.foto_portada, ...producto.fotos]" />
           </ion-col>
           <!-- Detalles del producto (nombre, precio, descripción) -->
           <ion-col size="4" size-md="6" class="datos-col">
@@ -29,10 +30,10 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import axios from 'axios';
 import { useRoute } from 'vue-router';
 import { IonContent, IonGrid, IonRow, IonCol, IonSpinner, IonButton } from '@ionic/vue';
 import { useProductStore } from '@/stores/productStore';
+import ImageCarousel from '@/components/ImageCarousel.vue'; // Importar el componente
 
 const productStore = useProductStore();
 
@@ -44,41 +45,48 @@ interface Producto {
   descripcion: string;
   color: string;
   foto_portada: string;
+  fotos: string[];
+  coleccionesDatas: { id: number; nombre: string }[];
+  tallaData: { id: number; talla: string; cantidad: number };
+  materialData: { id: number; material: string };
+  categoriaData: { id: number; categoria: string };
+  subcategoriaData: { id: number; subcategoria: string };
+  comentariosData: { id: number; texto: string; estrellas: number; usuarioId: number; productoId: number }[];
 }
 
 const producto = ref<Producto | null>(null); // Producto puede ser null inicialmente
 const route = useRoute();
 const productId = route.params.id;
 
-// Función para obtener el producto desde la API
+// Índice para controlar la imagen activa en el carrusel
+const indiceImagen = ref(0);
+
 // Función para obtener el producto desde la API
 const obtenerProducto = async () => {
   try {
-    // Convertir el productId (string) a number
-    const id = parseInt(productId as string, 10); // Forzamos que productId sea string y lo convertimos a número
-
+    const id = parseInt(productId as string, 10); // Convertir el ID a número
     if (isNaN(id)) {
       throw new Error('El ID del producto no es un número válido.');
     }
 
-    // Llamar al método del store con el ID convertido
+    // Llamar al método del store con el ID
     await productStore.fetchSingleProduct(id);
-    producto.value = productStore.singleProduct; // Asignar el producto al valor reactivo
+    producto.value = productStore.singleProduct;
   } catch (error) {
     console.error('Error al obtener el producto:', error);
   }
 };
 
-
 // Función para añadir el producto al carrito
 const añadirAlCarrito = async () => {
-  
+  console.log('Añadiendo al carrito:', producto.value);
 };
 
 onMounted(() => {
   obtenerProducto();
 });
 </script>
+
 
 <style scoped>
 /* Clase para la columna de la imagen */
@@ -92,15 +100,6 @@ onMounted(() => {
   margin-right: 10px;
   margin-left: 50px;
   margin-top: 50px;
-}
-
-/* Clase para la imagen del producto */
-.imagen-producto {
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-  margin: 0;
-  border-radius: 8px;
 }
 
 /* Clase para los detalles del producto */
