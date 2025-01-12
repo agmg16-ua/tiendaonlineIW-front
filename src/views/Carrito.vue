@@ -5,6 +5,11 @@
       <ion-grid>
         <ProductosCarrito :productos="productos" />
         <CosteTotalCarrito :total="totalCarrito" />
+        <ion-row class="pago-row">
+          <ion-col size="12" class="pago-col">
+            <button @click="procederPago" class="btn-proceder">Proceder al Pago</button>
+          </ion-col>
+        </ion-row>
       </ion-grid>
     </div>
   
@@ -16,70 +21,69 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { IonContent, IonGrid, IonRow, IonCol } from '@ionic/vue'; // Importando los componentes de Ionic
+import { IonContent, IonGrid, IonRow, IonCol } from '@ionic/vue';
 import HeaderCarrito from '@/components/HeaderCarrito.vue';
 import CosteTotalCarrito from '@/components/CosteTotalCarrito.vue';
 import ProductosCarrito from '@/components/ProductosCarrito.vue';
 
-// Obtener productos desde el localStorage
 const productos = ref<any[]>([]);
 
 onMounted(() => {
-  // Obtener carrito de localStorage
   const carrito = JSON.parse(localStorage.getItem('carrito') || '[]');
   productos.value = carrito;
 });
 
-// Calcular el total del carrito
 const totalCarrito = computed(() => {
   return productos.value.reduce((total, producto) => {
     return total + producto.precio * producto.cantidad;
   }, 0);
 });
+
+// Función para proceder al pago
+const procederPago = () => {
+  console.log('Botón "Proceder al Pago" presionado');
+};
 </script>
 
 <style scoped>
-/* Estilos generales del carrito */
 .carrito-container {
   padding: 20px;
   margin-top: 20px;
 }
 
-/* Título del carrito */
-.titulo-carrito {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.titulo-carrito h1 {
-  font-size: 2.5rem;
-  font-weight: bold;
-  color: #9e9b9b;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  margin: 0;
-}
-
-.total-carrito {
-  margin-top: 20px;
-  text-align: right;
-  font-weight: bold;
-}
-
-/* Mensaje si no hay productos */
 .no-productos {
   text-align: center;
   margin-top: 20px;
 }
 
-/* Media Queries - Ajustes responsivos */
-@media (max-width: 768px) {
-  .titulo-carrito h1 {
-    font-size: 1.8rem;
-    flex-direction: column;
-    text-align: center;
-  }
+.pago-row {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.pago-col {
+  display: flex;
+  justify-content: left;
+}
+
+.btn-proceder {
+  background-color: #f66f08;
+  width: 25%;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-proceder:hover {
+  background-color: #c64c00;
+}
+
+.btn-proceder:active {
+  background-color: #c64c00;
 }
 </style>

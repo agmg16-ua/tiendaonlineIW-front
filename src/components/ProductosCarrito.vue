@@ -4,6 +4,7 @@
         <ion-col size="2" class="precio-header">Precio</ion-col>
         <ion-col size="2" class="cantidad-header">Cantidad</ion-col>
         <ion-col size="2" class="total-header">Total</ion-col>
+        <ion-col size="1" class="eliminar-header"></ion-col>
     </ion-row>
 
     <div class="linea-horizontal"></div>
@@ -24,12 +25,21 @@
 
         <!-- Cantidad -->
         <ion-col size="2" class="cantidad-col">
-        {{ producto.cantidad }}
+        <div class="cantidad-controls">
+            <button @click="decrementarCantidad(producto)" class="cantidad-btn">-</button>
+            <span class="cantidad">{{ producto.cantidad }}</span>
+            <button @click="incrementarCantidad(producto)" class="cantidad-btn">+</button>
+        </div>
         </ion-col>
 
         <!-- Total -->
         <ion-col size="2" class="total-col">
         €{{ (producto.precio * producto.cantidad).toFixed(2) }}
+        </ion-col>
+
+        <!-- Botón de eliminación -->
+        <ion-col size="1" class="eliminar-col">
+            <button @click="eliminarProducto(Number(index))" class="eliminar-btn">✖</button>
         </ion-col>
     </ion-row>
 </template>
@@ -48,6 +58,31 @@ const props = defineProps({
   },
 });
 
+const guardarCarrito = () => {
+  localStorage.setItem('carrito', JSON.stringify(props.productos));
+};
+
+// Función para incrementar la cantidad
+const incrementarCantidad = (producto: any) => {
+  if (producto.cantidad < 99) { // Limitar a 99 unidades por producto
+    producto.cantidad += 1;
+  }
+  guardarCarrito();
+};
+
+// Función para decrementar la cantidad
+const decrementarCantidad = (producto: any) => {
+  if (producto.cantidad > 1) { // No permitir menos de 1
+    producto.cantidad -= 1;
+  }
+  guardarCarrito();
+};
+
+// Función para eliminar un producto
+const eliminarProducto = (index: number) => {
+  props.productos.splice(index, 1); // Eliminar el producto del array
+  guardarCarrito(); // Actualizar el localStorage
+};
 </script>
 
 <style scoped>
@@ -106,5 +141,53 @@ const props = defineProps({
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* Estilo para los controles de cantidad */
+.cantidad-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cantidad-btn {
+  font-size: 1.2rem;
+  padding: 5px 10px;
+  margin: 0 5px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  background-color: #242323;
+  border-radius: 5px;
+  transition: background-color 0.2s;
+}
+
+.cantidad-btn:hover {
+  background-color: black;
+}
+
+.cantidad {
+  font-size: 1.2rem;
+  width: 30px;
+  text-align: center;
+}
+
+/* Botón de eliminación */
+.eliminar-col {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.eliminar-btn {
+  font-size: 1.2rem;
+  color: #ff0000;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.eliminar-btn:hover {
+  color: #cc0000;
 }
 </style>
