@@ -68,6 +68,7 @@
         <ion-buttons slot="end">
           <ion-button @click="router.push('/carrito')">
             <ion-icon name="cart-outline"></ion-icon>
+            <p>({{  }})</p>
           </ion-button>
           
 

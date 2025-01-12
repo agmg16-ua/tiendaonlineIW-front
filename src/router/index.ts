@@ -13,6 +13,7 @@ import WomenCatalog from '@/views/WomenCatalog.vue';
 import AllCatalog from '@/views/AllCatalog.vue';
 import NinoCatalog from '@/views/NinoCatalog.vue';
 import NinaCatalog from '@/views/NinaCatalog.vue';
+import Carrito from '@/views/Carrito.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -69,6 +70,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/productos/:id',
     component: ProductDetails,
     name: 'DetallesProducto'
+  },
+  {
+    path: '/carrito',
+    component: Carrito,
+    name: 'Carrito'
   },
   {
     path: '/tabs/',
