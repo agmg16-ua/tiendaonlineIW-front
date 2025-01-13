@@ -25,12 +25,26 @@ import { IonContent, IonGrid, IonRow, IonCol } from '@ionic/vue';
 import HeaderCarrito from '@/components/HeaderCarrito.vue';
 import CosteTotalCarrito from '@/components/CosteTotalCarrito.vue';
 import ProductosCarrito from '@/components/ProductosCarrito.vue';
+import { useRouter } from 'vue-router';
+import { useCarritoStore } from '@/stores/store';
+
+const carritoStore = useCarritoStore();
+
+const router = useRouter();
 
 const productos = ref<any[]>([]);
 
-onMounted(() => {
+onMounted(async () => {
   const carrito = JSON.parse(localStorage.getItem('carrito') || '[]');
   productos.value = carrito;
+ 
+  if(localStorage.getItem('isAuthenticated') === 'true') {
+    const response = await carritoStore.fetchCarrito()
+
+    if (response.status === 200) {
+      productos.value = carritoStore.carrito.linCarritos //o carritoStore.carrito.linCarritos
+    }
+  }
 });
 
 const totalCarrito = computed(() => {
@@ -41,7 +55,7 @@ const totalCarrito = computed(() => {
 
 // Función para proceder al pago
 const procederPago = () => {
-  console.log('Botón "Proceder al Pago" presionado');
+  router.push('/tramitarPedido')
 };
 </script>
 
