@@ -22,12 +22,13 @@
         console.log(data)
         if (currentStepIndex.value === 0) {
             direccionEnvio.value = data
-            currentStepIndex.value++
         }
 
         if (currentStepIndex.value === 1) {
             userStore.newPedido(direccionEnvio.value)
         }
+
+        currentStepIndex.value++
     }
 
 </script>

@@ -24,10 +24,10 @@ let localData = ref({
     province: '',
     postalCode: '',
     country: '',
-    building: undefined,
-    stair: undefined,
-    floor: undefined,
-    door: undefined,
+    building: '',
+    stair: '',
+    floor: '',
+    door: '',
     captcha: undefined
 });
 
@@ -63,10 +63,25 @@ watch(
     { immediate: true }
 );
 
+function isANumber(value: string) {
+    if (value === undefined || value === '') {
+        return true
+    }
+    return !isNaN(Number(value))
+}
 
 function submitForm() {
     if (localData.value.captcha == correctAnswer) {
         //console.log('Submitting form from childcomponent:', localData.value);
+        const buldingIsANumber = isANumber(localData.value.building);
+        const stairIsANumber = isANumber(localData.value.stair);
+        const floorIsANumber = isANumber(localData.value.floor);
+
+        if (!isANumber(localData.value.number) || !buldingIsANumber || !stairIsANumber || !floorIsANumber || !isANumber(localData.value.postalCode)) {
+            console.log("Los campos no son correctos")
+            return
+        }
+
         emit('nextStep', localData.value);
     }
     else {
