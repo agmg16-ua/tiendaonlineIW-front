@@ -3,9 +3,10 @@
     <div v-if="producto" class="producto-detalle">
       <ion-grid>
         <ion-row>
-          <!-- Imagen del producto -->
+          <!-- Carousel del producto -->
           <ion-col size="4" size-md="3" class="imagen-col">
-            <img class="imagen-producto" :src="producto.foto_portada" alt="Foto del producto" />
+            <!-- Usar el componente ImageCarousel -->
+            <ImageCarousel :imagenes="[producto.foto_portada, ...producto.fotos]" />
           </ion-col>
           <!-- Detalles del producto (nombre, precio, descripción) -->
           <ion-col size="4" size-md="6" class="datos-col">
@@ -29,10 +30,10 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import axios from 'axios';
 import { useRoute } from 'vue-router';
 import { IonContent, IonGrid, IonRow, IonCol, IonSpinner, IonButton } from '@ionic/vue';
 import { useProductStore } from '@/stores/productStore';
+import ImageCarousel from '@/components/ImageCarousel.vue'; // Importar el componente
 
 const productStore = useProductStore();
 
@@ -44,6 +45,13 @@ interface Producto {
   descripcion: string;
   color: string;
   foto_portada: string;
+  fotos: string[];
+  coleccionesDatas: { id: number; nombre: string }[];
+  tallaData: { id: number; talla: string; cantidad: number };
+  materialData: { id: number; material: string };
+  categoriaData: { id: number; categoria: string };
+  subcategoriaData: { id: number; subcategoria: string };
+  comentariosData: { id: number; texto: string; estrellas: number; usuarioId: number; productoId: number }[];
 }
 
 const producto = ref<Producto | null>(null); // Producto puede ser null inicialmente
@@ -51,32 +59,58 @@ const route = useRoute();
 const productId = route.params.id;
 
 // Función para obtener el producto desde la API
-// Función para obtener el producto desde la API
 const obtenerProducto = async () => {
   try {
-    // Convertir el productId (string) a number
-    const id = parseInt(productId as string, 10); // Forzamos que productId sea string y lo convertimos a número
-
+    const id = parseInt(productId as string, 10); // Convertir el ID a número
     if (isNaN(id)) {
       throw new Error('El ID del producto no es un número válido.');
     }
 
-    // Llamar al método del store con el ID convertido
+    // Llamar al método del store con el ID
     await productStore.fetchSingleProduct(id);
-    producto.value = productStore.singleProduct; // Asignar el producto al valor reactivo
+    producto.value = productStore.singleProduct;
   } catch (error) {
     console.error('Error al obtener el producto:', error);
   }
 };
 
+const añadirAlCarrito = () => {
+  if (producto.value) {
+    // Obtener el carrito de localStorage o inicializarlo como vacío
+    let carrito = JSON.parse(localStorage.getItem('carrito') || '[]');
 
-// Función para añadir el producto al carrito
-const añadirAlCarrito = async () => {
-  
+    // Verificar si el producto ya está en el carrito
+    const productoExistente = carrito.find((item: Producto & { cantidad: number }) => item.id === parseInt(productId as string, 10));
+
+    if (productoExistente) {
+      // Si el producto ya está en el carrito, incrementamos la cantidad
+      productoExistente.cantidad += 1;
+      console.log(`Producto actualizado en el carrito: ${productoExistente.nombre}, cantidad: ${productoExistente.cantidad}`);
+    } else {
+      // Si no está en el carrito, añadirlo con cantidad 1
+      const productoConCantidad = { ...producto.value, cantidad: 1 }; // Asignamos cantidad = 1
+      carrito.push(productoConCantidad);
+      console.log(`Producto añadido al carrito: ${productoConCantidad.nombre}, cantidad: ${productoConCantidad.cantidad}`);
+    }
+
+    // Guardar de nuevo el carrito actualizado en localStorage
+    localStorage.setItem('carrito', JSON.stringify(carrito));4
+
+    if (localStorage.getItem('isAuthenticated') === 'true') {
+      //Utilizar endpoint back para añadir linea en BD
+
+      
+      //Despues endpoint fetchCarrito para actualizar carrito
+
+    }
+  }
+  console.log(localStorage.getItem('carrito'));
 };
 
 onMounted(() => {
   obtenerProducto();
+  //localStorage.removeItem('carrito');
+
 });
 </script>
 
@@ -92,15 +126,6 @@ onMounted(() => {
   margin-right: 10px;
   margin-left: 50px;
   margin-top: 50px;
-}
-
-/* Clase para la imagen del producto */
-.imagen-producto {
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-  margin: 0;
-  border-radius: 8px;
 }
 
 /* Clase para los detalles del producto */

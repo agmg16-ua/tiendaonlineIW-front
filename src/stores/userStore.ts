@@ -1,15 +1,18 @@
 import { defineStore } from 'pinia'
 import RegisterRequest from '@/generated/src/model/RegisterRequest'
 import LoginRequest from '@/generated/src/model/LoginRequest'
-import { authEndpoints } from '@/router/endpoints'
+import { authEndpoints, direccionEndpoints, pedidoEndpoints } from '@/router/endpoints'
+import { useCarritoStore } from '@/stores/store'
 
 export const useUserStore = defineStore('user', {
     state: () => ({
         isAuthenticated: false,
         jwt: '',
-        userEmail: ''
+        userEmail: '',
+        direcciones: [] as Array<any>
     }),
     actions: {
+        //Acctiones de auth
         async register(userData: RegisterRequest) {
             try {
                 const response = await fetch(authEndpoints.RegisterEndpoint, {
@@ -22,15 +25,24 @@ export const useUserStore = defineStore('user', {
 
                 const data = await response.json()
 
-                //Se guardan los datos en el localStorage
-                localStorage.setItem('tokenJWT', data.jwt)
-                localStorage.setItem('isAuthenticated', 'true')
-                localStorage.setItem('email', userData.email)
+                console.log(response.status)
 
-                //... y en el store
-                this.jwt = data.jwt
-                this.isAuthenticated = true
-                this.userEmail = userData.email
+                if (response.status === 200) {
+                    //Se guardan los datos en el localStorage
+                    localStorage.setItem('tokenJWT', data.jwt)
+                    localStorage.setItem('isAuthenticated', 'true')
+                    localStorage.setItem('email', userData.email)
+
+                    //... y en el store
+                    this.jwt = data.jwt
+                    this.isAuthenticated = true
+                    this.userEmail = userData.email
+
+                    return {
+                        status: response.status,
+                        message: data.message
+                    }
+                }
 
             } catch(error) {
                 console.error("Error en la solicitud de registro")
@@ -79,6 +91,7 @@ export const useUserStore = defineStore('user', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('tokenJWT')}`
                     },
                     mode: 'no-cors'
                 })
@@ -92,6 +105,9 @@ export const useUserStore = defineStore('user', {
                 this.jwt = ""
                 this.isAuthenticated = false
                 this.userEmail = ""
+
+                //... y otros stores
+                useCarritoStore().clearCarritoLogout()
             } catch (error) {
                 throw new Error()
             }
@@ -106,6 +122,43 @@ export const useUserStore = defineStore('user', {
                 this.jwt = token
                 this.isAuthenticated = true
                 this.userEmail = userEmail
+            }
+        },
+
+        //Acciones de usuario
+        async fetchDirecciones() {
+            try {
+                const response = await fetch(direccionEndpoints.GETUsuarioDireccionesEndpoint, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('tokenJWT')}`
+                    }
+                })
+
+                const data = await response.json()
+
+                this.direcciones = data
+
+            } catch (error) {
+                console.error(error)
+                throw new Error()
+            }
+        },
+
+        async newPedido(idDireccion: any) {
+            try {
+                const response = await fetch(pedidoEndpoints.POSTPedidoEndpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('tokenJWT')}`
+                    },
+                    body: JSON.stringify({ idDireccion })
+                })
+            } catch (error) {
+                console.error(error)
+                throw new Error()
             }
         }
     }

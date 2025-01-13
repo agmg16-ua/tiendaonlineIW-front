@@ -3,10 +3,10 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router';
 
-import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonGrid, IonIcon, IonicVue, IonRow, IonTitle } from '@ionic/vue';
+import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonGrid, IonIcon, IonicVue, IonImg, IonItem, IonLabel, IonList, IonRow, IonTitle } from '@ionic/vue';
 
 import { addIcons } from 'ionicons';
-import { carOutline, headsetOutline, lockClosedOutline, refreshOutline } from 'ionicons/icons';
+import { carOutline, cartOutline, headsetOutline, lockClosedOutline, refreshOutline } from 'ionicons/icons';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/vue/css/core.css';
@@ -54,12 +54,17 @@ app.component('ion-title', IonTitle)
   .component('ion-icon', IonIcon)
   .component('ion-grid', IonGrid)
   .component('ion-button', IonButton)
+  .component('ion-content', IonContent)
+  .component('ion-label', IonLabel)
+  .component('ion-item', IonItem)
+  .component('ion-list', IonList)
 
 addIcons({
   'car-outline': carOutline,
   'headset-outline': headsetOutline,
   'refresh-outline': refreshOutline,
-  'lock-closed-outline': lockClosedOutline
+  'lock-closed-outline': lockClosedOutline,
+  'cart-outline': cartOutline
 })
 
 router.isReady().then(() => {
