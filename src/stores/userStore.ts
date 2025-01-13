@@ -38,7 +38,10 @@ export const useUserStore = defineStore('user', {
                     this.isAuthenticated = true
                     this.userEmail = userData.email
 
-                    console.log(data)
+                    return {
+                        status: response.status,
+                        message: data.message
+                    }
                 }
 
             } catch(error) {
