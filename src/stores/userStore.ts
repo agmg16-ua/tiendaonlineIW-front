@@ -162,9 +162,13 @@ export const useUserStore = defineStore('user', {
                     })
                 })
 
+                console.log(response)
+
                 const data = await response.json()
 
-                console.log(data)
+                if (response.status === 200) {
+                    return data.url
+                }
 
             } catch (error) {
                 console.error(error)

@@ -18,14 +18,16 @@
 
     const currentStepComponent = computed(() => steps[currentStepIndex.value]);
 
-    const do_pedido = (data: any) => {
+    const do_pedido = async (data: any) => {
         console.log(data)
         if (currentStepIndex.value === 0) {
             direccionEnvio.value = data
         }
 
         if (currentStepIndex.value === 1) {
-            userStore.newPedido(direccionEnvio.value)
+            const url = await userStore.newPedido(direccionEnvio.value)
+
+            console.log(url)
         }
 
         currentStepIndex.value++
