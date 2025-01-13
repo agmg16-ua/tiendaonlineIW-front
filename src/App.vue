@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { IonApp, IonToolbar, IonTitle, IonFooter, IonHeader, IonButton, IonButtons, IonContent, IonPopover, IonList, IonItem, IonIcon } from '@ionic/vue';
   import { useUserStore } from '@/stores/store'
-  import { computed, ref } from 'vue'
+  import { computed, onMounted, ref } from 'vue'
   import { useRouter } from 'vue-router'
   
   const router = useRouter()
@@ -20,7 +20,6 @@
     popoverEvent.value = event
     popoverOpen.value = true
   }
-
 
   const goToPage = (page: String) => {
     popoverOpen.value = false

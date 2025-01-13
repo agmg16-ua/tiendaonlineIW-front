@@ -58,9 +58,6 @@ const producto = ref<Producto | null>(null); // Producto puede ser null inicialm
 const route = useRoute();
 const productId = route.params.id;
 
-// Índice para controlar la imagen activa en el carrusel
-const indiceImagen = ref(0);
-
 // Función para obtener el producto desde la API
 const obtenerProducto = async () => {
   try {
@@ -77,16 +74,37 @@ const obtenerProducto = async () => {
   }
 };
 
-// Función para añadir el producto al carrito
-const añadirAlCarrito = async () => {
-  console.log('Añadiendo al carrito:', producto.value);
+const añadirAlCarrito = () => {
+  if (producto.value) {
+    // Obtener el carrito de localStorage o inicializarlo como vacío
+    let carrito = JSON.parse(localStorage.getItem('carrito') || '[]');
+
+    // Verificar si el producto ya está en el carrito
+    const productoExistente = carrito.find((item: Producto & { cantidad: number }) => item.id === parseInt(productId as string, 10));
+
+    if (productoExistente) {
+      // Si el producto ya está en el carrito, incrementamos la cantidad
+      productoExistente.cantidad += 1;
+      console.log(`Producto actualizado en el carrito: ${productoExistente.nombre}, cantidad: ${productoExistente.cantidad}`);
+    } else {
+      // Si no está en el carrito, añadirlo con cantidad 1
+      const productoConCantidad = { ...producto.value, cantidad: 1 }; // Asignamos cantidad = 1
+      carrito.push(productoConCantidad);
+      console.log(`Producto añadido al carrito: ${productoConCantidad.nombre}, cantidad: ${productoConCantidad.cantidad}`);
+    }
+
+    // Guardar de nuevo el carrito actualizado en localStorage
+    localStorage.setItem('carrito', JSON.stringify(carrito));
+  }
+  console.log(localStorage.getItem('carrito'));
 };
 
 onMounted(() => {
   obtenerProducto();
+  //localStorage.removeItem('carrito');
+
 });
 </script>
-
 
 <style scoped>
 /* Clase para la columna de la imagen */
