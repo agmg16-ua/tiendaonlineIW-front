@@ -6,28 +6,17 @@
   
   const router = useRouter()
 
-  const popoverOpen = ref(false)
-  const popoverEvent = ref<MouseEvent | null>(null)
-
-
   const userStore = useUserStore()
 
   userStore.initialize()
   
   const isAuthenticated = computed(() => userStore.isAuthenticated)
 
-  const openPopover = (event: MouseEvent) => {
-    popoverEvent.value = event
-    popoverOpen.value = true
-  }
-
   const goToPage = (page: String) => {
-    popoverOpen.value = false
     router.push(`/${page}`)
   }
 
   const do_logout = (async () => {
-    popoverOpen.value = false
     await userStore.logout()
 
     router.push('/')
@@ -76,7 +65,7 @@
           <ion-button v-if="!isAuthenticated" href="/login">Iniciar Sesión</ion-button>
 
           <!--Botones para sesion iniciada-->
-          <ion-button v-if="isAuthenticated" @click="openPopover($event)">Cuenta</ion-button>
+          <ion-button v-if="isAuthenticated" id="popover-button">Cuenta</ion-button>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
@@ -93,15 +82,13 @@
     </ion-content>
 
     <ion-popover
-      ref="popover"
-      :is-open="popoverOpen"
-      :event="popoverEvent"
-      @did-dimiss="popoverOpen = false"
+      trigger="popover-button"
+      :dismiss-on-select="true"
     >
       <ion-list>
-        <ion-item button @click="goToPage('perfil')">Perfil</ion-item>
-        <ion-item button @click="goToPage('misPedidos')">Mis Pedidos</ion-item>
-        <ion-item button @click="do_logout">Cerrar Sesión</ion-item>
+        <ion-item :button="true" :detail="false" @click="goToPage('perfil')">Perfil</ion-item>
+        <ion-item :button="true" @click="goToPage('misPedidos')">Mis Pedidos</ion-item>
+        <ion-item :button="true" @click="do_logout">Cerrar Sesión</ion-item>
       </ion-list>
 
     </ion-popover>

@@ -135,7 +135,7 @@ router.beforeEach((to, from, next) => {
 
   if (to.path === '/tramitarPedido' && useCarritoStore().carrito.length === 0) {
     return next({
-      name: 'carrito'
+      name: 'Carrito'
     })
   }
 
