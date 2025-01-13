@@ -11,11 +11,11 @@ import ProductDetails from '@/views/ProductDetails.vue';
 import MenCatalog from '@/views/MenCatalog.vue';
 import WomenCatalog from '@/views/WomenCatalog.vue';
 import AllCatalog from '@/views/AllCatalog.vue';
-import NinoCatalog from '@/views/NinaCatalog.vue';
+import NinoCatalog from '@/views/NinoCatalog.vue';
 import NinaCatalog from '@/views/NinaCatalog.vue';
-import CarritoPage from '@/views/CarritoPage.vue'
 import TramitarPedido from '@/views/TramitarPedido.vue';
 import { useCarritoStore } from '@/stores/carritoStore';
+import Carrito from '@/views/Carrito.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -85,8 +85,8 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/carrito',
-    component: CarritoPage,
-    name: 'carrito'
+    component: Carrito,
+    name: 'Carrito'
   },
   {
     path: '/tramitarPedido',

@@ -1,5 +1,4 @@
 <template>
- 
   <!-- Contenedor de filtros -->
   <IonGrid class="filter-grid">
     <IonRow class="filter-row">
@@ -15,6 +14,25 @@
               <div slot="start">€{{ precioRango.lower }}</div>
               <div slot="end">€{{ precioRango.upper }}</div>
             </IonRange>
+          </div>
+        </div>
+      </IonCol>
+      <!-- Ordenar por precio -->
+      <IonCol size="auto" class="filter-col">
+        <div>
+          <IonButton @click="mostrarOrden = !mostrarOrden" size="small" class="filter-button">
+            Ordenar por Precio
+          </IonButton>
+          <div v-if="mostrarOrden" class="filter-options">
+            <IonButton size="small" @click="ordenarPorPrecio('asc')" :class="['filter-option-button', { 'active': ordenActual === 'asc' }]" color="transparent">
+              Ascendente
+            </IonButton>
+            <IonButton size="small" @click="ordenarPorPrecio('desc')" :class="['filter-option-button', { 'active': ordenActual === 'desc' }]" color="transparent">
+              Descendente
+            </IonButton>
+            <IonButton size="small" @click="limpiarOrdenacion" :class="['filter-option-button', { 'active': ordenActual === null }]" color="transparent">
+              Ninguno
+            </IonButton>
           </div>
         </div>
       </IonCol>
@@ -35,21 +53,17 @@
           </div>
         </div>
       </IonCol>
-
-      <!-- Ordenar por precio -->
       <IonCol size="auto" class="filter-col">
         <div>
-          <IonButton @click="mostrarOrden = !mostrarOrden" size="small" class="filter-button">
-            Ordenar por Precio
+          <IonButton @click="mostrarSubcategoriaFiltro = !mostrarSubcategoriaFiltro" size="small" class="filter-button">
+            <IonIcon :icon="funnelOutline" slot="start" />
+            Subcategoría
           </IonButton>
-          <div v-if="mostrarOrden" class="filter-options">
-            <IonButton size="small" @click="ordenarPorPrecio('asc')" :class="['filter-option-button', { 'active': ordenActual === 'asc' }]" color="transparent">
-              Ascendente
+          <div v-if="mostrarSubcategoriaFiltro" class="filter-options">
+            <IonButton v-for="subcategoria in subcategoriasDisponibles" :key="subcategoria.id" size="small" @click="filtrarPorSubcategoria(subcategoria.id)" :class="['filter-option-button', { 'active': subcategoriaSeleccionada === subcategoria.id }]" color="transparent">
+              {{ subcategoria.nombre }}
             </IonButton>
-            <IonButton size="small" @click="ordenarPorPrecio('desc')" :class="['filter-option-button', { 'active': ordenActual === 'desc' }]" color="transparent">
-              Descendente
-            </IonButton>
-            <IonButton size="small" @click="limpiarOrdenacion" :class="['filter-option-button', { 'active': ordenActual === null }]" color="transparent">
+            <IonButton size="small" @click="limpiarFiltroSubcategoria" :class="['filter-option-button', { 'active': subcategoriaSeleccionada === null }]" color="transparent">
               Ninguno
             </IonButton>
           </div>
@@ -97,21 +111,22 @@ interface ProductoData {
   id: number;
   nombre: string;
   descripcion: string;
-  fecha_alta: string | null;
   precio: number;
   color: string;
   foto_portada: string | null;
-  idTalla: number;
-  materialId: number;
-  idLinPedido: number | null;
-  idLinCarrito: number | null;
+  sku: string | null;
+  coleccionesDatas: { id: number; nombre: string }[];
+  tallaData: { id: number; talla: string; cantidad: number };
+  materialData: { id: number; material: string };
+  categoriaData: { id: number; categoria: string };
+  subcategoriaData: { id: number; subcategoria: string };
 }
-
 
 // Recibir la lista de productos como prop
 const props = defineProps<{
-  listaProductos: ProductoData[]; // Definir correctamente el tipo del array
+  listaProductos: ProductoData[];
 }>();
+
 // Variables reactivas
 const productosFiltrados = ref<ProductoData[]>([]);
 const mostrarFiltro = ref(false);
@@ -119,21 +134,24 @@ const mostrarOrden = ref(false);
 const precioRango = ref<{ lower: number; upper: number }>({ lower: 0, upper: 200 });
 const ordenActual = ref<'asc' | 'desc' | null>(null);
 const mostrarMaterialFiltro = ref(false);
-const materialesDisponibles = ref([
-  { id: 1, nombre: 'Algodón' },
-  { id: 2, nombre: 'Lana' },
-  { id: 3, nombre: 'Seda' },
-  { id: 4, nombre: 'Poliéster' },
-]);
+const materialesDisponibles = ref<{ id: number; nombre: string }[]>([]);
 const materialSeleccionado = ref<number | null>(null);
+const mostrarSubcategoriaFiltro = ref(false);
+const subcategoriasDisponibles = ref<{ id: number; nombre: string }[]>([]);
+const subcategoriaSeleccionada = ref<number | null>(null);
 
 // Función para aplicar todos los filtros acumulativamente
 const aplicarFiltros = () => {
   let productos = [...props.listaProductos];
 
+  // Filtrar por subcategoría
+  if (subcategoriaSeleccionada.value !== null) {
+    productos = productos.filter(producto => producto.subcategoriaData.id === subcategoriaSeleccionada.value);
+  }
+
   // Aplicar filtro de material si está seleccionado
   if (materialSeleccionado.value !== null) {
-    productos = productos.filter(producto => producto.materialId === materialSeleccionado.value);
+    productos = productos.filter(producto => producto.materialData.id === materialSeleccionado.value);
   }
 
   // Aplicar filtro de precio
@@ -147,35 +165,75 @@ const aplicarFiltros = () => {
   }
   
   productosFiltrados.value = productos;
-  console.log(productosFiltrados)
+};
+
+// Función para extraer materiales únicos de los productos
+const calcularMaterialesUnicos = () => {
+  const materialesMap = new Map<number, string>();
+  
+  props.listaProductos.forEach(producto => {
+    const material = producto.materialData;
+    if (material && !materialesMap.has(material.id)) {
+      materialesMap.set(material.id, material.material);
+    }
+  });
+
+  materialesDisponibles.value = Array.from(materialesMap, ([id, nombre]) => ({ id, nombre }));
+};
+
+const calcularSubcategoriasUnicas = () => {
+  const subcategoriasMap = new Map<number, string>();
+
+  props.listaProductos.forEach(producto => {
+    const subcategoria = producto.subcategoriaData;
+    if (subcategoria && !subcategoriasMap.has(subcategoria.id)) {
+      subcategoriasMap.set(subcategoria.id, subcategoria.subcategoria);
+    }
+  });
+
+  subcategoriasDisponibles.value = Array.from(subcategoriasMap, ([id, nombre]) => ({ id, nombre }));
+};
+
+// Función para filtrar por subcategoría
+const filtrarPorSubcategoria = (idSubcategoria: number) => {
+  subcategoriaSeleccionada.value = idSubcategoria;
+  localStorage.setItem('subcategoriaSeleccionada', idSubcategoria.toString());
+  aplicarFiltros();
+};
+
+// Función para limpiar el filtro de subcategoría
+const limpiarFiltroSubcategoria = () => {
+  subcategoriaSeleccionada.value = null;
+  localStorage.setItem('subcategoriaSeleccionada', 'null');
+  aplicarFiltros();
 };
 
 // Función para filtrar por material
 const filtrarPorMaterial = (idMaterial: number) => {
   materialSeleccionado.value = idMaterial;
-  localStorage.setItem('materialSeleccionado', idMaterial.toString()); // Guardar en localStorage
-  aplicarFiltros(); // Aplicar filtros acumulativos
+  localStorage.setItem('materialSeleccionado', idMaterial.toString());
+  aplicarFiltros();
 };
 
 // Función para limpiar el filtro de material
 const limpiarFiltroMaterial = () => {
   materialSeleccionado.value = null;
-  localStorage.setItem('materialSeleccionado', 'null'); // Guardar en localStorage
-  aplicarFiltros(); // Aplicar filtros acumulativos
+  localStorage.setItem('materialSeleccionado', 'null');
+  aplicarFiltros();
 };
 
 // Función para ordenar los productos por precio
 const ordenarPorPrecio = (orden: 'asc' | 'desc') => {
   ordenActual.value = orden;
-  localStorage.setItem('ordenActual', orden); // Guardar en localStorage
-  aplicarFiltros(); // Aplicar filtros acumulativos
+  localStorage.setItem('ordenActual', orden);
+  aplicarFiltros();
 };
 
 // Función para limpiar la ordenación
 const limpiarOrdenacion = () => {
   ordenActual.value = null;
-  localStorage.setItem('ordenActual', 'null'); // Guardar en localStorage
-  aplicarFiltros(); // Aplicar filtros acumulativos
+  localStorage.setItem('ordenActual', 'null');
+  aplicarFiltros();
 };
 
 // Función para inicializar filtros desde localStorage
@@ -192,7 +250,22 @@ const aplicarFiltrosDesdeLocalStorage = () => {
 
   const savedMaterialSeleccionado = localStorage.getItem('materialSeleccionado');
   if (savedMaterialSeleccionado) {
-    materialSeleccionado.value = savedMaterialSeleccionado === 'null' ? null : parseInt(savedMaterialSeleccionado, 10);
+    // Convertir el valor de localStorage en un número
+    const materialId = parseInt(savedMaterialSeleccionado, 10);
+    // Comprobar si el id del material está en la lista de materiales disponibles
+    const materialExistente = materialesDisponibles.value.find(material => material.id === materialId);
+    // Si el material no existe en la lista, se pone a null
+    materialSeleccionado.value = materialExistente ? materialId : null;
+  }
+
+  const savedSubcategoriaSeleccionada = localStorage.getItem('subcategoriaSeleccionada');
+  if (savedSubcategoriaSeleccionada) {
+    // Convertir el valor de localStorage en un número
+    const subcategoriaId = parseInt(savedSubcategoriaSeleccionada, 10);
+    // Comprobar si el id de la subcategoría está en la lista de subcategorías disponibles
+    const subcategoriaExistente = subcategoriasDisponibles.value.find(subcategoria => subcategoria.id === subcategoriaId);
+    // Si la subcategoría no existe en la lista, se pone a null
+    subcategoriaSeleccionada.value = subcategoriaExistente ? subcategoriaId : null;
   }
 };
 
@@ -203,14 +276,14 @@ watch(precioRango, () => {
 });
 
 onMounted(() => {
+  // Calcular materiales únicos dinámicamente
+  calcularMaterialesUnicos();
+  calcularSubcategoriasUnicas();
   // Aplicar filtros desde localStorage si existen
   aplicarFiltrosDesdeLocalStorage();
-  console.log("vndfovboboibivoe")
   aplicarFiltros();
 });
-
 </script>
-
 
 <style scoped>
 .filter-grid {
