@@ -32,6 +32,10 @@ export const useCarritoStore = defineStore('carrito', {
             }
         },
 
+        async addProductCarrito(productoId: number) {
+            //Primero endpoint para insertar linea
+
+        },
         clearCarritoLogout() {
             localStorage.removeItem('carrito')
             this.carrito = []
