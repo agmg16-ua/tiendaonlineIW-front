@@ -146,7 +146,10 @@ export const useUserStore = defineStore('user', {
             }
         },
 
-        async newPedido(idDireccion: any) {
+        async newPedido(direccionId: Number) {
+            console.log(direccionId)
+            console.log(JSON.stringify({ direccionId }))
+
             try {
                 const response = await fetch(pedidoEndpoints.POSTPedidoEndpoint, {
                     method: 'POST',
@@ -154,8 +157,15 @@ export const useUserStore = defineStore('user', {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${localStorage.getItem('tokenJWT')}`
                     },
-                    body: JSON.stringify({ idDireccion })
+                    body: JSON.stringify({
+                        "direccionId": direccionId
+                    })
                 })
+
+                const data = await response.json()
+
+                console.log(data)
+
             } catch (error) {
                 console.error(error)
                 throw new Error()
