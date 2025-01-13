@@ -94,7 +94,15 @@ const añadirAlCarrito = () => {
     }
 
     // Guardar de nuevo el carrito actualizado en localStorage
-    localStorage.setItem('carrito', JSON.stringify(carrito));
+    localStorage.setItem('carrito', JSON.stringify(carrito));4
+
+    if (localStorage.getItem('isAuthenticated') === 'true') {
+      //Utilizar endpoint back para añadir linea en BD
+
+      
+      //Despues endpoint fetchCarrito para actualizar carrito
+
+    }
   }
   console.log(localStorage.getItem('carrito'));
 };

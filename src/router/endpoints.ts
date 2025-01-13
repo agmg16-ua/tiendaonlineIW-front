@@ -60,6 +60,7 @@ export const productEndpoints = {
 //Direccion Endpoints
 export const POSTDireccionEndpoint = baseUrl + '/direccion/nueva'
 export const POSTUpdateDireccionEndpoint = baseUrl + '/direccion/{id}/modificar'
+export const GETUsuarioDireccionesEndpoint = baseUrl + '/usuario/direcciones'
 export const GETDireccionesEndpoint = baseUrl + '/direcciones'
 export const GETDireccionEndpoint = baseUrl + '/direccion/{id}'
 export const DELETEDireccionEndpoint = baseUrl + '/direccion/{id}/eliminar'
@@ -67,6 +68,7 @@ export const DELETEDireccionEndpoint = baseUrl + '/direccion/{id}/eliminar'
 export const direccionEndpoints = {
     POSTDireccionEndpoint,
     POSTUpdateDireccionEndpoint,
+    GETUsuarioDireccionesEndpoint,
     GETDireccionesEndpoint,
     GETDireccionEndpoint,
     DELETEDireccionEndpoint
@@ -85,4 +87,34 @@ export const comentarioEndpoints = {
     GETComentariosEndpoint,
     GETComentarioEndpoint,
     DELETEComentarioEndpoint
+}
+
+//Carrito Endpoints
+export const PUTIncrementProductEndpoint = baseUrl + '/lewkin/api/carrito/linCarrito/{idLinCarrito}/increment'
+export const PUTDecrementProductEndpoint = baseUrl + '/lewkin/api/carrito/linCarrito/{idLinCarrito}/decrement'
+export const POSTAddProductEndpoint = baseUrl + '/lewkin/api/carrito/linCarrito'
+export const GETCarritoEndpoint = baseUrl + '/lewkin/api/carrito'
+export const DELETECarritoEndpoint = baseUrl + '/lewkin/api/carrito/linCarrito/{idLinCarrito}'
+
+export const carritoEndpoints = {
+    PUTIncrementProductEndpoint,
+    PUTDecrementProductEndpoint,
+    POSTAddProductEndpoint,
+    GETCarritoEndpoint,
+    DELETECarritoEndpoint
+}
+
+//Pedido Endpoints
+export const POSTUpdatePedidoEndpoint = baseUrl + '/lewkin/api/pedido/{idPedido}/modificar'
+export const POSTPedidoEndpoint = baseUrl + '/lewkin/api/pedido/nuevo'
+export const GETPedidosUsuarioEndpoint = baseUrl + '/lewkin/api/usuario/pedidos'
+export const GETPedidosEndpoint = baseUrl + '/lewkin/api/pedidos'
+export const GETPedidoEndpoint = baseUrl + '/lewkin/api/pedido/{idPedido}'
+
+export const pedidoEndpoints = {
+    POSTUpdatePedidoEndpoint,
+    POSTPedidoEndpoint,
+    GETPedidosUsuarioEndpoint,
+    GETPedidosEndpoint,
+    GETPedidoEndpoint
 }

@@ -3,9 +3,10 @@ import { reactive, ref } from 'vue';
 import LoginRequest from '@/generated/src/model/LoginRequest';
 import { IonGrid, IonRow, IonCol, IonInput, IonButton, IonLabel, IonInputPasswordToggle } from '@ionic/vue';
 import { useUserStore } from '@/stores/userStore';
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 
 const router = useRouter()
+const route = useRoute()
 
 const userStore = useUserStore();
 
@@ -29,7 +30,8 @@ const handleLogin = async () => {
         const response = await userStore.login(loginRequest)
 
         if (response.status === 200) {
-            router.push('/')
+            const redirectTo = route.query.redirect || '/'
+            router.push(redirectTo as string)
         } else {
             console.log(response.message)
         }
