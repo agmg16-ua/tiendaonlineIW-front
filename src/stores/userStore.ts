@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import RegisterRequest from '@/generated/src/model/RegisterRequest'
 import LoginRequest from '@/generated/src/model/LoginRequest'
-import { authEndpoints, direccionEndpoints, pedidoEndpoints } from '@/router/endpoints'
+import { authEndpoints, carritoEndpoints, direccionEndpoints, pedidoEndpoints } from '@/router/endpoints'
 import { useCarritoStore } from '@/stores/store'
 
 export const useUserStore = defineStore('user', {
@@ -38,13 +38,19 @@ export const useUserStore = defineStore('user', {
                     this.isAuthenticated = true
                     this.userEmail = userData.email
 
+                    //.. y realizamos tareas sobre el carrito
+                    if (localStorage.getItem('carrito')) {
+                        console.log("Carrito encontrado")
+                        console.log(localStorage.getItem('carrito'))
+                    }
+
                     return {
                         status: response.status,
                         message: data.message
                     }
                 }
 
-            } catch(error) {
+            } catch (error) {
                 console.error("Error en la solicitud de registro")
                 throw new Error()
             }
@@ -71,18 +77,47 @@ export const useUserStore = defineStore('user', {
                     this.jwt = data.jwt
                     this.isAuthenticated = true
                     this.userEmail = userData.email
+
+                    //.. y realizamos tareas sobre el carrito
+                    if (localStorage.getItem('carrito')) {
+                        console.log("Carrito encontrado")
+                        const localCarrito = JSON.parse(localStorage.getItem('carrito') || '{}')
+
+                        let data = {}
+
+                        for (let item of localCarrito) {
+                            const response = await fetch(carritoEndpoints.POSTAddProductEndpoint, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': `Bearer ${localStorage.getItem('tokenJWT')}`
+                                },
+                                body: JSON.stringify({
+                                    "cantidad": item.cantidad,
+                                    "productoId": item.id,
+                                    "talla": item.tallaData.talla,
+                                    "precio": item.precio
+                                })
+                            })
+
+                            data = await response.json()
+                        }
+
+                        console.log(data)
+                        localStorage.setItem('carrito', JSON.stringify(data.linCarritos))
+                    }
                 }
 
                 return {
                     status: response.status,
                     message: data.message
                 }
-                
-            } catch(error) {
+
+            } catch (error) {
                 console.error("Error en la solicitud de login")
                 throw new Error()
             }
-            
+
         },
 
         async logout() {
@@ -181,7 +216,7 @@ export const useUserStore = defineStore('user', {
 
         async sendPaymentCallback(pedidoId: any) {
             try {
-                
+
                 console.log(pedidoId)
 
                 console.log(JSON.stringify({
@@ -205,7 +240,7 @@ export const useUserStore = defineStore('user', {
                     localStorage.removeItem('pedidoRedirect')
                 }
 
-                
+
             } catch (error) {
                 console.error(error)
                 throw new Error()
