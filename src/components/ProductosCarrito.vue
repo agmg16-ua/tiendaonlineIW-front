@@ -9,12 +9,18 @@
 
     <div class="linea-horizontal"></div>
 
-    <ion-row v-for="(producto, index) in props.productos" :key="producto.id" class="producto-row">
+    <ion-row v-for="(producto, index) in props.carrito" :key="producto.id" class="producto-row">
         <!-- Producto -->
         <ion-col size="3" class="producto-col">
         <div class="producto-info">
-            <img :src="producto.foto_portada" alt="Imagen del producto" class="imagen-carrito" />
-            <p class="nombre-producto">{{ producto.nombre }}</p>
+            <img :src="producto.producto.foto_portada" alt="Imagen del producto" class="imagen-carrito" v-if="isAuthenticated"/>
+            <img :src="producto.foto_portada" alt="Imagen del producto" class="imagen-carrito" v-else/>
+            <p class="nombre-producto" v-if="isAuthenticated">
+              {{ producto.producto.nombre }}
+            </p>
+            <p class="nombre-producto" v-else>
+              {{ producto.nombre }}
+            </p>
         </div>
         </ion-col>
 
@@ -26,9 +32,11 @@
         <!-- Cantidad -->
         <ion-col size="2" class="cantidad-col">
         <div class="cantidad-controls">
-            <button @click="decrementarCantidad(producto)" class="cantidad-btn">-</button>
+            <button @click="decrementarCantidad(producto, Number(index), Number(producto.producto.id))" class="cantidad-btn" v-if="isAuthenticated">-</button>
+            <button @click="decrementarCantidad(producto, Number(index), Number(producto.id))" class="cantidad-btn" v-else>-</button>
             <span class="cantidad">{{ producto.cantidad }}</span>
-            <button @click="incrementarCantidad(producto)" class="cantidad-btn">+</button>
+            <button @click="incrementarCantidad(producto, producto.producto.id)" class="cantidad-btn" v-if="isAuthenticated">+</button>
+            <button @click="incrementarCantidad(producto, producto.id)" class="cantidad-btn" v-else>+</button>
         </div>
         </ion-col>
 
@@ -39,7 +47,8 @@
 
         <!-- Botón de eliminación -->
         <ion-col size="1" class="eliminar-col">
-            <button @click="eliminarProducto(Number(index))" class="eliminar-btn">✖</button>
+            <button @click="eliminarProducto(Number(index), Number(producto.producto.id))" class="eliminar-btn" v-if="isAuthenticated">✖</button>
+            <button @click="eliminarProducto(Number(index), Number(producto.id))" class="eliminar-btn" v-else>✖</button>
         </ion-col>
     </ion-row>
 </template>
@@ -48,40 +57,145 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { IonContent, IonGrid, IonRow, IonCol } from '@ionic/vue'; // Importando los componentes de Ionic
-
 import { defineProps } from 'vue';
+import { useCarritoStore } from '@/stores/carritoStore';
+
+const carritoStore = useCarritoStore(); 
+const emit = defineEmits(['actualizarCarrito']);
+const isAuthenticated = computed(() => localStorage.getItem('isAuthenticated') === 'true');
+
+const carrito = ref<any[]>([]); // Donde se almacenarán las líneas del carrito
 
 const props = defineProps({
-  productos: {
+  carrito: {
     type: Object,
     required: true,
   },
 });
 
 const guardarCarrito = () => {
-  localStorage.setItem('carrito', JSON.stringify(props.productos));
+  localStorage.setItem('carrito', JSON.stringify(props.carrito));
 };
 
-// Función para incrementar la cantidad
-const incrementarCantidad = (producto: any) => {
-  if (producto.cantidad < 99) { // Limitar a 99 unidades por producto
-    producto.cantidad += 1;
+const obtenerIdLineaCarrito = async (idProducto: Number) => {
+
+  try {
+    const response = await carritoStore.fetchCarrito();
+    if (response.status === 200) {
+      carrito.value = carritoStore.carrito.linCarritos; // Asignar las líneas del carrito
+    }
+  } catch (error) {
+    console.error('Error al obtener el carrito:', error);
   }
-  guardarCarrito();
+
+    let idLineaCarrito = null;
+
+    // Buscar la línea del carrito correspondiente al producto
+    for (const linea of carrito.value) {
+      if (linea.producto.id === idProducto) { // Comprobar coincidencia de IDs
+        idLineaCarrito = linea.id; // ID de la línea de carrito
+        break;
+      }
+    }
+
+    if (!idLineaCarrito) {
+      console.error('No se encontró una línea de carrito para este producto.');
+      return;
+    }
+
+    return idLineaCarrito;
+
+}
+
+// Función para incrementar la cantidad
+const incrementarCantidad = async (producto: any, idProducto: Number) => {
+  
+  if(localStorage.getItem('isAuthenticated') === 'true'){
+
+    const idLineaCarrito = await obtenerIdLineaCarrito(idProducto);
+
+    try {
+      const response = await carritoStore.incrementarLinCarrito(Number(idLineaCarrito));
+      if (response.status === 200) {
+          console.log('Cantidad incrementada exitosamente.');
+          emit('actualizarCarrito');
+      } else {
+          console.error('Error al incrementar la cantidad:', response.message);
+      }
+    } catch (error) {
+        console.error('Error al ejecutar incrementarLinCarrito:', error);
+    }
+
+  }else{
+    if (producto.cantidad < 99) { // Limitar a 99 unidades por producto
+      producto.cantidad += 1;
+    }
+    guardarCarrito();
+  }
 };
 
 // Función para decrementar la cantidad
-const decrementarCantidad = (producto: any) => {
-  if (producto.cantidad > 1) { // No permitir menos de 1
-    producto.cantidad -= 1;
+const decrementarCantidad = async (producto: any, index: Number, idProducto: Number) => {
+  
+  if(localStorage.getItem('isAuthenticated') === 'true'){
+
+    if (producto.cantidad > 1){
+
+      const idLineaCarrito = await obtenerIdLineaCarrito(idProducto);
+
+      try {
+          const response = await carritoStore.decrementarLinCarrito(idLineaCarrito);
+          if (response.status === 200) {
+              console.log('Cantidad decrementada exitosamente.');
+              emit('actualizarCarrito');
+          } else {
+              console.error('Error al decrementar la cantidad:', response.message);
+          }
+      } catch (error) {
+          console.error('Error al ejecutar decrementarLinCarrito:', error);
+      }
+
+    }else{
+      await eliminarProducto(Number(index), idProducto);
+    }
+
+    
+
+  }else{
+    if (producto.cantidad > 1) { // No permitir menos de 1
+      producto.cantidad -= 1;
+    }else{
+       await eliminarProducto(Number(index), idProducto);
+    }
+    guardarCarrito();
   }
-  guardarCarrito();
+  
 };
 
 // Función para eliminar un producto
-const eliminarProducto = (index: number) => {
-  props.productos.splice(index, 1); // Eliminar el producto del array
-  guardarCarrito(); // Actualizar el localStorage
+const eliminarProducto = async (index: number, idProducto: Number) => {
+
+  if(localStorage.getItem('isAuthenticated') === 'true'){
+
+    const idLineaCarrito = await obtenerIdLineaCarrito(idProducto);
+
+    try {
+      const response = await carritoStore.deleteLinCarrito(idLineaCarrito);
+      if (response.status === 200) {
+          console.log('Linea eliminado correctamente.');
+          emit('actualizarCarrito');
+      } else {
+          console.error('Error al eliminar linea:', response.message);
+      }
+    } catch (error) {
+        console.error('Error al ejecutar deleteLinCarrito:', error);
+    }
+
+  }else{
+    props.carrito.splice(index, 1); // Eliminar el producto del array
+    guardarCarrito(); // Actualizar el localStorage
+  }
+  
 };
 </script>
 
