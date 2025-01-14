@@ -146,7 +146,7 @@ export const useUserStore = defineStore('user', {
             }
         },
 
-        async newPedido(idDireccion: any) {
+        async newPedido(direccionId: Number) {
             try {
                 const response = await fetch(pedidoEndpoints.POSTPedidoEndpoint, {
                     method: 'POST',
@@ -154,8 +154,53 @@ export const useUserStore = defineStore('user', {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${localStorage.getItem('tokenJWT')}`
                     },
-                    body: JSON.stringify({ idDireccion })
+                    body: JSON.stringify({
+                        "direccionId": direccionId
+                    })
                 })
+
+                console.log(response)
+
+                const data = await response.json()
+
+                if (response.status === 200) {
+                    localStorage.setItem('pedidoRedirect', data.referencia)
+                }
+
+                return {
+                    status: response.status,
+                    message: data.message,
+                    url: data.url
+                }
+
+            } catch (error) {
+                console.error(error)
+                throw new Error()
+            }
+        },
+
+        async sendPaymentCallback(pedidoId: Number) {
+            try {
+                /*
+                const response = await fetch(pedidoEndpoints.POSTPaymentCallbackEndpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('tokenJWT')}`
+                    },
+                    body: JSON.stringify({
+                        "pagado": true,
+                        "referencia": pedidoId
+                    })
+                })
+
+                const data = await response.json()
+
+                if (response.status === 200) {
+                    localStorage.removeItem('pedidoRedirect')
+                }
+
+                */
             } catch (error) {
                 console.error(error)
                 throw new Error()

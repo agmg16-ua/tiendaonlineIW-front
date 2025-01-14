@@ -82,6 +82,7 @@
     </ion-content>
 
     <ion-popover
+      v-if="isAuthenticated"
       trigger="popover-button"
       :dismiss-on-select="true"
     >
