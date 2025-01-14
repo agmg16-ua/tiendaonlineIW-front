@@ -34,7 +34,9 @@ import { useRoute } from 'vue-router';
 import { IonContent, IonGrid, IonRow, IonCol, IonSpinner, IonButton } from '@ionic/vue';
 import { useProductStore } from '@/stores/productStore';
 import ImageCarousel from '@/components/ImageCarousel.vue'; // Importar el componente
+import { useCarritoStore } from '@/stores/carritoStore';
 
+const carritoStore = useCarritoStore(); 
 const productStore = useProductStore();
 
 // Definir la interfaz para Producto
@@ -74,7 +76,7 @@ const obtenerProducto = async () => {
   }
 };
 
-const añadirAlCarrito = () => {
+const añadirAlCarrito = async () => {
   if (producto.value) {
     // Obtener el carrito de localStorage o inicializarlo como vacío
     let carrito = JSON.parse(localStorage.getItem('carrito') || '[]');
@@ -86,26 +88,98 @@ const añadirAlCarrito = () => {
       // Si el producto ya está en el carrito, incrementamos la cantidad
       productoExistente.cantidad += 1;
       console.log(`Producto actualizado en el carrito: ${productoExistente.nombre}, cantidad: ${productoExistente.cantidad}`);
+      incrementarLineaCarrito();
+      alert("Producto añadido al carrito");
     } else {
       // Si no está en el carrito, añadirlo con cantidad 1
       const productoConCantidad = { ...producto.value, cantidad: 1 }; // Asignamos cantidad = 1
       carrito.push(productoConCantidad);
       console.log(`Producto añadido al carrito: ${productoConCantidad.nombre}, cantidad: ${productoConCantidad.cantidad}`);
+      añadirAlCarritoUsuarioAutenticado();
+      alert("Producto añadido al carrito");
     }
 
     // Guardar de nuevo el carrito actualizado en localStorage
-    localStorage.setItem('carrito', JSON.stringify(carrito));4
-
-    if (localStorage.getItem('isAuthenticated') === 'true') {
-      //Utilizar endpoint back para añadir linea en BD
-
-      
-      //Despues endpoint fetchCarrito para actualizar carrito
-
-    }
+    localStorage.setItem('carrito', JSON.stringify(carrito));
   }
   console.log(localStorage.getItem('carrito'));
 };
+
+const carrito = ref<any[]>([]); // Donde se almacenarán las líneas del carrito
+
+const incrementarLineaCarrito = async () => {
+
+  if (producto.value) {
+
+    // Si el usuario está autenticado, llamar al API para incrementar
+    if (localStorage.getItem('isAuthenticated') === 'true') {
+
+      try {
+        const response = await carritoStore.fetchCarrito();
+        if (response.status === 200) {
+          carrito.value = carritoStore.carrito.linCarritos; // Asignar las líneas del carrito
+        }
+      } catch (error) {
+        console.error('Error al obtener el carrito:', error);
+      }
+
+      const idProducto = producto.value.id; // ID del producto actual
+      let idLineaCarrito = null;
+
+      // Buscar la línea del carrito correspondiente al producto
+      for (const linea of carrito.value) {
+        if (linea.producto.id === idProducto) { // Comprobar coincidencia de IDs
+          idLineaCarrito = linea.id; // ID de la línea de carrito
+          break;
+        }
+      }
+
+      if (!idLineaCarrito) {
+        console.error('No se encontró una línea de carrito para este producto.');
+        return;
+      }
+
+      try {
+        const response = await carritoStore.incrementarLinCarrito(idLineaCarrito);
+        if (response.status === 200) {
+          console.log('Cantidad incrementada exitosamente.');
+        } else {
+          console.error('Error al incrementar la cantidad:', response.message);
+        }
+      } catch (error) {
+        console.error('Error al ejecutar incrementarLinCarrito:', error);
+      }
+    }
+  }
+};
+
+
+const añadirAlCarritoUsuarioAutenticado = async () => {
+  if(producto.value){
+    // Si el usuario está autenticado, sincronizar con el backend
+    if (localStorage.getItem('isAuthenticated') === 'true') {
+      try {
+        // Llamar al método del store para sincronizar con el backend
+        const response = await carritoStore.addProductCarrito(
+          producto.value.id, 
+          1, // Cantidad inicial
+          producto.value.tallaData?.talla || '', // Asegúrate de tener la talla
+          producto.value.precio // Precio del producto
+        );
+
+        if (response.status === 200) {
+          console.log("Producto sincronizado con el backend");
+        } else {
+          console.error("Error al sincronizar con el backend:", response.message);
+          alert(`Error: ${response.message}`);
+        }
+      } catch (error) {
+        console.error("Error al realizar la sincronización con el backend:", error);
+        alert("Hubo un error al sincronizar con el servidor.");
+      }
+    }
+  }
+}
 
 onMounted(() => {
   obtenerProducto();

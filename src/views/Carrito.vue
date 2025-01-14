@@ -1,9 +1,9 @@
 <template>
   <ion-content>
-    <div v-if="productos.length > 0" class="carrito-container">
+    <div v-if="carrito.length > 0" class="carrito-container">
       <HeaderCarrito />
       <ion-grid>
-        <ProductosCarrito :productos="productos" />
+        <ProductosCarrito :carrito="carrito" @actualizarCarrito="obtenerCarrito" />
         <CosteTotalCarrito :total="totalCarrito" />
         <ion-row class="pago-row">
           <ion-col size="12" class="pago-col">
@@ -32,23 +32,32 @@ const carritoStore = useCarritoStore();
 
 const router = useRouter();
 
-const productos = ref<any[]>([]);
+const carrito = ref<any[]>([]);
 
 onMounted(async () => {
-  const carrito = JSON.parse(localStorage.getItem('carrito') || '[]');
-  productos.value = carrito;
- 
-  if(localStorage.getItem('isAuthenticated') === 'true') {
-    const response = await carritoStore.fetchCarrito()
-
-    if (response.status === 200) {
-      productos.value = carritoStore.carrito.linCarritos //o carritoStore.carrito.linCarritos
-    }
-  }
+  await obtenerCarrito(); // Llama a la nueva función al montar el componente
 });
 
+// Función para obtener el carrito desde la base de datos o localStorage
+const obtenerCarrito = async () => {
+  if (localStorage.getItem('isAuthenticated') === 'true') {
+    try {
+      const response = await carritoStore.fetchCarrito();
+      if (response.status === 200) {
+        carrito.value = carritoStore.carrito.linCarritos;
+      }
+    } catch (error) {
+      console.error('Error al obtener el carrito:', error);
+    }
+  } else {
+    const carrito = JSON.parse(localStorage.getItem('carrito') || '[]');
+    carrito.value = carrito;
+  }
+};
+
+
 const totalCarrito = computed(() => {
-  return productos.value.reduce((total, producto) => {
+  return carrito.value.reduce((total, producto) => {
     return total + producto.precio * producto.cantidad;
   }, 0);
 });
