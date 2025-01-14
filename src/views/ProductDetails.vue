@@ -11,6 +11,7 @@
           <!-- Detalles del producto (nombre, precio, descripción) -->
           <ion-col size="4" size-md="6" class="datos-col">
             <h1 class="titulo">{{ producto.nombre }}</h1>
+            <h2 class="talla">Talla: {{ producto.tallaData.talla }} </h2>
             <p class="precio">€{{ producto.precio.toFixed(2) }}</p>
             <p class="descripcion">{{ producto.descripcion }}</p>
             <!-- Botón Añadir al Carrito -->
@@ -211,6 +212,14 @@ onMounted(() => {
 /* Título del producto */
 .titulo {
   font-size: 3rem;
+  font-weight: bold;
+  margin: 0;
+  color: #b0a7a7;
+  margin-bottom: 20px;
+}
+
+.talla {
+  font-size: 1.5rem;
   font-weight: bold;
   margin: 0;
   color: #b0a7a7;
