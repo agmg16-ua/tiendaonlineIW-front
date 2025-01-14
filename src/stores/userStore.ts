@@ -164,7 +164,7 @@ export const useUserStore = defineStore('user', {
                 const data = await response.json()
 
                 if (response.status === 200) {
-                    localStorage.setItem('pedidoRedirect', data.pedidoId)
+                    localStorage.setItem('pedidoRedirect', data.referencia)
                 }
 
                 return {
