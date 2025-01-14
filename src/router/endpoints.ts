@@ -95,13 +95,15 @@ export const PUTDecrementProductEndpoint = baseUrl + '/lewkin/api/carrito/linCar
 export const POSTAddProductEndpoint = baseUrl + '/lewkin/api/carrito/linCarrito'
 export const GETCarritoEndpoint = baseUrl + '/lewkin/api/carrito'
 export const DELETECarritoEndpoint = baseUrl + '/lewkin/api/carrito/linCarrito/{idLinCarrito}'
+export const ADDLineCarritoEndpoint = baseUrl + '/lewkin/api/carrito/linCarrito'
 
 export const carritoEndpoints = {
     PUTIncrementProductEndpoint,
     PUTDecrementProductEndpoint,
     POSTAddProductEndpoint,
     GETCarritoEndpoint,
-    DELETECarritoEndpoint
+    DELETECarritoEndpoint,
+    ADDLineCarritoEndpoint,
 }
 
 //Pedido Endpoints
