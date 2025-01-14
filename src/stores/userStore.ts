@@ -179,9 +179,16 @@ export const useUserStore = defineStore('user', {
             }
         },
 
-        async sendPaymentCallback(pedidoId: Number) {
+        async sendPaymentCallback(pedidoId: any) {
             try {
-                /*
+                
+                console.log(pedidoId)
+
+                console.log(JSON.stringify({
+                    "tpvResponseOk": true,
+                    "referencia": pedidoId
+                }))
+
                 const response = await fetch(pedidoEndpoints.POSTPaymentCallbackEndpoint, {
                     method: 'POST',
                     headers: {
@@ -189,18 +196,16 @@ export const useUserStore = defineStore('user', {
                         'Authorization': `Bearer ${localStorage.getItem('tokenJWT')}`
                     },
                     body: JSON.stringify({
-                        "pagado": true,
+                        "tpvResponseOk": true,
                         "referencia": pedidoId
                     })
                 })
-
-                const data = await response.json()
 
                 if (response.status === 200) {
                     localStorage.removeItem('pedidoRedirect')
                 }
 
-                */
+                
             } catch (error) {
                 console.error(error)
                 throw new Error()
