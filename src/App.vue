@@ -62,7 +62,7 @@
           
 
           <!--Botones para sesion cerrada-->
-          <ion-button v-if="!isAuthenticated" href="/login">Iniciar Sesión</ion-button>
+          <ion-button v-if="!isAuthenticated" @click="router.push('/login')">Iniciar Sesión</ion-button>
 
           <!--Botones para sesion iniciada-->
           <ion-button v-if="isAuthenticated" id="popover-button">Cuenta</ion-button>
