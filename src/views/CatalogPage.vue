@@ -53,17 +53,50 @@
           </div>
         </div>
       </IonCol>
+      <!-- Filtro de SubCategoria -->
       <IonCol size="auto" class="filter-col">
         <div>
           <IonButton @click="mostrarSubcategoriaFiltro = !mostrarSubcategoriaFiltro" size="small" class="filter-button">
             <IonIcon :icon="funnelOutline" slot="start" />
-            Subcategoría
+            Categoría      
           </IonButton>
           <div v-if="mostrarSubcategoriaFiltro" class="filter-options">
             <IonButton v-for="subcategoria in subcategoriasDisponibles" :key="subcategoria.id" size="small" @click="filtrarPorSubcategoria(subcategoria.id)" :class="['filter-option-button', { 'active': subcategoriaSeleccionada === subcategoria.id }]" color="transparent">
               {{ subcategoria.nombre }}
             </IonButton>
             <IonButton size="small" @click="limpiarFiltroSubcategoria" :class="['filter-option-button', { 'active': subcategoriaSeleccionada === null }]" color="transparent">
+              Ninguno
+            </IonButton>
+          </div>
+        </div>
+      </IonCol>
+      <!-- Filtro de Color -->
+      <IonCol size="auto" class="filter-col">
+        <div>
+          <IonButton @click="mostrarColorFiltro = !mostrarColorFiltro" size="small" class="filter-button">
+            <IonIcon :icon="funnelOutline" slot="start" />
+            Color
+          </IonButton>
+          <div v-if="mostrarColorFiltro" class="filter-options">
+            <IonButton v-for="color in coloresDisponibles" :key="color" size="small" @click="filtrarPorColor(color)" :class="['filter-option-button', { 'active': colorSeleccionado === color }]" color="transparent">{{ color }}</IonButton>
+            <IonButton size="small" @click="limpiarFiltroColor" :class="['filter-option-button', { 'active': colorSeleccionado === null }]" color="transparent">
+              Ninguno
+            </IonButton>
+          </div>
+        </div>
+      </IonCol>
+      <!-- Filtro de Talla -->
+      <IonCol size="auto" class="filter-col">
+        <div>
+          <IonButton @click="mostrarTallaFiltro = !mostrarTallaFiltro" size="small" class="filter-button">
+            <IonIcon :icon="funnelOutline" slot="start" />
+            Talla
+          </IonButton>
+          <div v-if="mostrarTallaFiltro" class="filter-options">
+            <IonButton v-for="talla in tallasDisponibles" :key="talla" size="small" @click="filtrarPorTalla(talla)" :class="['filter-option-button', { 'active': tallaSeleccionada === talla }]" color="transparent">
+              {{ talla }}
+            </IonButton>
+            <IonButton size="small" @click="limpiarFiltroTalla" :class="['filter-option-button', { 'active': tallaSeleccionada === null }]" color="transparent">
               Ninguno
             </IonButton>
           </div>
@@ -139,6 +172,14 @@ const materialSeleccionado = ref<number | null>(null);
 const mostrarSubcategoriaFiltro = ref(false);
 const subcategoriasDisponibles = ref<{ id: number; nombre: string }[]>([]);
 const subcategoriaSeleccionada = ref<number | null>(null);
+const mostrarColorFiltro = ref(false);
+const coloresDisponibles = ref<string[]>([]); // Para almacenar los colores únicos
+const colorSeleccionado = ref<string | null>(null);  // Para el color seleccionado
+const mostrarTallaFiltro = ref(false); // Para mostrar/ocultar el filtro de tallas
+const tallasDisponibles = ref<string[]>(['XS', 'S', 'M', 'L', 'XL']); // Tallas predefinidas
+const tallaSeleccionada = ref<string | null>(null); // Para almacenar la talla seleccionada
+
+
 
 // Función para aplicar todos los filtros acumulativamente
 const aplicarFiltros = () => {
@@ -152,6 +193,16 @@ const aplicarFiltros = () => {
   // Aplicar filtro de material si está seleccionado
   if (materialSeleccionado.value !== null) {
     productos = productos.filter(producto => producto.materialData.id === materialSeleccionado.value);
+  }
+
+  // Filtrar por color
+  if (colorSeleccionado.value !== null) {
+    productos = productos.filter(producto => producto.color === colorSeleccionado.value);
+  }
+
+ // Filtrar por talla
+ if (tallaSeleccionada.value) {
+    productos = productos.filter(producto => producto.tallaData.talla === tallaSeleccionada.value); // Accedemos directamente a tallaData.talla
   }
 
   // Aplicar filtro de precio
@@ -194,6 +245,20 @@ const calcularSubcategoriasUnicas = () => {
   subcategoriasDisponibles.value = Array.from(subcategoriasMap, ([id, nombre]) => ({ id, nombre }));
 };
 
+// Función para extraer colores únicos de los productos
+const calcularColoresUnicos = () => {
+  const coloresSet = new Set<string>();
+  
+  props.listaProductos.forEach(producto => {
+    const color = producto.color;
+    if (color) {
+      coloresSet.add(color);  // Añadimos el color al Set (Set asegura valores únicos)
+    }
+  });
+
+  coloresDisponibles.value = Array.from(coloresSet);  // Convertimos el Set a un array
+};
+
 // Función para filtrar por subcategoría
 const filtrarPorSubcategoria = (idSubcategoria: number) => {
   subcategoriaSeleccionada.value = idSubcategoria;
@@ -207,6 +272,36 @@ const limpiarFiltroSubcategoria = () => {
   localStorage.setItem('subcategoriaSeleccionada', 'null');
   aplicarFiltros();
 };
+
+// Función para filtrar por talla
+const filtrarPorTalla = (talla: string) => {
+  tallaSeleccionada.value = talla;
+  localStorage.setItem('tallaSeleccionada', talla); // Guardamos la talla seleccionada en localStorage
+  aplicarFiltros();
+};
+
+// Función para limpiar el filtro de talla
+const limpiarFiltroTalla = () => {
+  tallaSeleccionada.value = null;
+  localStorage.setItem('tallaSeleccionada', 'null'); // Limpiamos el valor en el localStorage
+  aplicarFiltros();
+};
+
+
+// Función para filtrar por color
+const filtrarPorColor = (color: string) => {
+  colorSeleccionado.value = color;
+  localStorage.setItem('colorSeleccionado', color);
+  aplicarFiltros();
+};
+
+// Función para limpiar el filtro de color
+const limpiarFiltroColor = () => {
+  colorSeleccionado.value = null;
+  localStorage.setItem('colorSeleccionado', 'null');
+  aplicarFiltros();
+};
+
 
 // Función para filtrar por material
 const filtrarPorMaterial = (idMaterial: number) => {
@@ -248,6 +343,13 @@ const aplicarFiltrosDesdeLocalStorage = () => {
     ordenActual.value = savedOrdenActual === 'null' ? null : savedOrdenActual as 'asc' | 'desc';
   }
 
+  const savedTallaSeleccionada = localStorage.getItem('tallaSeleccionada');
+  if (savedTallaSeleccionada && savedTallaSeleccionada !== 'null') {
+    tallaSeleccionada.value = savedTallaSeleccionada;
+  } else {
+    tallaSeleccionada.value = null;
+  }
+
   const savedMaterialSeleccionado = localStorage.getItem('materialSeleccionado');
   if (savedMaterialSeleccionado) {
     // Convertir el valor de localStorage en un número
@@ -267,6 +369,17 @@ const aplicarFiltrosDesdeLocalStorage = () => {
     // Si la subcategoría no existe en la lista, se pone a null
     subcategoriaSeleccionada.value = subcategoriaExistente ? subcategoriaId : null;
   }
+
+  // ** Agregar lógica para el filtro de color desde localStorage **
+  const savedColorSeleccionado = localStorage.getItem('colorSeleccionado');
+  if (savedColorSeleccionado) {
+    // Recuperar el color guardado
+    const colorSeleccionadoGuardado = savedColorSeleccionado;
+    // Comprobar si el color está en la lista de colores disponibles
+    const colorExistente = coloresDisponibles.value.find(color => color === colorSeleccionadoGuardado);
+    // Si el color no existe en la lista, se pone a null
+    colorSeleccionado.value = colorExistente ? colorSeleccionadoGuardado : null;
+  }
 };
 
 // Guardar el rango de precios en localStorage y aplicar filtros
@@ -276,10 +389,9 @@ watch(precioRango, () => {
 });
 
 onMounted(() => {
-  // Calcular materiales únicos dinámicamente
   calcularMaterialesUnicos();
   calcularSubcategoriasUnicas();
-  // Aplicar filtros desde localStorage si existen
+  calcularColoresUnicos();
   aplicarFiltrosDesdeLocalStorage();
   aplicarFiltros();
 });
