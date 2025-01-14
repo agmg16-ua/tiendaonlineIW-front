@@ -40,8 +40,34 @@ export const useUserStore = defineStore('user', {
 
                     //.. y realizamos tareas sobre el carrito
                     if (localStorage.getItem('carrito')) {
-                        console.log("Carrito encontrado")
-                        console.log(localStorage.getItem('carrito'))
+                        //.. y realizamos tareas sobre el carrito
+                        if (localStorage.getItem('carrito')) {
+                            console.log("Carrito encontrado")
+                            const localCarrito = JSON.parse(localStorage.getItem('carrito') || '{}')
+
+                            let data = {}
+
+                            for (let item of localCarrito) {
+                                const response = await fetch(carritoEndpoints.POSTAddProductEndpoint, {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'Authorization': `Bearer ${localStorage.getItem('tokenJWT')}`
+                                    },
+                                    body: JSON.stringify({
+                                        "cantidad": item.cantidad,
+                                        "productoId": item.id,
+                                        "talla": item.tallaData.talla,
+                                        "precio": item.precio
+                                    })
+                                })
+
+                                data = await response.json()
+                            }
+
+                            console.log(data)
+                            localStorage.setItem('carrito', JSON.stringify(data.linCarritos))
+                        }
                     }
 
                     return {
