@@ -42,6 +42,11 @@ watch(
 
 function submitForm() {
     //console.log('Submitting form from childcomponent:', localData.value);
+    if (localData.value.birthDate > new Date(new Date().setFullYear(new Date().getFullYear() - 18)).toISOString().split('T')[0]) {
+        alert('Debes ser mayor de edad para registrarte');
+        return;
+    }
+
     emit('nextStep', localData.value);
 }
 
