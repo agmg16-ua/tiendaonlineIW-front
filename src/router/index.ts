@@ -16,6 +16,9 @@ import NinaCatalog from '@/views/NinaCatalog.vue';
 import TramitarPedido from '@/views/TramitarPedido.vue';
 import { useCarritoStore } from '@/stores/carritoStore';
 import Carrito from '@/views/Carrito.vue';
+import PaymentCallback from '@/views/PaymentCallback.vue';
+import MisPedidos from '@/views/MisPedidos.vue'
+
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -92,6 +95,18 @@ const routes: Array<RouteRecordRaw> = [
     path: '/tramitarPedido',
     component: TramitarPedido,
     name: 'tramitarPedido',
+    meta: {requiresAuth: true}
+  },
+  {
+    path: '/paymentCallback',
+    component: PaymentCallback,
+    name: 'paymentCallback',
+    meta: {requiresAuth: true}
+  },
+  {
+    path: '/cuenta/misPedidos',
+    component: MisPedidos,
+    name: 'misPedidos',
     meta: {requiresAuth: true}
   },
   {
