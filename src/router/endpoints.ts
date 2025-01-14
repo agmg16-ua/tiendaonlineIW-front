@@ -107,6 +107,7 @@ export const carritoEndpoints = {
 //Pedido Endpoints
 export const POSTUpdatePedidoEndpoint = baseUrl + '/lewkin/api/pedido/{idPedido}/modificar'
 export const POSTPedidoEndpoint = baseUrl + '/lewkin/api/pedido/nuevo'
+export const POSTPaymentCallbackEndpoint = baseUrl + '/lewkin/api/pedido/pagado'
 export const GETPedidosUsuarioEndpoint = baseUrl + '/lewkin/api/usuario/pedidos'
 export const GETPedidosEndpoint = baseUrl + '/lewkin/api/pedidos'
 export const GETPedidoEndpoint = baseUrl + '/lewkin/api/pedido/{idPedido}'
@@ -114,6 +115,7 @@ export const GETPedidoEndpoint = baseUrl + '/lewkin/api/pedido/{idPedido}'
 export const pedidoEndpoints = {
     POSTUpdatePedidoEndpoint,
     POSTPedidoEndpoint,
+    POSTPaymentCallbackEndpoint,
     GETPedidosUsuarioEndpoint,
     GETPedidosEndpoint,
     GETPedidoEndpoint

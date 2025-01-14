@@ -9,8 +9,6 @@
 
     const carrito = computed(() => carritoStore.carrito)
 
-    const lineasCarrito = {}
-
 </script>
 
 <template>

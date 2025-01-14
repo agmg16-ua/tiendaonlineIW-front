@@ -4,7 +4,6 @@
     import { useUserStore } from '@/stores/userStore'
     import SelectDirection from './TramitarPedidoSteps/SelectDirection.vue'
     import ViewResume from './TramitarPedidoSteps/ViewResume.vue'
-    import OrderConfirmation from './TramitarPedidoSteps/OrderConfirmation.vue'
 
     const userStore = useUserStore();
 
@@ -12,20 +11,26 @@
 
     let direccionEnvio = ref()
 
-    const steps = [SelectDirection, ViewResume, OrderConfirmation]
+    const steps = [SelectDirection, ViewResume]
 
     let currentStepIndex = ref(0)
 
     const currentStepComponent = computed(() => steps[currentStepIndex.value]);
 
-    const do_pedido = (data: any) => {
+    const do_pedido = async (data: any) => {
         console.log(data)
         if (currentStepIndex.value === 0) {
             direccionEnvio.value = data
         }
 
         if (currentStepIndex.value === 1) {
-            userStore.newPedido(direccionEnvio.value)
+            const data = await userStore.newPedido(direccionEnvio.value)
+
+            if (data.status === 200) {
+                window.location.href = data.url
+            } else {
+                console.error(data.message)
+            }
         }
 
         currentStepIndex.value++
