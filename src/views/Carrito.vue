@@ -50,9 +50,11 @@ const obtenerCarrito = async () => {
       console.error('Error al obtener el carrito:', error);
     }
   } else {
-    const carrito = JSON.parse(localStorage.getItem('carrito') || '[]');
-    carrito.value = carrito;
+    const carritoAux = JSON.parse(localStorage.getItem('carrito') || '[]');
+    carrito.value = carritoAux;
   }
+  console.log(carrito);
+  
 };
 
 
