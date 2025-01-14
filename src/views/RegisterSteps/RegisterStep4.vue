@@ -78,7 +78,7 @@ function submitForm() {
         const floorIsANumber = isANumber(localData.value.floor);
 
         if (!isANumber(localData.value.number) || !buldingIsANumber || !stairIsANumber || !floorIsANumber || !isANumber(localData.value.postalCode)) {
-            console.log("Los campos no son correctos")
+            alert("Datos incorrectos: Asegurate de que has introducido bien los números")
             return
         }
 
@@ -87,7 +87,7 @@ function submitForm() {
     else {
         console.log(correctAnswer)
         console.log(localData.value.captcha)
-        console.log('Captcha incorrecto');
+        alert('Captcha incorrecto: Vuelve a intentarlo');
     }
 }
 
