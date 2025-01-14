@@ -1,56 +1,56 @@
 <template>
-    <ion-row class="header-row">
-        <ion-col size="3" class="producto-header">Producto</ion-col>
-        <ion-col size="2" class="precio-header">Precio</ion-col>
-        <ion-col size="2" class="cantidad-header">Cantidad</ion-col>
-        <ion-col size="2" class="total-header">Total</ion-col>
-        <ion-col size="1" class="eliminar-header"></ion-col>
-    </ion-row>
+  <ion-row class="header-row">
+      <ion-col size="3" class="producto-header">Producto</ion-col>
+      <ion-col size="2" class="precio-header">Precio</ion-col>
+      <ion-col size="2" class="cantidad-header">Cantidad</ion-col>
+      <ion-col size="2" class="total-header">Total</ion-col>
+      <ion-col size="1" class="eliminar-header"></ion-col>
+  </ion-row>
 
-    <div class="linea-horizontal"></div>
+  <div class="linea-horizontal"></div>
 
-    <ion-row v-for="(producto, index) in props.carrito" :key="producto.id" class="producto-row">
-        <!-- Producto -->
-        <ion-col size="3" class="producto-col">
-        <div class="producto-info">
-            <img :src="producto.producto.foto_portada" alt="Imagen del producto" class="imagen-carrito" v-if="isAuthenticated"/>
-            <img :src="producto.foto_portada" alt="Imagen del producto" class="imagen-carrito" v-else/>
-            <p class="nombre-producto" v-if="isAuthenticated">
-              {{ producto.producto.nombre }}
-            </p>
-            <p class="nombre-producto" v-else>
-              {{ producto.nombre }}
-            </p>
-        </div>
-        </ion-col>
+  <ion-row v-for="(producto, index) in props.carrito" :key="producto.id" class="producto-row">
+      <!-- Producto -->
+      <ion-col size="3" class="producto-col">
+      <div class="producto-info">
+          <img :src="producto.producto.foto_portada" alt="Imagen del producto" class="imagen-carrito" v-if="isAuthenticated"/>
+          <img :src="producto.foto_portada" alt="Imagen del producto" class="imagen-carrito" v-else/>
+          <p class="nombre-producto" v-if="isAuthenticated">
+            {{ producto.producto.nombre }}
+          </p>
+          <p class="nombre-producto" v-else>
+            {{ producto.nombre }}
+          </p>
+      </div>
+      </ion-col>
 
-        <!-- Precio -->
-        <ion-col size="2" class="precio-col">
-        €{{ producto.precio.toFixed(2) }}
-        </ion-col>
+      <!-- Precio -->
+      <ion-col size="2" class="precio-col">
+      €{{ producto.precio.toFixed(2) }}
+      </ion-col>
 
-        <!-- Cantidad -->
-        <ion-col size="2" class="cantidad-col">
-        <div class="cantidad-controls">
-            <button @click="decrementarCantidad(producto, Number(index), Number(producto.producto.id))" class="cantidad-btn" v-if="isAuthenticated">-</button>
-            <button @click="decrementarCantidad(producto, Number(index), Number(producto.id))" class="cantidad-btn" v-else>-</button>
-            <span class="cantidad">{{ producto.cantidad }}</span>
-            <button @click="incrementarCantidad(producto, producto.producto.id)" class="cantidad-btn" v-if="isAuthenticated">+</button>
-            <button @click="incrementarCantidad(producto, producto.id)" class="cantidad-btn" v-else>+</button>
-        </div>
-        </ion-col>
+      <!-- Cantidad -->
+      <ion-col size="2" class="cantidad-col">
+      <div class="cantidad-controls">
+          <button @click="decrementarCantidad(producto, Number(index), Number(producto.producto.id))" class="cantidad-btn" v-if="isAuthenticated">-</button>
+          <button @click="decrementarCantidad(producto, Number(index), Number(producto.id))" class="cantidad-btn" v-else>-</button>
+          <span class="cantidad">{{ producto.cantidad }}</span>
+          <button @click="incrementarCantidad(producto, producto.producto.id)" class="cantidad-btn" v-if="isAuthenticated">+</button>
+          <button @click="incrementarCantidad(producto, producto.id)" class="cantidad-btn" v-else>+</button>
+      </div>
+      </ion-col>
 
-        <!-- Total -->
-        <ion-col size="2" class="total-col">
-        €{{ (producto.precio * producto.cantidad).toFixed(2) }}
-        </ion-col>
+      <!-- Total -->
+      <ion-col size="2" class="total-col">
+      €{{ (producto.precio * producto.cantidad).toFixed(2) }}
+      </ion-col>
 
-        <!-- Botón de eliminación -->
-        <ion-col size="1" class="eliminar-col">
-            <button @click="eliminarProducto(Number(index), Number(producto.producto.id))" class="eliminar-btn" v-if="isAuthenticated">✖</button>
-            <button @click="eliminarProducto(Number(index), Number(producto.id))" class="eliminar-btn" v-else>✖</button>
-        </ion-col>
-    </ion-row>
+      <!-- Botón de eliminación -->
+      <ion-col size="1" class="eliminar-col">
+          <button @click="eliminarProducto(Number(index), Number(producto.producto.id))" class="eliminar-btn" v-if="isAuthenticated">✖</button>
+          <button @click="eliminarProducto(Number(index), Number(producto.id))" class="eliminar-btn" v-else>✖</button>
+      </ion-col>
+  </ion-row>
 </template>
 
 
@@ -205,49 +205,55 @@ const eliminarProducto = async (index: number, idProducto: Number) => {
   font-weight: bold;
   text-align: center;
   margin-bottom: 20px;
+  flex-wrap: wrap;
 }
 
-/* Línea horizontal encima del primer producto */
 .linea-horizontal {
-  border-top: 1px solid #dcdcdc; /* Línea de separación clara */
-  margin-bottom: 20px; /* Espacio entre la línea y el primer producto */
+  border-top: 1px solid #dcdcdc;
+  margin-bottom: 20px;
 }
 
-/* Estilos para las celdas de la tabla */
 .producto-header, .precio-header, .cantidad-header, .total-header {
   text-align: center;
   font-size: 1.2rem;
 }
 
+.producto-col, .precio-col, .cantidad-col, .total-col, .eliminar-col {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+}
+
 .producto-col {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
 }
 
 .producto-info {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  margin-left: 3rem;
 }
 
 .imagen-carrito {
   max-width: 100px;
   max-height: 100px;
   object-fit: cover;
-  margin-right: 10px; /* Espacio entre la imagen y el nombre */
+  margin-bottom: 10px; /* Espacio entre la imagen y el nombre */
 }
 
 .producto-row {
   margin-top: 15px;
-  border-bottom: 1px solid #e0e0e0; /* Línea horizontal más clara entre productos */
-  padding-bottom: 10px; /* Espacio entre producto y línea */
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 10px;
 }
 
 .nombre-producto {
   font-size: 1.1rem;
   font-weight: bold;
+  text-align: center;
 }
 
 .precio-col, .cantidad-col, .total-col {
@@ -257,7 +263,6 @@ const eliminarProducto = async (index: number, idProducto: Number) => {
   justify-content: center;
 }
 
-/* Estilo para los controles de cantidad */
 .cantidad-controls {
   display: flex;
   align-items: center;
@@ -285,7 +290,6 @@ const eliminarProducto = async (index: number, idProducto: Number) => {
   text-align: center;
 }
 
-/* Botón de eliminación */
 .eliminar-col {
   display: flex;
   align-items: center;
@@ -304,4 +308,90 @@ const eliminarProducto = async (index: number, idProducto: Number) => {
 .eliminar-btn:hover {
   color: #cc0000;
 }
+
+/* Responsividad */
+@media (max-width: 768px) {
+  /* Cambiar tamaño de la fuente en dispositivos pequeños */
+  .producto-header, .precio-header, .cantidad-header, .total-header {
+    font-size: 1rem;
+  }
+
+  /* Ajustar la visualización de las columnas */
+  .producto-col, .precio-col, .cantidad-col, .total-col, .eliminar-col {
+    flex: 1 1 100%;
+    text-align: left;
+    padding: 8px;
+  }
+
+  .producto-info {
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+
+  .imagen-carrito {
+    max-width: 80px;
+    max-height: 80px;
+  }
+
+  .cantidad-controls {
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+
+  .cantidad-btn {
+    font-size: 1rem;
+  }
+
+  .nombre-producto {
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+}
+
+/* En pantallas más pequeñas */
+@media (max-width: 480px) {
+  .producto-header, .precio-header, .cantidad-header, .total-header {
+    text-align: center;
+    font-size: 0.8rem;
+    margin-right: 8px;
+  }
+
+  .producto-col, .precio-col, .cantidad-col, .total-col, .eliminar-col {
+    flex: 1 1 100%;
+    padding: 5px;
+    margin-right: 10px;
+    font-size: 0.8rem;
+  }
+
+  .producto-info {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .cantidad-btn {
+    font-size: 0.8rem;
+    padding: 4px 8px;
+    margin: 0 1px; /* Agregar un margen entre los botones de cantidad */
+  }
+
+  .cantidad {
+    font-size: 0.8rem;
+  }
+
+  .imagen-carrito {
+    max-width: 60px;
+    max-height: 60px;
+    margin-bottom: 10px;
+  }
+
+  /* Ajustar la separación entre los botones de cantidad y el precio / total */
+  .cantidad-controls {
+    margin-bottom: 10px; /* Añadir espacio debajo de los controles de cantidad */
+  }
+
+  .precio-col, .total-col {
+    padding-right: 10px; /* Añadir algo de espacio a la derecha para evitar el solapamiento */
+  }
+}
+
 </style>

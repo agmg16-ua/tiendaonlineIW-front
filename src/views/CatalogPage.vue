@@ -406,7 +406,7 @@ onMounted(() => {
 .filter-row {
   display: flex;
   justify-content: flex-start;
-  gap: 10px;
+  gap: 30px;
 }
 
 .filter-col {
