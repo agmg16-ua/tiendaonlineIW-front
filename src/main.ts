@@ -3,10 +3,10 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router';
 
-import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonGrid, IonIcon, IonicVue, IonImg, IonItem, IonLabel, IonList, IonPopover, IonRow, IonSelect, IonSelectOption, IonTitle } from '@ionic/vue';
+import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonicVue, IonImg, IonItem, IonLabel, IonList, IonMenu, IonPage, IonPopover, IonRow, IonSegment, IonSegmentButton, IonSegmentContent, IonSegmentView, IonSelect, IonSelectOption, IonSplitPane, IonTitle, IonToolbar } from '@ionic/vue';
 
 import { addIcons } from 'ionicons';
-import { carOutline, cartOutline, headsetOutline, lockClosedOutline, refreshOutline } from 'ionicons/icons';
+import { carOutline, cartOutline, chevronDown, chevronUp, headsetOutline, lockClosedOutline, refreshOutline } from 'ionicons/icons';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/vue/css/core.css';
@@ -61,13 +61,24 @@ app.component('ion-title', IonTitle)
   .component('ion-select', IonSelect)
   .component('ion-select-option', IonSelectOption)
   .component('ion-popover', IonPopover)
+  .component('ion-split-pane', IonSplitPane)
+  .component('ion-header', IonHeader)
+  .component('ion-toolbar', IonToolbar)
+  .component('ion-page', IonPage)
+  .component('ion-menu', IonMenu)
+  .component('ion-segment-button', IonSegmentButton)
+  .component('ion-segment', IonSegment)
+  .component('ion-segment-content', IonSegmentContent)
+  .component('ion-segment-view', IonSegmentView)
 
 addIcons({
   'car-outline': carOutline,
   'headset-outline': headsetOutline,
   'refresh-outline': refreshOutline,
   'lock-closed-outline': lockClosedOutline,
-  'cart-outline': cartOutline
+  'cart-outline': cartOutline,
+  'chevron-up': chevronUp,
+  'chevron-down': chevronDown
 })
 
 router.isReady().then(() => {

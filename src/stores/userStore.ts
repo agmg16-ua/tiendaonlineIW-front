@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import RegisterRequest from '@/generated/src/model/RegisterRequest'
 import LoginRequest from '@/generated/src/model/LoginRequest'
-import { authEndpoints, carritoEndpoints, direccionEndpoints, pedidoEndpoints } from '@/router/endpoints'
+import { authEndpoints, carritoEndpoints, direccionEndpoints, pedidoEndpoints, usuarioEndpoints } from '@/router/endpoints'
 import { useCarritoStore } from '@/stores/store'
 
 export const useUserStore = defineStore('user', {
@@ -183,6 +183,53 @@ export const useUserStore = defineStore('user', {
                 this.jwt = token
                 this.isAuthenticated = true
                 this.userEmail = userEmail
+            }
+        },
+
+        async getCurrentUserData() {
+            try {
+                const response = await fetch(usuarioEndpoints.GETCurrentUsuarioEndpoint, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('tokenJWT')}`
+                    }
+                })
+
+                const data = await response.json()
+
+                return {
+                    status: response.status,
+                    data: data,
+                    message: data.message
+                }
+
+            } catch (error) {
+                console.error(error)
+                throw new Error()
+            }
+        },
+
+        async getCurrentUserPedidos() {
+            try {
+                const response = await fetch(pedidoEndpoints.GETPedidosUsuarioEndpoint, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('tokenJWT')}`
+                    }
+                })
+
+                const data = await response.json()
+
+                return {
+                    status: response.status,
+                    data: data,
+                    message: data.message
+                }
+            } catch (error) {
+                console.error(error)
+                throw new Error()
             }
         },
 

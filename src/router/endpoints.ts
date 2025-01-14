@@ -18,7 +18,7 @@ export const demoEndpoints = {
 //Auth Endpoints
 export const VerificarionResendEndpoint = baseUrl + '/api/v1/auth/verification/resend';
 export const RegisterEndpoint = baseUrl + '/api/v1/auth/register';
-export const RecoverEndpoint = baseUrl + '/api/v1/auth/recover'; 
+export const RecoverEndpoint = baseUrl + '/api/v1/auth/recover';
 export const RecoverSendEndpoint = baseUrl + '/api/v1/auth/recover/send';
 export const LogoutEndpoint = baseUrl + '/api/v1/auth/logout';
 export const LoginEndpoint = baseUrl + '/api/v1/auth/login';
@@ -38,7 +38,7 @@ export const authEndpoints = {
 export const POSTProductEndpoint = baseUrl + '/lewkin/api/producto/nuevo';
 export const POSTUpdateProductEndpoint = baseUrl + '/lewkin/api/producto/{id}/actualizar';
 export const GETProductsEndpoint = baseUrl + '/lewkin/api/productos';
-export const GETProductEndpoint = baseUrl +  '/lewkin/api/producto/{id}';
+export const GETProductEndpoint = baseUrl + '/lewkin/api/producto/{id}';
 export const DELETEProductEndpoint = baseUrl + '/lewkin/api/producto/{id}/eliminar';
 export const GETMenProductsEndpoint = baseUrl + '/lewkin/api/productos/hombre';
 export const GETWomenProductsEndpoint = baseUrl + '/lewkin/api/productos/mujer';
@@ -121,4 +121,15 @@ export const pedidoEndpoints = {
     GETPedidosUsuarioEndpoint,
     GETPedidosEndpoint,
     GETPedidoEndpoint
+}
+
+//Usuario Endpoints
+export const POSTUpdateUsuarioEndpoint = baseUrl + '/lewkin/api/usuario/{usuarioId}/modificar'
+export const GETUsuarioEndpoint = baseUrl + '/lewkin/api/usuario/{usuarioId}'
+export const GETCurrentUsuarioEndpoint = baseUrl + '/lewkin/api/usuario/actual'
+
+export const usuarioEndpoints = {
+    POSTUpdateUsuarioEndpoint,
+    GETUsuarioEndpoint,
+    GETCurrentUsuarioEndpoint
 }

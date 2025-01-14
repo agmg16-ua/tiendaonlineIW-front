@@ -17,7 +17,8 @@ import TramitarPedido from '@/views/TramitarPedido.vue';
 import { useCarritoStore } from '@/stores/carritoStore';
 import Carrito from '@/views/Carrito.vue';
 import PaymentCallback from '@/views/PaymentCallback.vue';
-import MisPedidos from '@/views/MisPedidos.vue'
+import PerfilPage from '@/views/PerfilPage.vue';
+import DatosPersonales from '@/components/PerfilPage/DatosPersonales.vue'
 
 
 const routes: Array<RouteRecordRaw> = [
@@ -42,7 +43,7 @@ const routes: Array<RouteRecordRaw> = [
     name: 'login',
     beforeEnter: (to) => {
       if (localStorage.getItem('isAuthenticated') === 'true') {
-        return { name: 'home'}
+        return { name: 'home' }
       }
     }
   },
@@ -52,7 +53,7 @@ const routes: Array<RouteRecordRaw> = [
     name: 'register',
     beforeEnter: (to) => {
       if (localStorage.getItem('isAuthenticated') === 'true') {
-        return { name: 'home'}
+        return { name: 'home' }
       }
     }
   },
@@ -95,19 +96,24 @@ const routes: Array<RouteRecordRaw> = [
     path: '/tramitarPedido',
     component: TramitarPedido,
     name: 'tramitarPedido',
-    meta: {requiresAuth: true}
+    meta: { requiresAuth: true }
   },
   {
     path: '/paymentCallback',
     component: PaymentCallback,
     name: 'paymentCallback',
-    meta: {requiresAuth: true}
+    meta: { requiresAuth: true }
   },
   {
-    path: '/cuenta/misPedidos',
-    component: MisPedidos,
-    name: 'misPedidos',
-    meta: {requiresAuth: true}
+    path: '/perfil',
+    component: PerfilPage,
+    name: 'perfil',
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/datospersonales',
+    component: DatosPersonales,
+    name: 'datosPersonales',
   },
   {
     path: '/tabs/',
@@ -144,7 +150,7 @@ router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth && !isAuthenticated) {
     return next({
       name: 'login',
-      query: { redirect: to.fullPath}
+      query: { redirect: to.fullPath }
     })
   }
 
