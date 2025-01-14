@@ -26,7 +26,7 @@
     <ion-page>
         <ion-header>
             <ion-toolbar color="success">
-                <ion-title>Pago Completado: {{ pedidoRef.value }}</ion-title>
+                <ion-title>Pago Completado: {{ pedidoRef }}</ion-title>
             </ion-toolbar>
         </ion-header>
 
