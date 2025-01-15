@@ -58,4 +58,5 @@ const props = defineProps({
   color: white;
   margin-left: 150px;
 }
+
 </style>

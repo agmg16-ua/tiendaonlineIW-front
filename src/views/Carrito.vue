@@ -91,9 +91,10 @@ const procederPago = () => {
   justify-content: left;
 }
 
+/* Estilo general del botón */
 .btn-proceder {
   background-color: #f66f08;
-  width: 25%;
+  width: 25%; /* Ancho en pantallas grandes */
   color: white;
   font-size: 1.2rem;
   font-weight: bold;
@@ -110,5 +111,14 @@ const procederPago = () => {
 
 .btn-proceder:active {
   background-color: #c64c00;
+}
+
+/* Responsividad para pantallas móviles */
+@media (max-width: 480px) {
+  .btn-proceder {
+    width: 100%; /* Ancho completo en pantallas pequeñas */
+    padding: 12px 0; /* Aumentar el padding para mayor altura del botón */
+    font-size: 1.5rem; /* Hacer el texto más grande */
+  }
 }
 </style>
