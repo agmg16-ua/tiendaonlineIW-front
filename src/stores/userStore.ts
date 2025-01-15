@@ -58,7 +58,7 @@ export const useUserStore = defineStore('user', {
                                     body: JSON.stringify({
                                         "cantidad": item.cantidad,
                                         "productoId": item.id,
-                                        "talla": item.tallaData.talla,
+                                        "talla": item.talla,
                                         "precio": item.precio
                                     })
                                 })
@@ -122,7 +122,7 @@ export const useUserStore = defineStore('user', {
                                 body: JSON.stringify({
                                     "cantidad": item.cantidad,
                                     "productoId": item.id,
-                                    "talla": item.tallaData.talla,
+                                    "talla": item.talla,
                                     "precio": item.precio
                                 })
                             })
