@@ -18,7 +18,7 @@ let login = ref({
 
 function mapDataToLoginRequest() {
     return new LoginRequest(
-        login.value.email, 
+        login.value.email,
         login.value.password
     );
 }
@@ -34,6 +34,7 @@ const handleLogin = async () => {
             router.push(redirectTo as string)
         } else {
             console.log(response.message)
+            alert('Error al iniciar sesión' + response.message)
         }
     } catch (error) {
         console.error(error)
@@ -59,8 +60,8 @@ const handleLogin = async () => {
                         </ion-row>
                         <ion-row>
                             <ion-col>
-                                <ion-input v-model="login.password" label="Password" label-placement="stacked" fill="outline"
-                                    placeholder="Enter your password" type="password" required>
+                                <ion-input v-model="login.password" label="Password" label-placement="stacked"
+                                    fill="outline" placeholder="Enter your password" type="password" required>
                                     <ion-input-password-toggle slot="end"></ion-input-password-toggle>
                                 </ion-input>
                             </ion-col>
@@ -77,12 +78,12 @@ const handleLogin = async () => {
                         </ion-row>
                     </form>
                     <ion-row>
-                            <ion-col>
-                                <ion-label>
-                                    ¿No tienes cuenta? <RouterLink to="/register">Regístrate</RouterLink>
-                                </ion-label>
-                            </ion-col>
-                        </ion-row>
+                        <ion-col>
+                            <ion-label>
+                                ¿No tienes cuenta? <RouterLink to="/register">Regístrate</RouterLink>
+                            </ion-label>
+                        </ion-col>
+                    </ion-row>
                 </ion-col>
             </ion-row>
         </ion-grid>

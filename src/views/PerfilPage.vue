@@ -4,7 +4,6 @@ import { ref } from 'vue';
 // Importar los subcomponentes
 import DatosPersonales from '@/components/PerfilPage/DatosPersonales.vue';
 import MisPedidos from '@/components/PerfilPage/MisPedidos.vue';
-import BorrarCuenta from '@/components/PerfilPage/BorrarCuenta.vue';
 
 const selectedSegment = ref('misDatos');
 

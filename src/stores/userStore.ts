@@ -33,6 +33,7 @@ export const useUserStore = defineStore('user', {
                     localStorage.setItem('tokenJWT', data.jwt)
                     localStorage.setItem('isAuthenticated', 'true')
                     localStorage.setItem('email', userData.email)
+                    localStorage.setItem('role', data.role)
 
                     //... y en el store
                     this.jwt = data.jwt
@@ -75,6 +76,11 @@ export const useUserStore = defineStore('user', {
                         status: response.status,
                         message: data.message
                     }
+                }
+
+                return {
+                    response: response.status,
+                    message: data.message,
                 }
 
             } catch (error) {
