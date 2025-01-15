@@ -69,9 +69,13 @@ const handleRegister = async (data: any) => {
         try {
             const registerRequest = mapDataToRegisterData();
 
-            await userStore.register(registerRequest);
+            const response = await userStore.register(registerRequest);
 
-            router.push('/')
+            if (response.message === 200) {
+                router.push('/')
+            } else {
+                alert('Error al registrar el usuario: ' + response.message)
+            }
 
         } catch (error) {
             console.error("ERROR:", error)
