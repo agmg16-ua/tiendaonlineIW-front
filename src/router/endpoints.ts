@@ -75,7 +75,7 @@ export const direccionEndpoints = {
 }
 
 //Comentario Endpoints
-export const POSTComentarioEndpoint = baseUrl + '/lewkin/api/comentario/nuevo'
+export const POSTComentarioEndpoint = baseUrl + '/lewkin/api/comentar'
 export const POSTUpdateComentarioEndpoint = baseUrl + '/lewkin/api/comentario/{id}/modificar'
 export const GETComentariosEndpoint = baseUrl + '/lewkin/api/comentarios'
 export const GETComentarioEndpoint = baseUrl + '/lewkin/api/comentario/{comentarioId}'
