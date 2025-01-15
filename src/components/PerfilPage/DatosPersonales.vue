@@ -3,6 +3,9 @@ import { onMounted, ref } from 'vue'
 import { useUserStore } from '@/stores/store'
 import RegisterRequest from '@/generated/src/model/RegisterRequest'
 import AddDireccionForm from '@/components/AddDireccionForm.vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const userStore = useUserStore()
 
@@ -24,6 +27,9 @@ onMounted(async () => {
     if (data.status === 200) {
         userData.value = data.data
         editData.value = userData.value
+    } else {
+        alert('Error al obtener los datos del usuario: ' + data.message)
+        router.push('/')
     }
 })
 
@@ -38,11 +44,16 @@ const formatDate = (date: string | null) => {
 };
 
 const updateUser = async () => {
+    console.log(userData.value)
+
     const data = await userStore.updateCurrentUserData(editData.value)
 
     if (data.status === 200) {
         userData.value = data.data
         editData.value = userData.value
+    } else {
+        alert('Error al modificar los datos: ' + data.message)
+        window.location.reload()
     }
 
     console.log(userData.value)
@@ -55,6 +66,9 @@ const saveDireccion = async (direccionData: any) => {
 
     if (response.status === 200) {
         userData.value = response.data
+    } else {
+        alert('Error al guardar la dirección: ' + response.message)
+        router.push('/perfil')
     }
 }
 
@@ -63,6 +77,9 @@ const eliminarDireccion = async (direccionId: number) => {
 
     if (response.status === 200) {
         userData.value = (await userStore.getCurrentUserData()).data
+    } else {
+        alert('Error al eliminar la dirección')
+        router.push('/perfil')
     }
 }
 
