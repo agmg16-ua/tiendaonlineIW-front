@@ -135,3 +135,9 @@ export const usuarioEndpoints = {
     GETUsuarioEndpoint,
     GETCurrentUsuarioEndpoint
 }
+
+//Otros
+export const GETMaterialesEndpoint = baseUrl + '/lewkin/api/materiales'
+export const GETCategoriasEndpoint = baseUrl + '/lewkin/api/categorias'
+export const GETSubcategoriasEndpoint = baseUrl + '/lewkin/api/subcategorias'
+export const GETColeccionesEndpoint = baseUrl + '/lewkin/api/colecciones'

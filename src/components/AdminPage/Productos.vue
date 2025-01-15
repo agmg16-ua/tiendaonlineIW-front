@@ -14,8 +14,6 @@ const showAddProducto = ref(false)
 const showDetalles = ref<boolean[]>([]);
 
 onMounted(async () => {
-    console.log('Recopilando Productos de la BD')
-
     await productStore.fetchProducts()
 })
 
@@ -59,6 +57,10 @@ const guardarProducto = () => {
                             </p>
                             <p>Categoria: {{ producto.categoriaData.categoria }}</p>
                             <p>Subcategoria: {{ producto.subcategoriaData.subcategoria }}</p>
+                            <p>Stock:
+                            <p v-for="tallaData in producto.productosTallaData">{{ tallaData.talla.talla }}: {{
+                                tallaData.stock }}</p>
+                            </p>
                         </ion-label>
                     </ion-item>
                 </ion-item-group>
