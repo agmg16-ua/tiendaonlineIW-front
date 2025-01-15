@@ -45,6 +45,9 @@ const obtenerCarrito = async () => {
       const response = await carritoStore.fetchCarrito();
       if (response.status === 200) {
         carrito.value = carritoStore.carrito.linCarritos;
+
+        // Ordenar los productos por id
+        carrito.value.sort((a, b) => a.id - b.id);
       }
     } catch (error) {
       console.error('Error al obtener el carrito:', error);
@@ -52,10 +55,13 @@ const obtenerCarrito = async () => {
   } else {
     const carritoAux = JSON.parse(localStorage.getItem('carrito') || '[]');
     carrito.value = carritoAux;
+
+    // Ordenar los productos por id
+    carrito.value.sort((a, b) => a.id - b.id);
   }
   console.log(carrito);
-  
 };
+
 
 
 const totalCarrito = computed(() => {
