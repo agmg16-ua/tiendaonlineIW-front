@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useUserStore } from '@/stores/store';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const userStore = useUserStore();
 
@@ -52,6 +55,10 @@ onMounted(async () => {
 
   if (data.status === 200) {
     pedidosData.value = data.data;
+  } else {
+    console.error('Error al obtener los pedidos del usuario');
+    alert('Error al obtener los pedidos del usuario');
+    router.push('/home')
   }
 });
 
