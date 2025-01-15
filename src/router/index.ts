@@ -18,7 +18,6 @@ import { useCarritoStore } from '@/stores/carritoStore';
 import Carrito from '@/views/Carrito.vue';
 import PaymentCallback from '@/views/PaymentCallback.vue';
 import PerfilPage from '@/views/PerfilPage.vue';
-import DatosPersonales from '@/components/PerfilPage/DatosPersonales.vue'
 
 
 const routes: Array<RouteRecordRaw> = [
@@ -109,11 +108,6 @@ const routes: Array<RouteRecordRaw> = [
     component: PerfilPage,
     name: 'perfil',
     meta: { requiresAuth: true }
-  },
-  {
-    path: '/datospersonales',
-    component: DatosPersonales,
-    name: 'datosPersonales',
   },
   {
     path: '/tabs/',

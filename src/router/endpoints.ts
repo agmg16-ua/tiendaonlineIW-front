@@ -124,11 +124,13 @@ export const pedidoEndpoints = {
 }
 
 //Usuario Endpoints
+export const POSTDireccionUsuarioEndpoint = baseUrl + '/lewkin/api/usuario/nueva/direccion'
 export const POSTUpdateUsuarioEndpoint = baseUrl + '/lewkin/api/usuario/modificar'
 export const GETUsuarioEndpoint = baseUrl + '/lewkin/api/usuario/{usuarioId}'
 export const GETCurrentUsuarioEndpoint = baseUrl + '/lewkin/api/usuario/actual'
 
 export const usuarioEndpoints = {
+    POSTDireccionUsuarioEndpoint,
     POSTUpdateUsuarioEndpoint,
     GETUsuarioEndpoint,
     GETCurrentUsuarioEndpoint

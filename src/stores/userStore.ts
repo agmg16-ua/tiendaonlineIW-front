@@ -248,6 +248,54 @@ export const useUserStore = defineStore('user', {
             }
         },
 
+        async postNewUserDirection(direccionData: any) {
+
+            const dataToSend = await JSON.stringify({
+                "numero": Number(direccionData.numero),
+                "piso": Number(direccionData.piso),
+                "pais": direccionData.pais,
+                "puerta": direccionData.puerta,
+                "calle": direccionData.calle,
+                "ciudad": direccionData.ciudad,
+                "provincia": direccionData.provincia,
+                "cp": Number(direccionData.cp),
+            })
+
+            console.log(dataToSend)
+
+            const response = await fetch(usuarioEndpoints.POSTDireccionUsuarioEndpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('tokenJWT')}`
+                },
+                body: dataToSend
+            })
+
+            const data = await response.json()
+
+            return {
+                status: response.status,
+                data: data,
+                message: data.message
+            }
+
+
+        },
+
+        async deleteUserDirection(direccionId: any) {
+            const response = await fetch(direccionEndpoints.DELETEDireccionEndpoint.replace('{id}', direccionId), {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+
+            return {
+                status: response.status,
+            }
+        },
+
         async getCurrentUserPedidos() {
             try {
                 const response = await fetch(pedidoEndpoints.GETPedidosUsuarioEndpoint, {

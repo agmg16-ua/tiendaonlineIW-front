@@ -2,6 +2,7 @@
 import { onMounted, ref } from 'vue'
 import { useUserStore } from '@/stores/store'
 import RegisterRequest from '@/generated/src/model/RegisterRequest'
+import AddDireccionForm from '@/components/AddDireccionForm.vue'
 
 const userStore = useUserStore()
 
@@ -12,6 +13,8 @@ const editData = ref({})
 const gender = RegisterRequest.GeneroEnum
 
 const showDirecciones = ref(false)
+
+const showAddDireccion = ref(false)
 
 const editando = ref(false)
 
@@ -46,6 +49,23 @@ const updateUser = async () => {
 
     editando.value = false
 }
+
+const saveDireccion = async (direccionData: any) => {
+    const response = await userStore.postNewUserDirection(direccionData)
+
+    if (response.status === 200) {
+        userData.value = response.data
+    }
+}
+
+const eliminarDireccion = async (direccionId: number) => {
+    const response = await userStore.deleteUserDirection(direccionId)
+
+    if (response.status === 200) {
+        userData.value = (await userStore.getCurrentUserData()).data
+    }
+}
+
 </script>
 
 <template>
@@ -109,6 +129,9 @@ const updateUser = async () => {
             <div v-if="!editando">
                 <ion-item button @click="toggleDirecciones">
                     <ion-label>Direcciones</ion-label>
+                    <ion-button size="big" v-if="showDirecciones" fill="clear" @click="showAddDireccion = true">
+                        <ion-icon name="add-circle-outline"></ion-icon>
+                    </ion-button>
                     <ion-icon :name="showDirecciones ? 'chevron-up' : 'chevron-down'" slot="end"></ion-icon>
                 </ion-item>
 
@@ -117,13 +140,20 @@ const updateUser = async () => {
                         <ion-item>
                             <ion-label>
                                 <h2>{{ direccion.calle }}, {{ direccion.numero }}</h2>
+                                <p v-if="direccion.piso && direccion.puerta">{{ direccion.piso }}{{ direccion.puerta }}
+                                </p>
                                 <p>{{ direccion.ciudad }}, {{ direccion.provincia }} - {{ direccion.cp }}</p>
                                 <p>{{ direccion.pais }}</p>
                             </ion-label>
+                            <ion-button color="danger" @click="eliminarDireccion(direccion.id)">Eliminar</ion-button>
                         </ion-item>
                     </ion-item-group>
                 </ion-list>
             </div>
         </ion-card-content>
     </ion-card>
+
+    <ion-modal :is-open="showAddDireccion" @ionModalDidDismiss="showAddDireccion = false">
+        <AddDireccionForm @close="showAddDireccion = false" @save="saveDireccion" />
+    </ion-modal>
 </template>
