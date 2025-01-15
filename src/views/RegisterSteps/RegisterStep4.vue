@@ -24,8 +24,6 @@ let localData = ref({
     province: '',
     postalCode: '',
     country: '',
-    building: '',
-    stair: '',
     floor: '',
     door: '',
     captcha: undefined
@@ -39,8 +37,6 @@ onMounted(() => {
     localData.value.province = data.province;
     localData.value.postalCode = data.postalCode;
     localData.value.country = data.country;
-    localData.value.building = data.building;
-    localData.value.stair = data.stair;
     localData.value.floor = data.floor;
     localData.value.door = data.door;
 });
@@ -55,8 +51,6 @@ watch(
         localData.value.province = data.province;
         localData.value.postalCode = data.postalCode;
         localData.value.country = data.country;
-        localData.value.building = data.building;
-        localData.value.stair = data.stair;
         localData.value.floor = data.floor;
         localData.value.door = data.door;
     },
@@ -73,12 +67,10 @@ function isANumber(value: string) {
 function submitForm() {
     if (localData.value.captcha == correctAnswer) {
         //console.log('Submitting form from childcomponent:', localData.value);
-        const buldingIsANumber = isANumber(localData.value.building);
-        const stairIsANumber = isANumber(localData.value.stair);
         const floorIsANumber = isANumber(localData.value.floor);
 
-        if (!isANumber(localData.value.number) || !buldingIsANumber || !stairIsANumber || !floorIsANumber || !isANumber(localData.value.postalCode)) {
-            console.log("Los campos no son correctos")
+        if (!isANumber(localData.value.number) || !floorIsANumber || !isANumber(localData.value.postalCode)) {
+            alert("Datos incorrectos: Asegurate de que has introducido bien los números")
             return
         }
 
@@ -87,7 +79,7 @@ function submitForm() {
     else {
         console.log(correctAnswer)
         console.log(localData.value.captcha)
-        console.log('Captcha incorrecto');
+        alert('Captcha incorrecto: Vuelve a intentarlo');
     }
 }
 
@@ -98,35 +90,27 @@ function submitForm() {
     <form @submit.prevent="submitForm">
         <ion-grid>
             <ion-row>
-                <ion-col size="10">
+                <ion-col size="12">
                     <ion-input v-model="localData.street" label="Calle" label-placement="stacked" fill="outline"
                         placeholder="C/ Gran Vía" required></ion-input>
-                </ion-col>
-                <ion-col size="2">
-                    <ion-input v-model="localData.number" label="Num" label-placement="stacked" fill="outline"
-                        placeholder="12" required></ion-input>
                 </ion-col>
             </ion-row>
 
             <ion-row>
-                <ion-col size="3">
-                    <ion-input v-model="localData.building" label="Bloque" label-placement="stacked" fill="outline"
-                        placeholder="2"></ion-input>
+                <ion-col size="4">
+                    <ion-input v-model="localData.number" label="Num" label-placement="stacked" fill="outline"
+                        placeholder="12" required></ion-input>
                 </ion-col>
-                <ion-col size="3">
-                    <ion-input v-model="localData.stair" label="Escalera" label-placement="stacked" fill="outline"
-                        placeholder="3"></ion-input>
-                </ion-col>
-                <ion-col size="3">
+                <ion-col size="4">
                     <ion-input v-model="localData.floor" label="Piso" label-placement="stacked" fill="outline"
                         placeholder="1"></ion-input>
                 </ion-col>
-                <ion-col size="3">
+                <ion-col size="4">
                     <ion-input v-model="localData.door" label="Puerta" label-placement="stacked" fill="outline"
                         placeholder="B"></ion-input>
                 </ion-col>
             </ion-row>
-        
+
             <ion-row>
                 <ion-col>
                     <ion-input v-model="localData.city" label="Ciudad" label-placement="stacked" fill="outline"
@@ -137,11 +121,11 @@ function submitForm() {
                         placeholder="Madrid" required></ion-input>
                 </ion-col>
             </ion-row>
-            
+
             <ion-row>
                 <ion-col>
-                    <ion-input v-model="localData.postalCode" label="Código Postal" label-placement="stacked" fill="outline"
-                        placeholder="45675" required></ion-input>
+                    <ion-input v-model="localData.postalCode" label="Código Postal" label-placement="stacked"
+                        fill="outline" placeholder="45675" required></ion-input>
                 </ion-col>
                 <ion-col>
                     <ion-input v-model="localData.country" label="Pais" label-placement="stacked" fill="outline"

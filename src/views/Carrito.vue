@@ -1,9 +1,9 @@
 <template>
   <ion-content>
-    <div v-if="productos.length > 0" class="carrito-container">
+    <div v-if="carrito.length > 0" class="carrito-container">
       <HeaderCarrito />
       <ion-grid>
-        <ProductosCarrito :productos="productos" />
+        <ProductosCarrito :carrito="carrito" @actualizarCarrito="obtenerCarrito" />
         <CosteTotalCarrito :total="totalCarrito" />
         <ion-row class="pago-row">
           <ion-col size="12" class="pago-col">
@@ -32,23 +32,34 @@ const carritoStore = useCarritoStore();
 
 const router = useRouter();
 
-const productos = ref<any[]>([]);
+const carrito = ref<any[]>([]);
 
 onMounted(async () => {
-  const carrito = JSON.parse(localStorage.getItem('carrito') || '[]');
-  productos.value = carrito;
- 
-  if(localStorage.getItem('isAuthenticated') === 'true') {
-    const response = await carritoStore.fetchCarrito()
-
-    if (response.status === 200) {
-      productos.value = carritoStore.carrito.linCarritos //o carritoStore.carrito.linCarritos
-    }
-  }
+  await obtenerCarrito(); // Llama a la nueva función al montar el componente
 });
 
+// Función para obtener el carrito desde la base de datos o localStorage
+const obtenerCarrito = async () => {
+  if (localStorage.getItem('isAuthenticated') === 'true') {
+    try {
+      const response = await carritoStore.fetchCarrito();
+      if (response.status === 200) {
+        carrito.value = carritoStore.carrito.linCarritos;
+      }
+    } catch (error) {
+      console.error('Error al obtener el carrito:', error);
+    }
+  } else {
+    const carritoAux = JSON.parse(localStorage.getItem('carrito') || '[]');
+    carrito.value = carritoAux;
+  }
+  console.log(carrito);
+  
+};
+
+
 const totalCarrito = computed(() => {
-  return productos.value.reduce((total, producto) => {
+  return carrito.value.reduce((total, producto) => {
     return total + producto.precio * producto.cantidad;
   }, 0);
 });
@@ -80,9 +91,10 @@ const procederPago = () => {
   justify-content: left;
 }
 
+/* Estilo general del botón */
 .btn-proceder {
   background-color: #f66f08;
-  width: 25%;
+  width: 25%; /* Ancho en pantallas grandes */
   color: white;
   font-size: 1.2rem;
   font-weight: bold;
@@ -99,5 +111,14 @@ const procederPago = () => {
 
 .btn-proceder:active {
   background-color: #c64c00;
+}
+
+/* Responsividad para pantallas móviles */
+@media (max-width: 480px) {
+  .btn-proceder {
+    width: 100%; /* Ancho completo en pantallas pequeñas */
+    padding: 12px 0; /* Aumentar el padding para mayor altura del botón */
+    font-size: 1.5rem; /* Hacer el texto más grande */
+  }
 }
 </style>
