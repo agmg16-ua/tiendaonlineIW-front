@@ -12,6 +12,8 @@ userStore.initialize()
 
 const isAuthenticated = computed(() => userStore.isAuthenticated)
 
+const isAdmin = computed(() => userStore.role === 'ADMIN')
+
 const goToPage = (page: String) => {
   router.push(`/${page}`)
 }
@@ -84,6 +86,8 @@ const do_logout = (async () => {
     <ion-popover v-if="isAuthenticated" trigger="popover-button" :dismiss-on-select="true">
       <ion-list>
         <ion-item :button="true" :detail="false" @click="goToPage('perfil')">Perfil</ion-item>
+        <ion-item v-if="isAdmin" :button="true" :detal="false" @click="goToPage('panelAdmin')">Panel de
+          Administración</ion-item>
         <ion-item :button="true" @click="do_logout">Cerrar Sesión</ion-item>
       </ion-list>
 

@@ -18,6 +18,7 @@ import { useCarritoStore } from '@/stores/carritoStore';
 import Carrito from '@/views/Carrito.vue';
 import PaymentCallback from '@/views/PaymentCallback.vue';
 import PerfilPage from '@/views/PerfilPage.vue';
+import AdminPage from '@/views/AdminPage.vue';
 
 
 const routes: Array<RouteRecordRaw> = [
@@ -110,6 +111,12 @@ const routes: Array<RouteRecordRaw> = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/panelAdmin',
+    component: AdminPage,
+    name: 'panelAdmin',
+    meta: { requiresAuth: true, requiresAdmin: true }
+  },
+  {
     path: '/tabs/',
     component: TabsPage,
     children: [
@@ -145,6 +152,12 @@ router.beforeEach((to, from, next) => {
     return next({
       name: 'login',
       query: { redirect: to.fullPath }
+    })
+  }
+
+  if (to.meta.requiresAdmin && localStorage.getItem('role') !== 'ADMIN') {
+    return next({
+      name: 'home'
     })
   }
 

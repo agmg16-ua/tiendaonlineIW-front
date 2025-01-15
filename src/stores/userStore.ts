@@ -9,6 +9,7 @@ export const useUserStore = defineStore('user', {
         isAuthenticated: false,
         jwt: '',
         userEmail: '',
+        role: '',
         direcciones: [] as Array<any>,
         currentUserData: {} as any
     }),
@@ -39,6 +40,7 @@ export const useUserStore = defineStore('user', {
                     this.jwt = data.jwt
                     this.isAuthenticated = true
                     this.userEmail = userData.email
+                    this.role = data.role
 
                     //.. y realizamos tareas sobre el carrito
                     if (localStorage.getItem('carrito')) {
@@ -106,10 +108,12 @@ export const useUserStore = defineStore('user', {
                     localStorage.setItem('tokenJWT', data.jwt)
                     localStorage.setItem('email', userData.email)
                     localStorage.setItem('isAuthenticated', 'true')
+                    localStorage.setItem('role', data.role)
 
                     this.jwt = data.jwt
                     this.isAuthenticated = true
                     this.userEmail = userData.email
+                    this.role = data.role
 
                     //.. y realizamos tareas sobre el carrito
                     if (localStorage.getItem('carrito')) {
@@ -168,6 +172,7 @@ export const useUserStore = defineStore('user', {
                 localStorage.removeItem('email')
                 localStorage.removeItem('tokenJWT')
                 localStorage.removeItem('isAuthenticated')
+                localStorage.removeItem('role')
 
                 //...y del store
                 this.jwt = ""
@@ -185,11 +190,13 @@ export const useUserStore = defineStore('user', {
             const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true'
             const token = localStorage.getItem('tokenJWT')
             const userEmail = localStorage.getItem('email')
+            const role = localStorage.getItem('role')
 
-            if (isAuthenticated && token && userEmail) {
+            if (isAuthenticated && token && userEmail && role) {
                 this.jwt = token
                 this.isAuthenticated = true
                 this.userEmail = userEmail
+                this.role = role
             }
         },
 
