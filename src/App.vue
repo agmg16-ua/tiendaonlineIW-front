@@ -1,26 +1,26 @@
 <script setup lang="ts">
-  import { IonApp, IonToolbar, IonTitle, IonFooter, IonHeader, IonButton, IonButtons, IonContent, IonPopover, IonList, IonItem, IonIcon } from '@ionic/vue';
-  import { useUserStore } from '@/stores/store'
-  import { computed, onMounted, ref } from 'vue'
-  import { useRouter } from 'vue-router'
-  
-  const router = useRouter()
+import { IonApp, IonToolbar, IonTitle, IonFooter, IonHeader, IonButton, IonButtons, IonContent, IonPopover, IonList, IonItem, IonIcon } from '@ionic/vue';
+import { useUserStore } from '@/stores/store'
+import { computed, onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 
-  const userStore = useUserStore()
+const router = useRouter()
 
-  userStore.initialize()
-  
-  const isAuthenticated = computed(() => userStore.isAuthenticated)
+const userStore = useUserStore()
 
-  const goToPage = (page: String) => {
-    router.push(`/${page}`)
-  }
+userStore.initialize()
 
-  const do_logout = (async () => {
-    await userStore.logout()
+const isAuthenticated = computed(() => userStore.isAuthenticated)
 
-    router.push('/')
-  })
+const goToPage = (page: String) => {
+  router.push(`/${page}`)
+}
+
+const do_logout = (async () => {
+  await userStore.logout()
+
+  router.push('/')
+})
 
 </script>
 
@@ -59,20 +59,20 @@
           <ion-button @click="router.push('/carrito')">
             <ion-icon name="cart-outline"></ion-icon>
           </ion-button>
-          
+
 
           <!--Botones para sesion cerrada-->
-          <ion-button v-if="!isAuthenticated" href="/login">Iniciar Sesión</ion-button>
+          <ion-button v-if="!isAuthenticated" @click="router.push('/login')">Iniciar Sesión</ion-button>
 
           <!--Botones para sesion iniciada-->
           <ion-button v-if="isAuthenticated" id="popover-button">Cuenta</ion-button>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
-      
+
 
     <ion-content>
-      <RouterView/>
+      <RouterView />
 
       <ion-footer>
         <ion-toolbar>
@@ -81,14 +81,9 @@
       </ion-footer>
     </ion-content>
 
-    <ion-popover
-      v-if="isAuthenticated"
-      trigger="popover-button"
-      :dismiss-on-select="true"
-    >
+    <ion-popover v-if="isAuthenticated" trigger="popover-button" :dismiss-on-select="true">
       <ion-list>
         <ion-item :button="true" :detail="false" @click="goToPage('perfil')">Perfil</ion-item>
-        <ion-item :button="true" @click="goToPage('misPedidos')">Mis Pedidos</ion-item>
         <ion-item :button="true" @click="do_logout">Cerrar Sesión</ion-item>
       </ion-list>
 
