@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { comentarioEndpoints } from '@/router/endpoints';
+import { textOutline } from 'ionicons/icons';
 
 export const useComentarioStore = defineStore('comentario', {
   state: () => ({
@@ -33,15 +34,26 @@ export const useComentarioStore = defineStore('comentario', {
     },
 
     // Acción para crear un nuevo comentario
-    async crearComentario(comentario: { texto: string; estrellas: number; productoId: number }) {
+    async crearComentario( texto: string, estrellas: number, productoId: number ) {
       try {
+        
+        console.log("Cuerpo de la solicitud:", JSON.stringify({
+          texto: texto,
+          estrellas: estrellas,
+          productoId: productoId,
+        }));
+        
         const response = await fetch(comentarioEndpoints.POSTComentarioEndpoint, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem('tokenJWT')}`,
           },
-          body: JSON.stringify(comentario), // Convertimos los datos a JSON
+          body: JSON.stringify({
+            texto: texto,
+            estrellas: estrellas,
+            productoId: productoId,      
+          }), 
         });
 
         const data = await response.json();
