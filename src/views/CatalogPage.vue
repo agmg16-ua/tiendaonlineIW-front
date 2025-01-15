@@ -24,13 +24,16 @@
             Ordenar por Precio
           </IonButton>
           <div v-if="mostrarOrden" class="filter-options">
-            <IonButton size="small" @click="ordenarPorPrecio('asc')" :class="['filter-option-button', { 'active': ordenActual === 'asc' }]" color="transparent">
+            <IonButton size="small" @click="ordenarPorPrecio('asc')"
+              :class="['filter-option-button', { 'active': ordenActual === 'asc' }]" color="transparent">
               Ascendente
             </IonButton>
-            <IonButton size="small" @click="ordenarPorPrecio('desc')" :class="['filter-option-button', { 'active': ordenActual === 'desc' }]" color="transparent">
+            <IonButton size="small" @click="ordenarPorPrecio('desc')"
+              :class="['filter-option-button', { 'active': ordenActual === 'desc' }]" color="transparent">
               Descendente
             </IonButton>
-            <IonButton size="small" @click="limpiarOrdenacion" :class="['filter-option-button', { 'active': ordenActual === null }]" color="transparent">
+            <IonButton size="small" @click="limpiarOrdenacion"
+              :class="['filter-option-button', { 'active': ordenActual === null }]" color="transparent">
               Ninguno
             </IonButton>
           </div>
@@ -44,10 +47,13 @@
             Material
           </IonButton>
           <div v-if="mostrarMaterialFiltro" class="filter-options">
-            <IonButton v-for="material in materialesDisponibles" :key="material.id" size="small" @click="filtrarPorMaterial(material.id)" :class="['filter-option-button', { 'active': materialSeleccionado === material.id }]" color="transparent">
+            <IonButton v-for="material in materialesDisponibles" :key="material.id" size="small"
+              @click="filtrarPorMaterial(material.id)"
+              :class="['filter-option-button', { 'active': materialSeleccionado === material.id }]" color="transparent">
               {{ material.nombre }}
             </IonButton>
-            <IonButton size="small" @click="limpiarFiltroMaterial" :class="['filter-option-button', { 'active': materialSeleccionado === null }]" color="transparent">
+            <IonButton size="small" @click="limpiarFiltroMaterial"
+              :class="['filter-option-button', { 'active': materialSeleccionado === null }]" color="transparent">
               Ninguno
             </IonButton>
           </div>
@@ -61,10 +67,14 @@
             Categoría      
           </IonButton>
           <div v-if="mostrarSubcategoriaFiltro" class="filter-options">
-            <IonButton v-for="subcategoria in subcategoriasDisponibles" :key="subcategoria.id" size="small" @click="filtrarPorSubcategoria(subcategoria.id)" :class="['filter-option-button', { 'active': subcategoriaSeleccionada === subcategoria.id }]" color="transparent">
+            <IonButton v-for="subcategoria in subcategoriasDisponibles" :key="subcategoria.id" size="small"
+              @click="filtrarPorSubcategoria(subcategoria.id)"
+              :class="['filter-option-button', { 'active': subcategoriaSeleccionada === subcategoria.id }]"
+              color="transparent">
               {{ subcategoria.nombre }}
             </IonButton>
-            <IonButton size="small" @click="limpiarFiltroSubcategoria" :class="['filter-option-button', { 'active': subcategoriaSeleccionada === null }]" color="transparent">
+            <IonButton size="small" @click="limpiarFiltroSubcategoria"
+              :class="['filter-option-button', { 'active': subcategoriaSeleccionada === null }]" color="transparent">
               Ninguno
             </IonButton>
           </div>
@@ -110,9 +120,11 @@
       <IonCol size="12" size-md="4" size-lg="2" v-for="producto in productosFiltrados" :key="producto.id">
         <IonCard class="product-card" @click="$router.push({ name: 'DetallesProducto', params: { id: producto.id } })">
           <!-- Imagen del producto en la parte superior -->
-          <Img v-if="producto.foto_portada" :src="producto.foto_portada"  alt="Foto del producto" class="product-image-container"/>
+          <Img v-if="producto.foto_portada" :src="producto.foto_portada" alt="Foto del producto"
+            class="product-image-container" />
           <!-- Imagen de ejemplo si no hay foto disponible -->
-          <IonImg v-else src="https://via.placeholder.com/80x80?text=Producto" alt="Foto de ejemplo" class="product-image"/>
+          <IonImg v-else src="https://via.placeholder.com/80x80?text=Producto" alt="Foto de ejemplo"
+            class="product-image" />
           <IonCardContent>
             <!-- Nombre del producto debajo de la imagen -->
             <IonText>
@@ -131,7 +143,7 @@
   <div v-if="productosFiltrados.length === 0">
     <p>No hay productos disponibles.</p>
   </div>
-  
+
 </template>
 
 <script setup lang="ts">
@@ -206,7 +218,7 @@ const aplicarFiltros = () => {
   }
 
   // Aplicar filtro de precio
-  productos = productos.filter(producto => 
+  productos = productos.filter(producto =>
     producto.precio >= precioRango.value.lower && producto.precio <= precioRango.value.upper
   );
 
@@ -214,14 +226,14 @@ const aplicarFiltros = () => {
   if (ordenActual.value) {
     productos.sort((a, b) => ordenActual.value === 'asc' ? a.precio - b.precio : b.precio - a.precio);
   }
-  
+
   productosFiltrados.value = productos;
 };
 
 // Función para extraer materiales únicos de los productos
 const calcularMaterialesUnicos = () => {
   const materialesMap = new Map<number, string>();
-  
+
   props.listaProductos.forEach(producto => {
     const material = producto.materialData;
     if (material && !materialesMap.has(material.id)) {
@@ -456,7 +468,8 @@ onMounted(() => {
 }
 
 .filter-option-button.active {
-  background-color: #add8e6; /* Azul claro */
+  background-color: #add8e6;
+  /* Azul claro */
   color: white;
 }
 
@@ -464,7 +477,7 @@ onMounted(() => {
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.product-card:hover{
+.product-card:hover {
   cursor: pointer;
 }
 
@@ -489,5 +502,4 @@ onMounted(() => {
   font-weight: bold;
   margin: 5px 0;
 }
-
 </style>
