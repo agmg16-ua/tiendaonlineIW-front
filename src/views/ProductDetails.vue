@@ -20,7 +20,7 @@
             <ion-button class="boton-carrito" @click="añadirAlCarrito">
               Añadir al Carrito
             </ion-button>
-            <ComentarioProducto :productoId="producto.id" />
+            <!--<ComentarioProducto :productoId="producto.id" />-->
           </ion-col>
           
         </ion-row>
@@ -40,7 +40,7 @@ import { useRoute } from 'vue-router';
 import { IonContent, IonGrid, IonRow, IonCol, IonSpinner, IonButton } from '@ionic/vue';
 import { useProductStore } from '@/stores/productStore';
 import ImageCarousel from '@/components/ImageCarousel.vue';
-import ComentarioProducto from '@/components/ComentarioProducto.vue';
+//import ComentarioProducto from '@/components/ComentarioProducto.vue';
 import ListadoComentarios from '@/components/ListadoComentarios.vue';
 import { useCarritoStore } from '@/stores/carritoStore';
 import SeleccionTallas from '@/components/SeleccionTallas.vue';
