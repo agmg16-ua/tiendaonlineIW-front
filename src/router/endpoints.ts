@@ -124,7 +124,7 @@ export const pedidoEndpoints = {
 }
 
 //Usuario Endpoints
-export const POSTUpdateUsuarioEndpoint = baseUrl + '/lewkin/api/usuario/{usuarioId}/modificar'
+export const POSTUpdateUsuarioEndpoint = baseUrl + '/lewkin/api/usuario/modificar'
 export const GETUsuarioEndpoint = baseUrl + '/lewkin/api/usuario/{usuarioId}'
 export const GETCurrentUsuarioEndpoint = baseUrl + '/lewkin/api/usuario/actual'
 

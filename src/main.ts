@@ -3,7 +3,7 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router';
 
-import { IonAvatar, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonicVue, IonImg, IonItem, IonItemGroup, IonLabel, IonList, IonMenu, IonPage, IonPopover, IonRow, IonSegment, IonSegmentButton, IonSegmentContent, IonSegmentView, IonSelect, IonSelectOption, IonSplitPane, IonTitle, IonToolbar } from '@ionic/vue';
+import { IonAvatar, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonicVue, IonImg, IonInput, IonItem, IonItemGroup, IonLabel, IonList, IonMenu, IonPage, IonPopover, IonRow, IonSegment, IonSegmentButton, IonSegmentContent, IonSegmentView, IonSelect, IonSelectOption, IonSplitPane, IonTitle, IonToolbar } from '@ionic/vue';
 
 import { addIcons } from 'ionicons';
 import { carOutline, cartOutline, checkmarkCircle, chevronDown, chevronUp, headsetOutline, lockClosedOutline, refreshOutline } from 'ionicons/icons';
@@ -72,6 +72,7 @@ app.component('ion-title', IonTitle)
   .component('ion-segment-view', IonSegmentView)
   .component('ion-item-group', IonItemGroup)
   .component('ion-avatar', IonAvatar)
+  .component('ion-input', IonInput)
 
 addIcons({
   'car-outline': carOutline,

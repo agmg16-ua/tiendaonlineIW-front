@@ -9,7 +9,8 @@ export const useUserStore = defineStore('user', {
         isAuthenticated: false,
         jwt: '',
         userEmail: '',
-        direcciones: [] as Array<any>
+        direcciones: [] as Array<any>,
+        currentUserData: {} as any
     }),
     actions: {
         //Acctiones de auth
@@ -194,6 +195,43 @@ export const useUserStore = defineStore('user', {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${localStorage.getItem('tokenJWT')}`
                     }
+                })
+
+                const data = await response.json()
+
+                this.currentUserData = data
+
+                return {
+                    status: response.status,
+                    data: data,
+                    message: data.message
+                }
+
+            } catch (error) {
+                console.error(error)
+                throw new Error()
+            }
+        },
+
+        async updateCurrentUserData(userData: any) {
+            console.log("Update user data")
+            const dataToSend = JSON.stringify({
+                "nombreUsuario": userData.nombreUsuario,
+                "nombre": userData.nombre,
+                "apellidos": userData.apellidos,
+                "telefono": userData.telefono,
+                "genero": userData.genero,
+                "fechaNacimiento": userData.fechaNacimiento
+            })
+
+            try {
+                const response = await fetch(usuarioEndpoints.POSTUpdateUsuarioEndpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('tokenJWT')}`
+                    },
+                    body: dataToSend
                 })
 
                 const data = await response.json()

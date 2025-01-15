@@ -52,10 +52,6 @@ onMounted(async () => {
 
   if (data.status === 200) {
     pedidosData.value = data.data;
-
-    console.log(data.data)
-    console.log(pedidosData.value)
-    console.log(pedidosData.value[0])
   }
 });
 
