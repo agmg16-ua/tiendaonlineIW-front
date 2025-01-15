@@ -8,7 +8,7 @@ interface Producto {
   id: number;
   nombre: string;
   descripcion: string;
-  imagen: string;
+  foto_portada: string;
   precio: number;
 }
 
@@ -22,6 +22,7 @@ interface LineaPedido {
 interface Pedido {
   id: number;
   referencia: string;
+  importe: number;
   facturaData: {
     id: number;
     importe: number;
@@ -51,6 +52,10 @@ onMounted(async () => {
 
   if (data.status === 200) {
     pedidosData.value = data.data;
+
+    console.log(data.data)
+    console.log(pedidosData.value)
+    console.log(pedidosData.value[0])
   }
 });
 
@@ -73,15 +78,37 @@ const togglePedido = (index: number) => {
           <ion-item button @click="togglePedido(index)">
             <ion-label>
               <h2>Referencia: {{ pedido.referencia }}</h2>
-              <p>Fecha: {{ formatDate(pedido.facturaData.created_at) }}</p>
-              <p>Importe: {{ pedido.facturaData.importe }}€</p>
+              <p v-if="pedido.facturaData">Fecha: {{ formatDate(pedido.facturaData.created_at) }}</p>
+              <p>Estado: {{ pedido.estado }}</p>
+              <p>Importe: {{ pedido.importe }}€</p>
             </ion-label>
             <ion-icon :name="showLineas[index] ? 'chevron-up' : 'chevron-down'" slot="end"></ion-icon>
           </ion-item>
 
-          <ion-item>
-            hola
+          <ion-item v-if="showLineas[index]" lines="full">
+            <ion-label>
+              <h3>Dirección de Envio:</h3>
+              <p>{{ pedido.direccionData.calle }} {{ pedido.direccionData.numero }}, {{ pedido.direccionData.ciudad }}
+                {{ pedido.direccionData.provincia }}</p>
+            </ion-label>
           </ion-item>
+
+          <ion-list v-if="showLineas[index]">
+            <ion-item-group v-for="linea in pedido.lineasPedidoData" :key="linea.id">
+              <ion-item>
+                <ion-avatar slot="start">
+                  <img :src="linea.productoData.foto_portada" alt="Producto">
+                </ion-avatar>
+                <ion-label>
+                  <h2>{{ linea.productoData.nombre }}</h2>
+                  <p>{{ linea.productoData.descripcion }}</p>
+                  <p>Cantidad: {{ linea.cantidad }}</p>
+                  <p>Precio: {{ linea.productoData.precio }}€/unidad</p>
+                </ion-label>
+              </ion-item>
+            </ion-item-group>
+          </ion-list>
+
         </ion-item-group>
       </ion-list>
     </ion-card-content>

@@ -7,7 +7,7 @@ const router = useRouter()
 
 const pedidoRef = ref()
 const userStore = useUserStore()
-/*
+
 onMounted(async () => {
 
     if (localStorage.getItem('pedidoRedirect') === null) {
@@ -18,7 +18,8 @@ onMounted(async () => {
 
     await userStore.sendPaymentCallback(pedidoRef.value)
 })
-*/
+
+
 
 </script>
 

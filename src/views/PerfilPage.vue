@@ -6,20 +6,15 @@ import DatosPersonales from '@/components/PerfilPage/DatosPersonales.vue';
 import MisPedidos from '@/components/PerfilPage/MisPedidos.vue';
 import BorrarCuenta from '@/components/PerfilPage/BorrarCuenta.vue';
 
-// Variable reactiva para el componente activo
-const currentComponent = ref('DatosPersonales');
+const selectedSegment = ref('misDatos');
 
-// Función para cambiar el componente activo
-const setActiveComponent = (componentName) => {
-  currentComponent.value = componentName;
-};
 </script>
 
 <template>
     <ion-grid>
         <ion-row>
             <ion-col size="2">
-                <ion-segment value="Menu" class="menu-style" swipe-gesture="false">
+                <ion-segment :value="selectedSegment" class="menu-style" swipe-gesture="false">
                     <ion-segment-button value="misDatos" content-id="misDatos">
                         <ion-label>Mis Datos</ion-label>
                     </ion-segment-button>
@@ -43,12 +38,12 @@ const setActiveComponent = (componentName) => {
 </template>
 
 <style scoped>
-    .menu-style {
-        display: flex;
-        flex-direction: column;
-    }
+.menu-style {
+    display: flex;
+    flex-direction: column;
+}
 
-    ion-grid {
-        --ion-grid-padding: 50px;
-    }
+ion-grid {
+    --ion-grid-padding: 50px;
+}
 </style>
