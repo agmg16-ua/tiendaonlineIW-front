@@ -11,15 +11,20 @@
           <!-- Detalles del producto (nombre, precio, descripción) -->
           <ion-col size="4" size-md="6" class="datos-col">
             <h1 class="titulo">{{ producto.nombre }}</h1>
-            <h2 class="talla">Talla: {{ producto.tallaData.talla }} </h2>
+            <!--<h2 class="talla">Talla: {{ producto.tallaData.talla }} </h2>-->
             <p class="precio">€{{ producto.precio.toFixed(2) }}</p>
             <p class="descripcion">{{ producto.descripcion }}</p>
+            <!-- Componente de selección de talla -->
+            <SeleccionTallas :tallasDisponibles="obtenerTallasDisponibles" @tallaSeleccionada="manejarTallaSeleccionada" />
             <!-- Botón Añadir al Carrito -->
             <ion-button class="boton-carrito" @click="añadirAlCarrito">
               Añadir al Carrito
             </ion-button>
+            <ComentarioProducto :productoId="producto.id" />
           </ion-col>
+          
         </ion-row>
+        <ListadoComentarios :productoId="producto.id" />
       </ion-grid>
     </div>
     <div v-else>
@@ -30,12 +35,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { IonContent, IonGrid, IonRow, IonCol, IonSpinner, IonButton } from '@ionic/vue';
 import { useProductStore } from '@/stores/productStore';
-import ImageCarousel from '@/components/ImageCarousel.vue'; // Importar el componente
+import ImageCarousel from '@/components/ImageCarousel.vue';
+import ComentarioProducto from '@/components/ComentarioProducto.vue';
+import ListadoComentarios from '@/components/ListadoComentarios.vue';
 import { useCarritoStore } from '@/stores/carritoStore';
+import SeleccionTallas from '@/components/SeleccionTallas.vue';
 
 const carritoStore = useCarritoStore(); 
 const productStore = useProductStore();
@@ -50,7 +58,15 @@ interface Producto {
   foto_portada: string;
   fotos: string[];
   coleccionesDatas: { id: number; nombre: string }[];
-  tallaData: { id: number; talla: string; cantidad: number };
+  productosTallaData: { 
+    id: number; 
+    productoId: number; 
+    talla: { 
+      id: number; 
+      talla: string; 
+    }; 
+    stock: number; 
+  }[];
   materialData: { id: number; material: string };
   categoriaData: { id: number; categoria: string };
   subcategoriaData: { id: number; subcategoria: string };
@@ -60,6 +76,20 @@ interface Producto {
 const producto = ref<Producto | null>(null); // Producto puede ser null inicialmente
 const route = useRoute();
 const productId = route.params.id;
+const tallaSeleccionada = ref<string | null>(null);
+
+// Obtener las tallas disponibles del producto
+const obtenerTallasDisponibles = computed(() => {
+  if (producto.value) {
+    return producto.value.productosTallaData.map(tallaData => tallaData.talla);
+  }
+  return [];
+});
+
+// Manejar la talla seleccionada
+const manejarTallaSeleccionada = (talla: string) => {
+  tallaSeleccionada.value = talla;
+};
 
 // Función para obtener el producto desde la API
 const obtenerProducto = async () => {
@@ -83,25 +113,42 @@ const añadirAlCarrito = async () => {
     let carrito = JSON.parse(localStorage.getItem('carrito') || '[]');
 
     // Verificar si el producto ya está en el carrito
-    const productoExistente = carrito.find((item: Producto & { cantidad: number }) => item.id === parseInt(productId as string, 10));
+    const productoExistente = carrito.find((item: Producto & { cantidad: number; talla: string }) => 
+      item.id === parseInt(productId as string, 10) && 
+      item.talla === tallaSeleccionada.value
+    );
 
     if (productoExistente) {
-      // Si el producto ya está en el carrito, incrementamos la cantidad
-      productoExistente.cantidad += 1;
-      console.log(`Producto actualizado en el carrito: ${productoExistente.nombre}, cantidad: ${productoExistente.cantidad}`);
-      incrementarLineaCarrito();
-      alert("Producto añadido al carrito");
+      if (tallaSeleccionada.value) {
+        // Si el producto ya está en el carrito, incrementamos la cantidad
+        productoExistente.cantidad += 1;
+        console.log(`Producto actualizado en el carrito: ${productoExistente.nombre}, cantidad: ${productoExistente.cantidad}`);
+        incrementarLineaCarrito();
+        alert("Producto añadido al carrito");
+      }else{
+        alert("Por favor, selecciona una talla antes de añadir el producto al carrito.");
+      }
+     
     } else {
-      // Si no está en el carrito, añadirlo con cantidad 1
-      const productoConCantidad = { ...producto.value, cantidad: 1 }; // Asignamos cantidad = 1
-      carrito.push(productoConCantidad);
-      console.log(`Producto añadido al carrito: ${productoConCantidad.nombre}, cantidad: ${productoConCantidad.cantidad}`);
-      añadirAlCarritoUsuarioAutenticado();
-      alert("Producto añadido al carrito");
+
+      if (tallaSeleccionada.value){
+        // Si no está en el carrito, añadirlo con cantidad 1
+        const productoConCantidad = { ...producto.value, cantidad: 1, talla: tallaSeleccionada.value }; // Asignamos cantidad = 1
+        carrito.push(productoConCantidad);
+        console.log(`Producto añadido al carrito: ${productoConCantidad.nombre}, cantidad: ${productoConCantidad.cantidad}`);
+        añadirAlCarritoUsuarioAutenticado();
+        alert("Producto añadido al carrito");
+      }else{
+        alert("Por favor, selecciona una talla antes de añadir el producto al carrito.");
+      }
+      
     }
 
-    // Guardar de nuevo el carrito actualizado en localStorage
-    localStorage.setItem('carrito', JSON.stringify(carrito));
+    if (tallaSeleccionada.value){
+      // Guardar de nuevo el carrito actualizado en localStorage
+      localStorage.setItem('carrito', JSON.stringify(carrito));
+    }
+    
   }
   console.log(localStorage.getItem('carrito'));
 };
@@ -156,15 +203,21 @@ const incrementarLineaCarrito = async () => {
 
 
 const añadirAlCarritoUsuarioAutenticado = async () => {
-  if(producto.value){
+  if (producto.value) {
+    // Verificar si se ha seleccionado una talla
+    if (!tallaSeleccionada.value) {
+      alert("Por favor, selecciona una talla antes de añadir el producto al carrito.");
+      return; // Detener la ejecución si no hay talla seleccionada
+    }
+
     // Si el usuario está autenticado, sincronizar con el backend
     if (localStorage.getItem('isAuthenticated') === 'true') {
       try {
         // Llamar al método del store para sincronizar con el backend
         const response = await carritoStore.addProductCarrito(
-          producto.value.id, 
+          producto.value.id,
           1, // Cantidad inicial
-          producto.value.tallaData?.talla || '', // Asegúrate de tener la talla
+          tallaSeleccionada.value, // Talla seleccionada
           producto.value.precio // Precio del producto
         );
 
@@ -180,9 +233,11 @@ const añadirAlCarritoUsuarioAutenticado = async () => {
       }
     }
   }
-}
+};
+
 
 onMounted(() => {
+  console.log(localStorage.getItem('carrito'))
   obtenerProducto();
   //localStorage.removeItem('carrito');
 

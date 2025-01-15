@@ -110,7 +110,7 @@
       <IonCol size="12" size-md="4" size-lg="2" v-for="producto in productosFiltrados" :key="producto.id">
         <IonCard class="product-card" @click="$router.push({ name: 'DetallesProducto', params: { id: producto.id } })">
           <!-- Imagen del producto en la parte superior -->
-          <Img v-if="producto.foto_portada" :src="producto.foto_portada"  alt="Foto del producto" class="product-image-container"/>
+          <img v-if="producto.foto_portada" :src="producto.foto_portada"  alt="Foto del producto" class="product-image-container"/>
           <!-- Imagen de ejemplo si no hay foto disponible -->
           <IonImg v-else src="https://via.placeholder.com/80x80?text=Producto" alt="Foto de ejemplo" class="product-image"/>
           <IonCardContent>
@@ -149,11 +149,20 @@ interface ProductoData {
   foto_portada: string | null;
   sku: string | null;
   coleccionesDatas: { id: number; nombre: string }[];
-  tallaData: { id: number; talla: string; cantidad: number };
+  productosTallaData: { 
+    id: number; 
+    productoId: number; 
+    talla: { 
+      id: number; 
+      talla: string; 
+    }; 
+    stock: number; 
+  }[];
   materialData: { id: number; material: string };
   categoriaData: { id: number; categoria: string };
   subcategoriaData: { id: number; subcategoria: string };
 }
+
 
 // Recibir la lista de productos como prop
 const props = defineProps<{
@@ -200,15 +209,12 @@ const aplicarFiltros = () => {
     productos = productos.filter(producto => producto.color === colorSeleccionado.value);
   }
 
- // Filtrar por talla
- if (tallaSeleccionada.value) {
-    productos = productos.filter(producto => producto.tallaData.talla === tallaSeleccionada.value); // Accedemos directamente a tallaData.talla
+  // Filtrar por talla: Ajustar acceso a la talla dentro de productosTallaData
+  if (tallaSeleccionada.value) {
+    productos = productos.filter(producto => 
+      producto.productosTallaData.some(tallaData => tallaData.talla.talla === tallaSeleccionada.value)
+    );
   }
-
-  // Aplicar filtro de precio
-  productos = productos.filter(producto => 
-    producto.precio >= precioRango.value.lower && producto.precio <= precioRango.value.upper
-  );
 
   // Aplicar ordenación si está seleccionada
   if (ordenActual.value) {

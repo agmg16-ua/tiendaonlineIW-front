@@ -75,11 +75,11 @@ export const direccionEndpoints = {
 }
 
 //Comentario Endpoints
-export const POSTComentarioEndpoint = baseUrl + '/comentario/nuevo'
-export const POSTUpdateComentarioEndpoint = baseUrl + '/comentario/{id}/modificar'
-export const GETComentariosEndpoint = baseUrl + '/comentarios'
-export const GETComentarioEndpoint = baseUrl + '/comentario/{comentarioId}'
-export const DELETEComentarioEndpoint = baseUrl + '/comentario/{comentarioId}/eliminar'
+export const POSTComentarioEndpoint = baseUrl + '/lewkin/api/comentario/nuevo'
+export const POSTUpdateComentarioEndpoint = baseUrl + '/lewkin/api/comentario/{id}/modificar'
+export const GETComentariosEndpoint = baseUrl + '/lewkin/api/comentarios'
+export const GETComentarioEndpoint = baseUrl + '/lewkin/api/comentario/{comentarioId}'
+export const DELETEComentarioEndpoint = baseUrl + '/lewkin/api/comentario/{comentarioId}/eliminar'
 
 export const comentarioEndpoints = {
     POSTComentarioEndpoint,

@@ -16,10 +16,10 @@
           <img :src="producto.producto.foto_portada" alt="Imagen del producto" class="imagen-carrito" v-if="isAuthenticated"/>
           <img :src="producto.foto_portada" alt="Imagen del producto" class="imagen-carrito" v-else/>
           <p class="nombre-producto" v-if="isAuthenticated">
-            {{ producto.producto.nombre }}
+            {{ producto.producto.nombre }} ( {{ producto.talla }} )
           </p>
           <p class="nombre-producto" v-else>
-            {{ producto.nombre }}
+            {{ producto.nombre }} ( {{ producto.talla }} )
           </p>
       </div>
       </ion-col>
@@ -32,11 +32,35 @@
       <!-- Cantidad -->
       <ion-col size="2" class="cantidad-col">
       <div class="cantidad-controls">
-          <button @click="decrementarCantidad(producto, Number(index), Number(producto.producto.id))" class="cantidad-btn" v-if="isAuthenticated">-</button>
-          <button @click="decrementarCantidad(producto, Number(index), Number(producto.id))" class="cantidad-btn" v-else>-</button>
+        <button
+          @click="decrementarCantidad(producto, producto.producto.id, producto.talla)"
+          class="cantidad-btn"
+          v-if="isAuthenticated"
+        >
+          -
+        </button>
+        <button
+          @click="decrementarCantidad(producto, producto.id, producto.talla)"
+          class="cantidad-btn"
+          v-else
+        >
+          -
+        </button>
           <span class="cantidad">{{ producto.cantidad }}</span>
-          <button @click="incrementarCantidad(producto, producto.producto.id)" class="cantidad-btn" v-if="isAuthenticated">+</button>
-          <button @click="incrementarCantidad(producto, producto.id)" class="cantidad-btn" v-else>+</button>
+          <button
+            @click="incrementarCantidad(producto, producto.producto.id, producto.talla)"
+            class="cantidad-btn"
+            v-if="isAuthenticated"
+          >
+            +
+          </button>
+          <button
+            @click="incrementarCantidad(producto, producto.id, producto.talla)"
+            class="cantidad-btn"
+            v-else
+          >
+            +
+          </button>
       </div>
       </ion-col>
 
@@ -47,8 +71,8 @@
 
       <!-- Botón de eliminación -->
       <ion-col size="1" class="eliminar-col">
-          <button @click="eliminarProducto(Number(index), Number(producto.producto.id))" class="eliminar-btn" v-if="isAuthenticated">✖</button>
-          <button @click="eliminarProducto(Number(index), Number(producto.id))" class="eliminar-btn" v-else>✖</button>
+          <button @click="eliminarProducto(Number(index), Number(producto.producto.id), producto.talla)" class="eliminar-btn" v-if="isAuthenticated">✖</button>
+          <button @click="eliminarProducto(Number(index), Number(producto.id), producto.talla)" class="eliminar-btn" v-else>✖</button>
       </ion-col>
   </ion-row>
 </template>
@@ -77,107 +101,103 @@ const guardarCarrito = () => {
   localStorage.setItem('carrito', JSON.stringify(props.carrito));
 };
 
-const obtenerIdLineaCarrito = async (idProducto: Number) => {
-
+const obtenerIdLineaCarrito = async (idProducto: number, talla: string) => {
   try {
     const response = await carritoStore.fetchCarrito();
     if (response.status === 200) {
       carrito.value = carritoStore.carrito.linCarritos; // Asignar las líneas del carrito
     }
   } catch (error) {
-    console.error('Error al obtener el carrito:', error);
+    console.error("Error al obtener el carrito:", error);
+    return null;
   }
 
-    let idLineaCarrito = null;
+  // Buscar la línea del carrito correspondiente al producto y talla
+  const linea = carrito.value.find(
+    (linea) => linea.producto.id === idProducto && linea.talla === talla
+  );
 
-    // Buscar la línea del carrito correspondiente al producto
-    for (const linea of carrito.value) {
-      if (linea.producto.id === idProducto) { // Comprobar coincidencia de IDs
-        idLineaCarrito = linea.id; // ID de la línea de carrito
-        break;
-      }
-    }
-
-    if (!idLineaCarrito) {
-      console.error('No se encontró una línea de carrito para este producto.');
-      return;
-    }
-
-    return idLineaCarrito;
-
-}
-
-// Función para incrementar la cantidad
-const incrementarCantidad = async (producto: any, idProducto: Number) => {
-  
-  if(localStorage.getItem('isAuthenticated') === 'true'){
-
-    const idLineaCarrito = await obtenerIdLineaCarrito(idProducto);
-
-    try {
-      const response = await carritoStore.incrementarLinCarrito(Number(idLineaCarrito));
-      if (response.status === 200) {
-          console.log('Cantidad incrementada exitosamente.');
-          emit('actualizarCarrito');
-      } else {
-          console.error('Error al incrementar la cantidad:', response.message);
-      }
-    } catch (error) {
-        console.error('Error al ejecutar incrementarLinCarrito:', error);
-    }
-
-  }else{
-    if (producto.cantidad < 99) { // Limitar a 99 unidades por producto
-      producto.cantidad += 1;
-    }
-    guardarCarrito();
+  if (!linea) {
+    console.error("No se encontró una línea de carrito para este producto.");
+    return null;
   }
+
+  return linea.id; // Devuelve el ID de la línea del carrito
 };
 
-// Función para decrementar la cantidad
-const decrementarCantidad = async (producto: any, index: Number, idProducto: Number) => {
-  
-  if(localStorage.getItem('isAuthenticated') === 'true'){
 
-    if (producto.cantidad > 1){
+const incrementarCantidad = async (producto: any, idProducto: number, talla: string) => {
+  if (localStorage.getItem("isAuthenticated") === "true") {
+    const idLineaCarrito = await obtenerIdLineaCarrito(idProducto, talla);
 
-      const idLineaCarrito = await obtenerIdLineaCarrito(idProducto);
-
+    if (idLineaCarrito) {
       try {
-          const response = await carritoStore.decrementarLinCarrito(idLineaCarrito);
-          if (response.status === 200) {
-              console.log('Cantidad decrementada exitosamente.');
-              emit('actualizarCarrito');
-          } else {
-              console.error('Error al decrementar la cantidad:', response.message);
-          }
+        const response = await carritoStore.incrementarLinCarrito(Number(idLineaCarrito));
+        if (response.status === 200) {
+          console.log("Cantidad incrementada exitosamente.");
+          emit("actualizarCarrito");
+        } else {
+          console.error("Error al incrementar la cantidad:", response.message);
+        }
       } catch (error) {
-          console.error('Error al ejecutar decrementarLinCarrito:', error);
+        console.error("Error al ejecutar incrementarLinCarrito:", error);
       }
-
-    }else{
-      await eliminarProducto(Number(index), idProducto);
     }
-
-    
-
-  }else{
-    if (producto.cantidad > 1) { // No permitir menos de 1
-      producto.cantidad -= 1;
-    }else{
-       await eliminarProducto(Number(index), idProducto);
+  } else {
+    const linea = props.carrito.find(
+      (linea) => linea.id === idProducto && linea.talla === talla
+    );
+    if (linea && linea.cantidad < 99) {
+      linea.cantidad += 1;
     }
     guardarCarrito();
   }
-  
 };
+
+const decrementarCantidad = async (producto: any, idProducto: number, talla: string) => {
+  if (localStorage.getItem("isAuthenticated") === "true") {
+    const idLineaCarrito = await obtenerIdLineaCarrito(idProducto, talla);
+
+    if (idLineaCarrito) {
+      if (producto.cantidad > 1) {
+        try {
+          const response = await carritoStore.decrementarLinCarrito(Number(idLineaCarrito));
+          if (response.status === 200) {
+            console.log("Cantidad decrementada exitosamente.");
+            emit("actualizarCarrito");
+          } else {
+            console.error("Error al decrementar la cantidad:", response.message);
+          }
+        } catch (error) {
+          console.error("Error al ejecutar decrementarLinCarrito:", error);
+        }
+      } else {
+        await eliminarProducto(props.carrito.indexOf(producto), idProducto, talla);
+      }
+    }
+  } else {
+    const linea = props.carrito.find(
+      (linea) => linea.id === idProducto && linea.talla === talla
+    );
+    if (linea) {
+      if (linea.cantidad > 1) {
+        linea.cantidad -= 1;
+      } else {
+        const index = props.carrito.indexOf(linea);
+        props.carrito.splice(index, 1); // Eliminar el producto del array
+      }
+      guardarCarrito();
+    }
+  }
+};
+
 
 // Función para eliminar un producto
-const eliminarProducto = async (index: number, idProducto: Number) => {
+const eliminarProducto = async (index: number, idProducto: Number, talla: string) => {
 
   if(localStorage.getItem('isAuthenticated') === 'true'){
 
-    const idLineaCarrito = await obtenerIdLineaCarrito(idProducto);
+    const idLineaCarrito = await obtenerIdLineaCarrito(Number(idProducto), talla);
 
     try {
       const response = await carritoStore.deleteLinCarrito(idLineaCarrito);
