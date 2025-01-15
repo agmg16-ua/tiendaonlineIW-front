@@ -35,6 +35,9 @@ export const useComentarioStore = defineStore('comentario', {
     // Acción para crear un nuevo comentario
     async crearComentario(comentario: { texto: string; estrellas: number; productoId: number }) {
       try {
+        console.log(comentario.texto);
+        console.log(comentario.estrellas);
+        console.log(comentario.productoId);
         const response = await fetch(comentarioEndpoints.POSTComentarioEndpoint, {
           method: 'POST',
           headers: {
