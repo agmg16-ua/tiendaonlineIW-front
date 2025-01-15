@@ -76,7 +76,7 @@
     
       try {
         // Llamamos a la acción del store para crear el comentario
-        const response = await comentarioStore.crearComentario(nuevoComentario);
+        const response = await comentarioStore.crearComentario(comentario.value, puntuacion.value, props.productoId);
     
         // Si la respuesta es exitosa
         if (response.status === 200) {
@@ -92,7 +92,10 @@
       }
 
     }else{
-      router.push('/login');
+      router.push({ 
+        path: '/login', 
+        query: { redirect: router.currentRoute.value.fullPath } 
+      });
     }
      
   };
