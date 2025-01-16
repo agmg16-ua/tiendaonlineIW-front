@@ -10,6 +10,10 @@
           <!-- Detalles del producto (nombre, precio, descripción) -->
           <ion-col size="4" size-md="6" class="datos-col">
             <h1 class="titulo">{{ producto.nombre }}</h1>
+            <!-- Mostrar la media de valoración en formato estrellas -->
+            <div class="valoracion">
+              <ion-icon v-for="n in 5" :key="n" :name="getStarIcon(n)" class="star-icon"></ion-icon>
+            </div>
             <!--<h2 class="talla">Talla: {{ producto.tallaData.talla }} </h2>-->
             <p class="precio">€{{ producto.precio.toFixed(2) }}</p>
             <p class="descripcion">{{ producto.descripcion }}</p>
@@ -19,7 +23,7 @@
             <ion-button class="boton-carrito" @click="añadirAlCarrito">
               Añadir al Carrito
             </ion-button>
-            <ComentarioProducto :productoId="producto.id" />
+            <ComentarioProducto :productoId="producto.id" @comentarioCreado="comentarioCreado"/>
           </ion-col>
           
         </ion-row>
@@ -69,6 +73,7 @@ interface Producto {
   categoriaData: { id: number; categoria: string };
   subcategoriaData: { id: number; subcategoria: string };
   comentariosData: { id: number; texto: string; estrellas: number; usuarioId: number; productoId: number }[];
+  mediaValoracion: number;
 }
 
 const producto = ref<Producto | null>(null); // Producto puede ser null inicialmente
@@ -76,8 +81,28 @@ const route = useRoute();
 const productId = route.params.id;
 const tallaSeleccionada = ref<string | null>(null);
 
+const comentarioCreado = () => {
+ obtenerProducto();
+}
+
+// Método para obtener el nombre de la estrella (completa o vacía)
+const getStarIcon = (starIndex: number) => {
+  const valoracion = producto.value?.mediaValoracion;
+  if(valoracion){
+    if (starIndex <= valoracion) {
+      return 'star'; // Estrella llena
+    }else{
+      return 'star-outline'; // Estrella vacía
+    }
+  }else{
+    return 'star-outline'; // Estrella vacía
+  }
+  
+};
+
 // Obtener las tallas disponibles del producto (con stock > 0)
 const obtenerTallasDisponibles = computed(() => {
+  console.log(producto.value?.mediaValoracion);
   if (producto.value) {
     return producto.value.productosTallaData
       .filter(tallaData => tallaData.stock > 0) // Filtrar solo las tallas con stock > 0
@@ -238,10 +263,7 @@ const añadirAlCarritoUsuarioAutenticado = async () => {
 
 
 onMounted(() => {
-  console.log(localStorage.getItem('carrito'))
   obtenerProducto();
-  //localStorage.removeItem('carrito');
-
 });
 </script>
 
@@ -257,6 +279,17 @@ onMounted(() => {
   margin-right: 10px;
   margin-left: 50px;
   margin-top: 50px;
+}
+
+.valoracion {
+  display: flex;
+  gap: 5px; /* Espacio entre las estrellas */
+  margin-top: 10px;
+}
+
+.star-icon {
+  color: #ffcc00; /* Color dorado para las estrellas */
+  font-size: 24px;
 }
 
 /* Clase para los detalles del producto */

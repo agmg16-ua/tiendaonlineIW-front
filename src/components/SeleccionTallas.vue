@@ -40,7 +40,7 @@
   
   <style scoped>
   .seleccion-talla {
-    margin-top: 40px;
+    margin-top: 20px;
   }
   
   ion-select {
