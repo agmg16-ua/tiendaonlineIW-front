@@ -1,5 +1,5 @@
 <template>
-    <ion-row class="ff">
+    <ion-row class="crear-comentario">
       <ion-col size="12">
         <div class="comentario-container">
           <h3>Añade un comentario</h3>
@@ -28,7 +28,8 @@
   import { useRouter } from 'vue-router';
 
   const router = useRouter();
-  
+  const emit = defineEmits(["comentarioCreado"]);
+
   // Definimos las props
   const props = defineProps({
     productoId: {
@@ -83,6 +84,7 @@
           alert("Comentario enviado con éxito.");
           comentario.value = ""; // Limpiamos el comentario después de enviarlo
           puntuacion.value = 0; // Limpiamos la puntuación después de enviarlo
+          emit("comentarioCreado", nuevoComentario);
         } else {
           alert(response.message); // Si ocurre un error, mostramos el mensaje de error
         }
@@ -103,10 +105,10 @@
   
   
   <style scoped>
-  .ff {
+  .crear-comentario {
     width: 100%;
     justify-content: left;
-    margin-top: 5%;
+    margin-top: 1%;
   }
   
   .comentario-container {

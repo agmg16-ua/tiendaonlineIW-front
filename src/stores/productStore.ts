@@ -5,6 +5,7 @@ export const useProductStore = defineStore('product', {
     state: () => ({
         allProducts: [],
         singleProduct: null,
+        destacados: []
     }),
     actions: {
         async fetchProducts() {
@@ -103,6 +104,21 @@ export const useProductStore = defineStore('product', {
                 .catch(error => {
                     console.error('Error al obtener el producto individual:', error)
                 })
+        },
+
+        async fetchDestacados() {
+            const response = await fetch(productEndpoints.GETDestacadosEndpoint, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+
+            const data = await response.json()
+
+            if (response.status === 200) {
+                this.destacados = data
+            }
         }
     }
 })
