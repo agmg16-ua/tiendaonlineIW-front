@@ -12,17 +12,24 @@ export const useAdminStore = defineStore('admin', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
             })
 
-            console.log(response)
+            const data = await response.json()
+
+            return {
+                status: response.status,
+                data: data,
+                message: data.message
+            }
         },
 
         async saveProducto(producto: any) {
             producto.precio = parseInt(producto.precio)
 
             console.log(producto)
+
+            console.log(JSON.stringify(producto))
 
             const response = await fetch(productEndpoints.POSTProductEndpoint, {
                 method: 'POST',
