@@ -17,6 +17,8 @@ let currentStepIndex = ref(0)
 
 const currentStepComponent = computed(() => steps[currentStepIndex.value]);
 
+const showLoading = ref(false)
+
 const do_pedido = async (data: any) => {
     console.log(data)
     if (currentStepIndex.value === 0) {
@@ -24,8 +26,9 @@ const do_pedido = async (data: any) => {
     }
 
     if (currentStepIndex.value === 1) {
+        showLoading.value = true
         const data = await userStore.newPedido(direccionEnvio.value)
-
+        showLoading.value = false;
         if (data.status === 200) {
             window.location.href = data.url
         } else {
@@ -40,4 +43,5 @@ const do_pedido = async (data: any) => {
 
 <template>
     <Component :is="currentStepComponent" @next_step="do_pedido" />
+    <ion-loading :is-open="showLoading"></ion-loading>
 </template>
