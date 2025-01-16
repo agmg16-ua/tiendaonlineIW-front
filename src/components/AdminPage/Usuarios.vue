@@ -9,7 +9,11 @@ const showDetalles = ref<boolean[]>([])
 const usuarios = ref([])
 
 onMounted(async () => {
+    /*
     const response = await adminStore.fetchAllUsuarios()
+
+    console.log(response)
+    */
 })
 
 

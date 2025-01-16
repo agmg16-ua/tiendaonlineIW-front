@@ -17,11 +17,6 @@ onMounted(async () => {
     await productStore.fetchProducts()
 })
 
-const guardarProducto = () => {
-    console.log('Guardando producto')
-    showAddProducto.value = false
-}
-
 </script>
 
 <template>

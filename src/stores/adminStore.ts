@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { GETMaterialesEndpoint, GETCategoriasEndpoint, GETSubcategoriasEndpoint, GETColeccionesEndpoint, productEndpoints } from '@/router/endpoints'
+import { GETMaterialesEndpoint, GETCategoriasEndpoint, GETSubcategoriasEndpoint, GETColeccionesEndpoint, productEndpoints, usuarioEndpoints, POSTColeccionEndpoint } from '@/router/endpoints'
 
 
 export const useAdminStore = defineStore('admin', {
@@ -8,11 +8,21 @@ export const useAdminStore = defineStore('admin', {
     }),
     actions: {
         async fetchAllUsuarios() {
-            console.log('fetching all usuarios')
+            const response = await fetch(usuarioEndpoints.GETUsuariosEndpoint, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            })
+
+            console.log(response)
         },
 
         async saveProducto(producto: any) {
             producto.precio = parseInt(producto.precio)
+
+            console.log(producto)
 
             const response = await fetch(productEndpoints.POSTProductEndpoint, {
                 method: 'POST',
@@ -100,7 +110,20 @@ export const useAdminStore = defineStore('admin', {
         },
 
         async saveNewColeccion(coleccion: any) {
-            console.log(coleccion)
+            const response = await fetch(POSTColeccionEndpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify({
+                    nombre: coleccion.nombre
+                })
+            })
+
+            const data = response.json()
+
+            console.log(data)
         }
     }
 })

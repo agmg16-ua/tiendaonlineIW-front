@@ -127,12 +127,14 @@ export const pedidoEndpoints = {
 export const POSTDireccionUsuarioEndpoint = baseUrl + '/lewkin/api/usuario/nueva/direccion'
 export const POSTUpdateUsuarioEndpoint = baseUrl + '/lewkin/api/usuario/modificar'
 export const GETUsuarioEndpoint = baseUrl + '/lewkin/api/usuario/{usuarioId}'
+export const GETUsuariosEndpoint = baseUrl + '/lewkin/api/usuarios'
 export const GETCurrentUsuarioEndpoint = baseUrl + '/lewkin/api/usuario/actual'
 
 export const usuarioEndpoints = {
     POSTDireccionUsuarioEndpoint,
     POSTUpdateUsuarioEndpoint,
     GETUsuarioEndpoint,
+    GETUsuariosEndpoint,
     GETCurrentUsuarioEndpoint
 }
 
@@ -141,3 +143,4 @@ export const GETMaterialesEndpoint = baseUrl + '/lewkin/api/materiales'
 export const GETCategoriasEndpoint = baseUrl + '/lewkin/api/categorias'
 export const GETSubcategoriasEndpoint = baseUrl + '/lewkin/api/subcategorias'
 export const GETColeccionesEndpoint = baseUrl + '/lewkin/api/colecciones'
+export const POSTColeccionEndpoint = baseUrl + '/lewkin/api/coleccion/nueva'
