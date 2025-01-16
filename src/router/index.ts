@@ -3,10 +3,8 @@ import { RouteRecordRaw } from 'vue-router';
 import TabsPage from '../views/TabsPage.vue'
 import HomePage from '../views/HomePage.vue'
 import AboutPage from '../views/AboutPage.vue'
-import ContactPage from '../views/ContactPage.vue'
 import LoginPage from '../views/LoginPage.vue'
 import RegisterPage from '../views/RegisterPage.vue'
-import CatalogPage from '@/views/CatalogPage.vue';
 import ProductDetails from '@/views/ProductDetails.vue';
 import MenCatalog from '@/views/MenCatalog.vue';
 import WomenCatalog from '@/views/WomenCatalog.vue';
@@ -31,11 +29,6 @@ const routes: Array<RouteRecordRaw> = [
     path: '/about',
     component: AboutPage,
     name: 'about'
-  },
-  {
-    path: '/contact',
-    component: ContactPage,
-    name: 'contact'
   },
   {
     path: '/login',

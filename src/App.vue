@@ -39,9 +39,6 @@ const do_logout = (async () => {
             <Router-Link to="/about">Nosotros</Router-Link>
           </ion-button>
           <ion-button>
-            <Router-Link to="/contact">Contacta con Nosotros</Router-Link>
-          </ion-button>
-          <ion-button>
             <Router-Link to="/catalog">Catálogo</Router-Link>
           </ion-button>
           <ion-button>
