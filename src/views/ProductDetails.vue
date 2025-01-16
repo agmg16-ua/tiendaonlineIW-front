@@ -1,5 +1,4 @@
 <template>
-  <ion-content>
     <div v-if="producto" class="producto-detalle">
       <ion-grid>
         <ion-row>
@@ -20,7 +19,7 @@
             <ion-button class="boton-carrito" @click="añadirAlCarrito">
               Añadir al Carrito
             </ion-button>
-            <!--<ComentarioProducto :productoId="producto.id" />-->
+            <ComentarioProducto :productoId="producto.id" />
           </ion-col>
           
         </ion-row>
@@ -31,7 +30,6 @@
       <ion-spinner name="crescent"></ion-spinner>
       <p>Cargando...</p>
     </div>
-  </ion-content>
 </template>
 
 <script setup lang="ts">
@@ -40,7 +38,7 @@ import { useRoute } from 'vue-router';
 import { IonContent, IonGrid, IonRow, IonCol, IonSpinner, IonButton } from '@ionic/vue';
 import { useProductStore } from '@/stores/productStore';
 import ImageCarousel from '@/components/ImageCarousel.vue';
-//import ComentarioProducto from '@/components/ComentarioProducto.vue';
+import ComentarioProducto from '@/components/ComentarioProducto.vue';
 import ListadoComentarios from '@/components/ListadoComentarios.vue';
 import { useCarritoStore } from '@/stores/carritoStore';
 import SeleccionTallas from '@/components/SeleccionTallas.vue';
@@ -78,13 +76,16 @@ const route = useRoute();
 const productId = route.params.id;
 const tallaSeleccionada = ref<string | null>(null);
 
-// Obtener las tallas disponibles del producto
+// Obtener las tallas disponibles del producto (con stock > 0)
 const obtenerTallasDisponibles = computed(() => {
   if (producto.value) {
-    return producto.value.productosTallaData.map(tallaData => tallaData.talla);
+    return producto.value.productosTallaData
+      .filter(tallaData => tallaData.stock > 0) // Filtrar solo las tallas con stock > 0
+      .map(tallaData => tallaData.talla); // Mapear para obtener las tallas
   }
   return [];
 });
+
 
 // Manejar la talla seleccionada
 const manejarTallaSeleccionada = (talla: string) => {

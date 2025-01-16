@@ -38,7 +38,7 @@ const props = defineProps({
 .total-title {
   font-size: 1.5rem;
   font-weight: 600;
-  color: white;
+  color: #9e9b9b;
   margin: 0;
   display: flex;
   align-items: center;
@@ -48,15 +48,15 @@ const props = defineProps({
 .iva-text {
   font-size: 0.9rem;
   font-weight: 400;
-  color: #d3d3d3;
+  color: #9e9b9b;
   margin-left: 5px;
 }
 
 .total-amount {
   font-size: 1.5rem;
   font-weight: bold;
-  color: white;
-  margin-left: 150px;
+  color: #9e9b9b;
+  margin-left: 100px;
 }
 
 </style>
