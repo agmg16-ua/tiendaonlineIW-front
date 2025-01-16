@@ -229,7 +229,7 @@ const mostrarColorFiltro = ref(false);
 const coloresDisponibles = ref<string[]>([]); // Para almacenar los colores únicos
 const colorSeleccionado = ref<string | null>(null);  // Para el color seleccionado
 const mostrarTallaFiltro = ref(false); // Para mostrar/ocultar el filtro de tallas
-const tallasDisponibles = ref<string[]>(['XS', 'S', 'M', 'L', 'XL']); // Tallas predefinidas
+const tallasDisponibles = ref<string[]>([]); // Tallas predefinidas
 const tallaSeleccionada = ref<string | null>(null); // Para almacenar la talla seleccionada
 const mostrarColeccionFiltro = ref(false); 
 const coleccionesDisponibles = ref<{ id: number; nombre: string }[]>([]); // Almacenará las colecciones únicas
@@ -312,6 +312,22 @@ const aplicarFiltros = () => {
 
   productosFiltrados.value = productos;
 };
+
+// Función para extraer tallas únicas de los productos
+const calcularTallasUnicas = () => {
+  const tallasSet = new Set<string>();
+
+  props.listaProductos.forEach(producto => {
+    producto.productosTallaData.forEach(tallaData => {
+      if (tallaData.talla && tallaData.talla.talla) {
+        tallasSet.add(tallaData.talla.talla);
+      }
+    });
+  });
+
+  tallasDisponibles.value = Array.from(tallasSet).sort(); // Convertir a un array y ordenar alfabéticamente
+};
+
 
 // Función para extraer materiales únicos de los productos
 const calcularMaterialesUnicos = () => {
@@ -468,7 +484,8 @@ const aplicarFiltrosDesdeLocalStorage = () => {
 
   const savedTallaSeleccionada = localStorage.getItem('tallaSeleccionada');
   if (savedTallaSeleccionada && savedTallaSeleccionada !== 'null') {
-    tallaSeleccionada.value = savedTallaSeleccionada;
+    const tallaExistente = tallasDisponibles.value.includes(savedTallaSeleccionada);
+    tallaSeleccionada.value = tallaExistente ? savedTallaSeleccionada : null;
   } else {
     tallaSeleccionada.value = null;
   }
@@ -514,6 +531,7 @@ onMounted(() => {
   calcularSubcategoriasUnicas();
   calcularColoresUnicos();
   calcularColeccionesUnicas();
+  calcularTallasUnicas();
   aplicarFiltrosDesdeLocalStorage();
   aplicarFiltros();
 });
