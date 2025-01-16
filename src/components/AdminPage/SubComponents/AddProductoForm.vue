@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { useAdminStore } from '@/stores/store'
 
-const emit = defineEmits(["closePopup"]);
+const emit = defineEmits(["closePopup", "save"]);
 const adminStore = useAdminStore()
 
 interface ParTallaStock {
@@ -23,11 +23,20 @@ const productoData = ref({
     tallaStocks: <ParTallaStock[]>([]),
 })
 
+const selectedImage = ref<File | null>(null)
+
 const materiales = ref([])
 const categorias = ref([])
 const subcategorias = ref([])
 const colecciones = ref([])
 const paresTallaStock = ref<ParTallaStock[]>([])
+
+const onFileChanged = (event: Event) => {
+    const input = event.target as HTMLInputElement
+    if (input.files && input.files.length > 0) {
+        selectedImage.value = input.files[0]
+    }
+}
 
 const agregarPar = () => {
     paresTallaStock.value.push({ talla: '', stock: 0 })
@@ -75,6 +84,14 @@ onMounted(async () => {
 
 const saveProducto = async () => {
     console.log('Guardando producto')
+
+    console.log(selectedImage.value)
+
+    if (!selectedImage.value) {
+        alert('Debes seleccionar una imagen')
+        return
+    }
+
     productoData.value.tallaStocks = paresTallaStock.value
 
     productoData.value.tallaStocks = productoData.value.tallaStocks.map((par) => ({
@@ -82,13 +99,23 @@ const saveProducto = async () => {
         stock: Number(par.stock)
     }))
 
-    const response = await adminStore.saveProducto(productoData.value)
+    const responseProducto = await adminStore.saveProducto(productoData.value)
 
-    if (response.status === 200) {
-        alert('Producto guardado correctamente')
-        emit("closePopup")
+    if (responseProducto.status === 200) {
+        console.log('Producto guardado. Guardando imagen...')
+
+        const responseImagen = await adminStore.saveImagenProducto(selectedImage.value, responseProducto.data.id)
+
+
+        if (responseImagen.status === 200) {
+            alert('Producto guardado correctamente')
+            emit("save")
+        } else {
+            alert('Error al guardar la imagen del producto: ' + responseImagen.message)
+            emit("closePopup")
+        }
     } else {
-        alert('Error al guardar el producto: ' + response.message)
+        alert('Error al guardar el producto: ' + responseProducto.message)
     }
 }
 
@@ -106,6 +133,11 @@ const cancel = () => {
                     <ion-row>
                         <ion-col>
                             <h2>Añadir Producto</h2>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col>
+                            <input type="file" @change="onFileChanged" accept="image/*">
                         </ion-col>
                     </ion-row>
                     <ion-row>

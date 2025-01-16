@@ -37,6 +37,7 @@ export const authEndpoints = {
 //Products Endpoints
 export const POSTProductEndpoint = baseUrl + '/lewkin/api/producto/nuevo';
 export const POSTUpdateProductEndpoint = baseUrl + '/lewkin/api/producto/{id}/actualizar';
+export const POSTImagenProductoEndpoint = baseUrl + '/lewkin/api/producto/{id}/foto/subir'
 export const GETProductsEndpoint = baseUrl + '/lewkin/api/productos';
 export const GETProductEndpoint = baseUrl + '/lewkin/api/producto/{id}';
 export const DELETEProductEndpoint = baseUrl + '/lewkin/api/producto/{id}/eliminar';
@@ -49,6 +50,7 @@ export const GETDestacadosEndpoint = baseUrl + '/lewkin/api/productos/destacados
 export const productEndpoints = {
     POSTProductEndpoint,
     POSTUpdateProductEndpoint,
+    POSTImagenProductoEndpoint,
     GETProductsEndpoint,
     GETProductEndpoint,
     DELETEProductEndpoint,

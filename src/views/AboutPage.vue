@@ -10,9 +10,9 @@
     <ion-grid>
       <ion-row>
         <ion-col size="3" class="founder">
-          <ion-img class="founder-image" src="https://via.placeholder.com/400x300?text=Fundador+1" alt="Fundador 1" />
+          <img class="founder-image" src="../assets/AboutPage/luna.jpg" alt="Fundador 1" />
           <ion-text>
-            <p>Fundador 1</p>
+            <p>Luna S. Willems</p>
           </ion-text>
         </ion-col>
         <ion-col size="3" class="founder">

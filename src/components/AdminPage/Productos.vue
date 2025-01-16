@@ -17,6 +17,11 @@ onMounted(async () => {
     await productStore.fetchProducts()
 })
 
+const doSave = async () => {
+    await productStore.fetchProducts()
+    showAddProducto.value = false
+}
+
 </script>
 
 <template>
@@ -64,6 +69,6 @@ onMounted(async () => {
     </ion-card>
 
     <ion-modal :is-open="showAddProducto" @ionModalDidDismiss="showAddProducto = false">
-        <AddProductoForm @closePopup="showAddProducto = false" />
+        <AddProductoForm @closePopup="showAddProducto = false" @save="doSave" />
     </ion-modal>
 </template>
