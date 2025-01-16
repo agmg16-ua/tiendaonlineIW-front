@@ -83,7 +83,7 @@ const togglePedido = (index: number) => {
               <h2>Referencia: {{ pedido.referencia }}</h2>
               <p v-if="pedido.facturaData">Fecha: {{ formatDate(pedido.facturaData.created_at) }}</p>
               <p>Estado: {{ pedido.estado }}</p>
-              <p>Importe: {{ pedido.importe }}€</p>
+              <p>Importe: {{ pedido.importe.toFixed(2) }}€</p>
             </ion-label>
             <ion-icon :name="showLineas[index] ? 'chevron-up' : 'chevron-down'" slot="end"></ion-icon>
           </ion-item>
@@ -106,6 +106,7 @@ const togglePedido = (index: number) => {
                   <h2>{{ linea.productoData.nombre }}</h2>
                   <p>{{ linea.productoData.descripcion }}</p>
                   <p>Cantidad: {{ linea.cantidad }}</p>
+                  <p>Talla: {{ linea.talla }}</p>
                   <p>Precio: {{ linea.productoData.precio }}€/unidad</p>
                 </ion-label>
               </ion-item>

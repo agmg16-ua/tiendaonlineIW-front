@@ -43,5 +43,5 @@ const do_pedido = async (data: any) => {
 
 <template>
     <Component :is="currentStepComponent" @next_step="do_pedido" />
-    <ion-loading :is-open="showLoading" message="Tramitand Pedido..."></ion-loading>
+    <ion-loading :is-open="showLoading" message="Tramitando Pedido..."></ion-loading>
 </template>

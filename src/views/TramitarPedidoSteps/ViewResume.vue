@@ -1,13 +1,13 @@
 <script setup lang="ts">
 
-    import { computed, onMounted } from 'vue'  
-    import { useCarritoStore } from '@/stores/store'
+import { computed, onMounted } from 'vue'
+import { useCarritoStore } from '@/stores/store'
 
-    defineEmits(['next_step'])
+defineEmits(['next_step'])
 
-    const carritoStore = useCarritoStore()
+const carritoStore = useCarritoStore()
 
-    const carrito = computed(() => carritoStore.carrito)
+const carrito = computed(() => carritoStore.carrito)
 
 </script>
 
@@ -34,7 +34,7 @@
                     <ion-item>
                         <ion-label>Subtotal</ion-label>
                         <ion-label></ion-label>
-                        <ion-label>{{ carrito.total }}€</ion-label>
+                        <ion-label>{{ carrito.total.toFixed(2) }}€</ion-label>
                     </ion-item>
                 </ion-list>
             </ion-col>
