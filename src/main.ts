@@ -3,12 +3,11 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router';
 
-import { IonAvatar, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonicVue, IonImg, IonInput, IonItem, IonItemGroup, IonLabel, IonList, IonLoading, IonMenu, IonModal, IonPage, IonPopover, IonRow, IonSegment, IonSegmentButton, IonSegmentContent, IonSegmentView, IonSelect, IonSelectOption, IonSplitPane, IonTitle, IonToolbar } from '@ionic/vue';
+import { IonAvatar, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonicVue, IonImg, IonInput, IonItem, IonItemGroup, IonLabel, IonList, IonLoading, IonMenu, IonModal, IonPage, IonPopover, IonRow, IonSegment, IonSegmentButton, IonSegmentContent, IonSegmentView, IonSelect, IonSelectOption, IonSplitPane, IonTextarea, IonTitle, IonToolbar } from '@ionic/vue';
 
 import { addIcons } from 'ionicons';
 
-import { carOutline, cartOutline, headsetOutline, lockClosedOutline, refreshOutline, personCircleOutline, star, starOutline, removeOutline } from 'ionicons/icons';
-import { addCircleOutline, carOutline, cartOutline, checkmarkCircle, chevronDown, chevronUp, headsetOutline, lockClosedOutline, refreshOutline } from 'ionicons/icons';
+import { addCircleOutline, checkmarkCircle, chevronDown, chevronUp, carOutline, cartOutline, headsetOutline, lockClosedOutline, refreshOutline, personCircleOutline, star, starOutline, removeOutline, trash } from 'ionicons/icons';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/vue/css/core.css';
@@ -76,6 +75,7 @@ app.component('ion-title', IonTitle)
   .component('ion-avatar', IonAvatar)
   .component('ion-input', IonInput)
   .component('ion-modal', IonModal)
+  .component('ion-textarea', IonTextarea)
   .component('ion-loading', IonLoading)
 
 addIcons({
@@ -91,7 +91,8 @@ addIcons({
   'chevron-up': chevronUp,
   'chevron-down': chevronDown,
   'checkmark-circle': checkmarkCircle,
-  'add-circle-outline': addCircleOutline
+  'add-circle-outline': addCircleOutline,
+  'trash': trash
 })
 
 router.isReady().then(() => {
