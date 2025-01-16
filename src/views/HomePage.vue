@@ -127,11 +127,9 @@
   
   // Carrusel de imágenes
   const carouselImages = [
-  { src: 'https://via.placeholder.com/800x400?text=Imagen+1' },
-  { src: 'https://via.placeholder.com/800x400?text=Imagen+2' },
-  { src: 'https://via.placeholder.com/800x400?text=Imagen+3' },
-  { src: 'https://via.placeholder.com/800x400?text=Imagen+4' },
-  { src: 'https://via.placeholder.com/800x400?text=Imagen+5' },
+  { src: 'src/assets/carouselHomePage/carousel1.jpg' },
+  { src: 'src/assets/carouselHomePage/carousel2.jpg' },
+  { src: 'src/assets/carouselHomePage/carousel3.jpg' },
 ];
 
   const activeIndex = ref(0);
@@ -185,7 +183,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 550px; /* Ajusta la altura según sea necesario */
+    height: 750px; /* Ajusta la altura según sea necesario */
     width: 100vw; /* Asegúrate de que ocupe todo el ancho del viewport */
   }
 
@@ -193,7 +191,7 @@
     position: absolute;
     width: 100vw; /* Ocupa todo el ancho de la pantalla */
     height: 100%; /* Altura relativa al contenedor */
-    object-fit: cover; /* Escala y recorta la imagen si es necesario */
+
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
   }
