@@ -5,9 +5,12 @@
       <!-- Buscador de productos por nombre -->
       <IonCol size="12" class="filter-col">
         <IonItem lines="none" class="search-item custom-search">
-          <IonInput v-model="textoBusqueda" placeholder="Buscar por nombre de producto..." clear-input/>
+          <IonInput v-model="textoBusqueda" placeholder="Buscar productos..." clear-input/>
           <IonButton slot="end" @click="aplicarFiltroBusqueda">
             Buscar
+          </IonButton>
+          <IonButton slot="end" @click="limpiarFiltroBusqueda">
+            Limpiar
           </IonButton>
         </IonItem>
       </IonCol>
@@ -236,15 +239,15 @@ const textoBusqueda = ref<string>(''); // Input del buscador
 
 // Función para aplicar filtro de búsqueda
 const aplicarFiltroBusqueda = () => {
-  subcategoriaSeleccionada.value = null;
-  materialSeleccionado.value = null;
-  colorSeleccionado.value = null;
-  tallaSeleccionada.value = null;
-  coleccionSeleccionada.value = null;
-  ordenActual.value = null;
-  precioRango.value = { lower: 0, upper: 200 };  
+  localStorage.setItem('textoBusqueda', textoBusqueda.value.trim());
+  aplicarFiltros();
 };
 
+const limpiarFiltroBusqueda = () => {
+  localStorage.setItem('textoBusqueda', '');
+  textoBusqueda.value = ''
+  aplicarFiltros();
+}
 
 // Función para aplicar todos los filtros acumulativamente
 const aplicarFiltros = () => {
@@ -289,12 +292,23 @@ const aplicarFiltros = () => {
     productos.sort((a, b) => ordenActual.value === 'asc' ? a.precio - b.precio : b.precio - a.precio);
   }
 
+  const textoGuardado = localStorage.getItem('textoBusqueda');
+  if (textoGuardado) {
+    textoBusqueda.value = textoGuardado;
+  }
+
   // Verifica que el texto de búsqueda no esté vacío antes de aplicar el filtro
   if (textoBusqueda.value.trim() !== '') {
+    const textoNormalizado = textoBusqueda.value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
     productos = productos.filter(producto =>
-      producto.nombre.toLowerCase().includes(textoBusqueda.value.toLowerCase())
+      producto.descripcion
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .includes(textoNormalizado)
     );
   }
+
 
   productosFiltrados.value = productos;
 };
@@ -603,9 +617,11 @@ onMounted(() => {
 }
 
 
-.search-item{
+.search-item {
   margin-top: 10px;
-  border-radius: 5px;   
+  border-radius: 5px;
+  border: 1px solid rgb(177, 175, 175); /* Añade un borde negro */
 }
+
 
 </style>
