@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { GETMaterialesEndpoint, GETCategoriasEndpoint, GETSubcategoriasEndpoint, GETColeccionesEndpoint, productEndpoints, usuarioEndpoints, POSTColeccionEndpoint } from '@/router/endpoints'
+import { GETMaterialesEndpoint, GETCategoriasEndpoint, GETSubcategoriasEndpoint, GETColeccionesEndpoint, productEndpoints, usuarioEndpoints, POSTColeccionEndpoint, GETTallasEndpoint } from '@/router/endpoints'
 
 
 export const useAdminStore = defineStore('admin', {
@@ -121,6 +121,23 @@ export const useAdminStore = defineStore('admin', {
 
         async fetchColecciones() {
             const response = await fetch(GETColeccionesEndpoint, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+
+            const data = await response.json()
+
+            return {
+                status: response.status,
+                data: data,
+                message: data.message
+            }
+        },
+
+        async fetchTallas() {
+            const response = await fetch(GETTallasEndpoint, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'

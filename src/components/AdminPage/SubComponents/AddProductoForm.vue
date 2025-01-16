@@ -29,6 +29,7 @@ const materiales = ref([])
 const categorias = ref([])
 const subcategorias = ref([])
 const colecciones = ref([])
+const tallas = ref([])
 const paresTallaStock = ref<ParTallaStock[]>([])
 
 const onFileChanged = (event: Event) => {
@@ -78,6 +79,14 @@ onMounted(async () => {
         colecciones.value = responseColecciones.data
     } else {
         alert('Error al cargar las colecciones: ' + responseColecciones.message)
+    }
+
+    const responseTallas = await adminStore.fetchTallas()
+
+    if (responseTallas.status === 200) {
+        tallas.value = responseTallas.data
+    } else {
+        alert('Error al cargar las tallas: ' + responseTallas.message)
     }
 })
 
@@ -206,8 +215,10 @@ const cancel = () => {
                                 <ion-row>
                                     <ion-col size="5">
                                         <ion-item>
-                                            <ion-input v-model="par.talla" fill="outline"
-                                                placeholder="Talla"></ion-input>
+                                            <ion-select v-model="par.talla" fill="outline" placeholder="Talla" required>
+                                                <ion-select-option v-for="talla in tallas" :key="talla.id"
+                                                    :value="talla.string">{{ talla.talla }}</ion-select-option>
+                                            </ion-select>
                                         </ion-item>
                                     </ion-col>
                                     <ion-col size="5">
