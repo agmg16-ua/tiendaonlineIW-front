@@ -3,6 +3,8 @@ import { ref } from 'vue';
 
 // Importar los subcomponentes
 import Productos from '@/components/AdminPage/Productos.vue';
+import Usuarios from '@/components/AdminPage/Usuarios.vue';
+import Colecciones from '@/components/AdminPage/Colecciones.vue';
 
 const selectedSegment = ref('productos');
 
@@ -10,6 +12,11 @@ const selectedSegment = ref('productos');
 
 <template>
     <ion-grid>
+        <ion-row>
+            <ion-col>
+                <h1>Panel de Administración</h1>
+            </ion-col>
+        </ion-row>
         <ion-row>
             <ion-col size="3">
                 <ion-segment :value="selectedSegment" class="menu-style" swipe-gesture="false">
@@ -22,15 +29,6 @@ const selectedSegment = ref('productos');
                     <ion-segment-button value="colecciones" content-id="colecciones">
                         <ion-label>Colecciones</ion-label>
                     </ion-segment-button>
-                    <ion-segment-button value="categorias" content-id="categorias">
-                        <ion-label>Categorias</ion-label>
-                    </ion-segment-button>
-                    <ion-segment-button value="subcategorias" content-id="subcategorias">
-                        <ion-label>Subcategorias</ion-label>
-                    </ion-segment-button>
-                    <ion-segment-button value="materiales" content-id="materiales">
-                        <ion-label>Materiales</ion-label>
-                    </ion-segment-button>
                 </ion-segment>
             </ion-col>
             <ion-col size="9">
@@ -39,19 +37,10 @@ const selectedSegment = ref('productos');
                         <Productos />
                     </ion-segment-content>
                     <ion-segment-content id="usuarios">
-                        <Productos />
+                        <Usuarios />
                     </ion-segment-content>
                     <ion-segment-content id="colecciones">
-                        <Productos />
-                    </ion-segment-content>
-                    <ion-segment-content id="categorias">
-                        <Productos />
-                    </ion-segment-content>
-                    <ion-segment-content id="subcategorias">
-                        <Productos />
-                    </ion-segment-content>
-                    <ion-segment-content id="materiales">
-                        <Productos />
+                        <Colecciones />
                     </ion-segment-content>
                 </ion-segment-view>
             </ion-col>

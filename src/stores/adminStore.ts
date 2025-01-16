@@ -7,6 +7,10 @@ export const useAdminStore = defineStore('admin', {
 
     }),
     actions: {
+        async fetchAllUsuarios() {
+            console.log('fetching all usuarios')
+        },
+
         async saveProducto(producto: any) {
             producto.precio = parseInt(producto.precio)
 
@@ -93,6 +97,10 @@ export const useAdminStore = defineStore('admin', {
                 data: data,
                 message: data.message
             }
+        },
+
+        async saveNewColeccion(coleccion: any) {
+            console.log(coleccion)
         }
     }
 })
