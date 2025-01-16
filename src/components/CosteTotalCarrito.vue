@@ -56,7 +56,7 @@ const props = defineProps({
   font-size: 1.5rem;
   font-weight: bold;
   color: #9e9b9b;
-  margin-left: 150px;
+  margin-left: 100px;
 }
 
 </style>

@@ -1,5 +1,4 @@
 <template>
-  <ion-content>
     <div v-if="producto" class="producto-detalle">
       <ion-grid>
         <ion-row>
@@ -31,7 +30,6 @@
       <ion-spinner name="crescent"></ion-spinner>
       <p>Cargando...</p>
     </div>
-  </ion-content>
 </template>
 
 <script setup lang="ts">

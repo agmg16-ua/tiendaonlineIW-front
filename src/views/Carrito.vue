@@ -1,5 +1,4 @@
 <template>
-  <ion-content>
     <div v-if="carrito.length > 0" class="carrito-container">
       <HeaderCarrito />
       <ion-grid>
@@ -16,7 +15,6 @@
     <div v-else class="no-productos">
       <p>No hay productos en el carrito.</p>
     </div>
-  </ion-content>
 </template>
 
 <script setup lang="ts">
