@@ -78,13 +78,16 @@ const route = useRoute();
 const productId = route.params.id;
 const tallaSeleccionada = ref<string | null>(null);
 
-// Obtener las tallas disponibles del producto
+// Obtener las tallas disponibles del producto (con stock > 0)
 const obtenerTallasDisponibles = computed(() => {
   if (producto.value) {
-    return producto.value.productosTallaData.map(tallaData => tallaData.talla);
+    return producto.value.productosTallaData
+      .filter(tallaData => tallaData.stock > 0) // Filtrar solo las tallas con stock > 0
+      .map(tallaData => tallaData.talla); // Mapear para obtener las tallas
   }
   return [];
 });
+
 
 // Manejar la talla seleccionada
 const manejarTallaSeleccionada = (talla: string) => {

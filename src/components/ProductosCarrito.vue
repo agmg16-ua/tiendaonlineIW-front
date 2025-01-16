@@ -195,6 +195,12 @@ const decrementarCantidad = async (producto: any, idProducto: number, talla: str
 // Función para eliminar un producto
 const eliminarProducto = async (index: number, idProducto: Number, talla: string) => {
 
+  const confirmacion = window.confirm("¿Estás seguro de que deseas eliminar este producto?");
+  
+  if (!confirmacion) {
+    return;
+  }
+
   if(localStorage.getItem('isAuthenticated') === 'true'){
 
     const idLineaCarrito = await obtenerIdLineaCarrito(Number(idProducto), talla);
@@ -295,13 +301,13 @@ const eliminarProducto = async (index: number, idProducto: Number, talla: string
   margin: 0 5px;
   cursor: pointer;
   border: 1px solid #ccc;
-  background-color: #242323;
+  background-color: #989696;
   border-radius: 5px;
   transition: background-color 0.2s;
 }
 
 .cantidad-btn:hover {
-  background-color: black;
+  background-color: rgb(97, 95, 95);
 }
 
 .cantidad {

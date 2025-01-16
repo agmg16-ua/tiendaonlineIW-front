@@ -2,11 +2,11 @@
     <ion-row>
       <ion-card class="comentarios-container">
         <ion-card-header>
-          <ion-card-title>Comentarios</ion-card-title>
+          <ion-card-title class="title-comentarios">Comentarios</ion-card-title>
         </ion-card-header>
         <ion-card-content>
           <div v-if="comentarios.length">
-            <ion-list>
+            <ion-list class="lista-comentarios">
               <ion-item v-for="comentario in comentarios" :key="comentario.id" lines="none">
                 <ion-label class="comentario-contenedor">
                   <!-- Guion (marca de listado) alineado a la izquierda -->
@@ -81,20 +81,19 @@
     margin-top: 20px;
     margin-left: 50px;
     padding: 20px;
-    background-color: #2c2c2c;
+    background-color: #2f2f30;
     color: #fff;
     border-radius: 10px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
   }
   
-  .comentarios-container .ion-card-header {
-    background-color: #3b3b3b;
-    border-radius: 8px;
+  .lista-comentarios{
+    border-radius: 5px;
   }
-  
-  .ion-card-title {
+  .title-comentarios {
     font-size: 1.2rem;
-    color: #ffc107;
+    font-weight: bold;
+    color: #d4d4d0;
   }
   
   .texto-comentario {

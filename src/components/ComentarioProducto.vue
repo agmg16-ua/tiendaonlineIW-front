@@ -113,7 +113,7 @@
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 8px;
-    background-color: #cdc6c6;
+    background-color: #e4dfdf;
     height: auto;
   }
   

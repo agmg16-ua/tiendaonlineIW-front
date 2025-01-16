@@ -45,7 +45,7 @@
   
   ion-select {
   width: 15%; /* Asegura que ocupe todo el ancho disponible */
-  background-color: #cdc6c6;
+  background-color: #e4dfdf;
   border-radius: 12px; /* Bordes redondeados */
   padding: 10px; /* Espaciado dentro del selector */
   font-size: 16px; /* Ajuste de tamaño de fuente */
