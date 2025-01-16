@@ -21,12 +21,12 @@
   <!-- 3. Grid de elementos -->
   <ion-grid>
     <ion-row>
-      <ion-col size="6" size-md="3" v-for="product in products" :key="product.id" class="product-card">
-        <ion-card>
-          <img :src="product.image" alt="Imagen de {{ product.name }}" />
+      <ion-col size="6" size-md="3" v-for="producto in destacados" :key="producto.id" class="product-card">
+        <ion-card @click="router.push(`/productos/${producto.id}`)">
+          <img :src="producto.foto_portada" alt="Imagen de producto" />
           <ion-card-content>
-            <h3>{{ product.name }}</h3>
-            <p>{{ product.price }} €</p>
+            <h3>{{ producto.nombre }}</h3>
+            <p>{{ producto.precio }} €</p>
           </ion-card-content>
         </ion-card>
       </ion-col>
@@ -70,10 +70,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
+import { useProductStore } from '@/stores/store'
+
+const productStore = useProductStore();
 
 const router = useRouter();
+
+const destacados = computed(() => productStore.destacados)
 
 interface Product {
   id: number;
@@ -87,6 +92,10 @@ interface Benefit {
   title: string;
   description: string;
 }
+
+onMounted(async () => {
+  await productStore.fetchDestacados()
+})
 
 // Carrusel de imágenes
 const carouselImages = [
@@ -107,22 +116,6 @@ const prevSlide = () => {
   activeIndex.value =
     (activeIndex.value - 1 + carouselImages.length) % carouselImages.length;
 };
-
-
-// Productos destacados y más vendidos
-const products: Product[] = [
-  { id: 1, name: 'Producto 1', price: 25, image: 'https://via.placeholder.com/150' },
-  { id: 2, name: 'Producto 2', price: 50, image: 'https://via.placeholder.com/150' },
-  { id: 3, name: 'Producto 3', price: 75, image: 'https://via.placeholder.com/150' },
-  { id: 4, name: 'Producto 4', price: 100, image: 'https://via.placeholder.com/150' },
-];
-
-const bestSellers: Product[] = [
-  { id: 5, name: 'Producto 5', price: 30, image: 'https://via.placeholder.com/150' },
-  { id: 6, name: 'Producto 6', price: 60, image: 'https://via.placeholder.com/150' },
-  { id: 7, name: 'Producto 7', price: 90, image: 'https://via.placeholder.com/150' },
-  { id: 8, name: 'Producto 8', price: 120, image: 'https://via.placeholder.com/150' },
-];
 
 // Beneficios
 const benefits: Benefit[] = [

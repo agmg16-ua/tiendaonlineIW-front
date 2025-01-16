@@ -44,6 +44,7 @@ export const GETMenProductsEndpoint = baseUrl + '/lewkin/api/productos/hombre';
 export const GETWomenProductsEndpoint = baseUrl + '/lewkin/api/productos/mujer';
 export const GETNinoProductsEndpoint = baseUrl + '/lewkin/api/productos/nino';
 export const GETNinaProductsEndpoint = baseUrl + '/lewkin/api/productos/nina';
+export const GETDestacadosEndpoint = baseUrl + '/lewkin/api/productos/destacados'
 
 export const productEndpoints = {
     POSTProductEndpoint,
@@ -55,6 +56,7 @@ export const productEndpoints = {
     GETWomenProductsEndpoint,
     GETNinoProductsEndpoint,
     GETNinaProductsEndpoint,
+    GETDestacadosEndpoint
 }
 
 //Direccion Endpoints
