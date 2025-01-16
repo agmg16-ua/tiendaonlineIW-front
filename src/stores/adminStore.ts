@@ -48,6 +48,26 @@ export const useAdminStore = defineStore('admin', {
             }
         },
 
+        async saveImagenProducto(imagen: File, idProducto: number) {
+            const url = productEndpoints.POSTImagenProductoEndpoint.replace('{id}', idProducto.toString())
+
+            const formData = new FormData()
+            formData.append('file', imagen)
+
+            const response = await fetch(url, {
+                method: 'POST',
+                body: formData
+            })
+
+            const data = await response.json()
+
+            return {
+                status: response.status,
+                data: data,
+                message: data.message
+            }
+        },
+
         async fetchMateriales() {
             const response = await fetch(GETMaterialesEndpoint, {
                 method: 'GET',
@@ -133,6 +153,20 @@ export const useAdminStore = defineStore('admin', {
                 status: response.status,
                 data: data,
                 message: data.message
+            }
+        },
+
+        async reponerStock(dataToSend: any) {
+            const response = await fetch(productEndpoints.POSTReponerProductoEndpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(dataToSend)
+            })
+
+            return {
+                status: response.status,
             }
         }
     }
