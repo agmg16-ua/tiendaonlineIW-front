@@ -38,6 +38,8 @@ export const authEndpoints = {
 //Products Endpoints
 export const POSTProductEndpoint = baseUrl + '/lewkin/api/producto/nuevo';
 export const POSTUpdateProductEndpoint = baseUrl + '/lewkin/api/producto/{id}/actualizar';
+export const POSTImagenProductoEndpoint = baseUrl + '/lewkin/api/producto/{id}/foto/subir'
+export const POSTReponerProductoEndpoint = baseUrl + '/lewkin/api/producto/reponer'
 export const GETProductsEndpoint = baseUrl + '/lewkin/api/productos';
 export const GETProductEndpoint = baseUrl + '/lewkin/api/producto/{id}';
 export const DELETEProductEndpoint = baseUrl + '/lewkin/api/producto/{id}/eliminar';
@@ -45,10 +47,13 @@ export const GETMenProductsEndpoint = baseUrl + '/lewkin/api/productos/hombre';
 export const GETWomenProductsEndpoint = baseUrl + '/lewkin/api/productos/mujer';
 export const GETNinoProductsEndpoint = baseUrl + '/lewkin/api/productos/nino';
 export const GETNinaProductsEndpoint = baseUrl + '/lewkin/api/productos/nina';
+export const GETDestacadosEndpoint = baseUrl + '/lewkin/api/productos/destacados'
 
 export const productEndpoints = {
     POSTProductEndpoint,
     POSTUpdateProductEndpoint,
+    POSTImagenProductoEndpoint,
+    POSTReponerProductoEndpoint,
     GETProductsEndpoint,
     GETProductEndpoint,
     DELETEProductEndpoint,
@@ -56,6 +61,7 @@ export const productEndpoints = {
     GETWomenProductsEndpoint,
     GETNinoProductsEndpoint,
     GETNinaProductsEndpoint,
+    GETDestacadosEndpoint
 }
 
 //Direccion Endpoints
@@ -76,11 +82,11 @@ export const direccionEndpoints = {
 }
 
 //Comentario Endpoints
-export const POSTComentarioEndpoint = baseUrl + '/comentario/nuevo'
-export const POSTUpdateComentarioEndpoint = baseUrl + '/comentario/{id}/modificar'
-export const GETComentariosEndpoint = baseUrl + '/comentarios'
-export const GETComentarioEndpoint = baseUrl + '/comentario/{comentarioId}'
-export const DELETEComentarioEndpoint = baseUrl + '/comentario/{comentarioId}/eliminar'
+export const POSTComentarioEndpoint = baseUrl + '/lewkin/api/comentar'
+export const POSTUpdateComentarioEndpoint = baseUrl + '/lewkin/api/comentario/{id}/modificar'
+export const GETComentariosEndpoint = baseUrl + '/lewkin/api/comentarios'
+export const GETComentarioEndpoint = baseUrl + '/lewkin/api/comentario/{comentarioId}'
+export const DELETEComentarioEndpoint = baseUrl + '/lewkin/api/comentario/{comentarioId}/eliminar'
 
 export const comentarioEndpoints = {
     POSTComentarioEndpoint,
@@ -123,3 +129,26 @@ export const pedidoEndpoints = {
     GETPedidosEndpoint,
     GETPedidoEndpoint
 }
+
+//Usuario Endpoints
+export const POSTDireccionUsuarioEndpoint = baseUrl + '/lewkin/api/usuario/nueva/direccion'
+export const POSTUpdateUsuarioEndpoint = baseUrl + '/lewkin/api/usuario/modificar'
+export const GETUsuarioEndpoint = baseUrl + '/lewkin/api/usuario/{usuarioId}'
+export const GETUsuariosEndpoint = baseUrl + '/lewkin/api/usuarios'
+export const GETCurrentUsuarioEndpoint = baseUrl + '/lewkin/api/usuario/actual'
+
+export const usuarioEndpoints = {
+    POSTDireccionUsuarioEndpoint,
+    POSTUpdateUsuarioEndpoint,
+    GETUsuarioEndpoint,
+    GETUsuariosEndpoint,
+    GETCurrentUsuarioEndpoint
+}
+
+//Otros
+export const GETMaterialesEndpoint = baseUrl + '/lewkin/api/materiales'
+export const GETCategoriasEndpoint = baseUrl + '/lewkin/api/categorias'
+export const GETSubcategoriasEndpoint = baseUrl + '/lewkin/api/subcategorias'
+export const GETColeccionesEndpoint = baseUrl + '/lewkin/api/colecciones'
+export const POSTColeccionEndpoint = baseUrl + '/lewkin/api/coleccion/nueva'
+export const GETTallasEndpoint = baseUrl + '/lewkin/api/tallas'

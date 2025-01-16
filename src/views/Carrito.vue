@@ -1,5 +1,4 @@
 <template>
-  <ion-content>
     <div v-if="carrito.length > 0" class="carrito-container">
       <HeaderCarrito />
       <ion-grid>
@@ -16,7 +15,6 @@
     <div v-else class="no-productos">
       <p>No hay productos en el carrito.</p>
     </div>
-  </ion-content>
 </template>
 
 <script setup lang="ts">
@@ -45,6 +43,9 @@ const obtenerCarrito = async () => {
       const response = await carritoStore.fetchCarrito();
       if (response.status === 200) {
         carrito.value = carritoStore.carrito.linCarritos;
+
+        // Ordenar los productos por id
+        carrito.value.sort((a, b) => a.id - b.id);
       }
     } catch (error) {
       console.error('Error al obtener el carrito:', error);
@@ -52,10 +53,13 @@ const obtenerCarrito = async () => {
   } else {
     const carritoAux = JSON.parse(localStorage.getItem('carrito') || '[]');
     carrito.value = carritoAux;
+
+    // Ordenar los productos por id
+    carrito.value.sort((a, b) => a.id - b.id);
   }
   console.log(carrito);
-  
 };
+
 
 
 const totalCarrito = computed(() => {
@@ -91,9 +95,10 @@ const procederPago = () => {
   justify-content: left;
 }
 
+/* Estilo general del botón */
 .btn-proceder {
   background-color: #f66f08;
-  width: 25%;
+  width: 25%; /* Ancho en pantallas grandes */
   color: white;
   font-size: 1.2rem;
   font-weight: bold;
@@ -110,5 +115,14 @@ const procederPago = () => {
 
 .btn-proceder:active {
   background-color: #c64c00;
+}
+
+/* Responsividad para pantallas móviles */
+@media (max-width: 480px) {
+  .btn-proceder {
+    width: 100%; /* Ancho completo en pantallas pequeñas */
+    padding: 12px 0; /* Aumentar el padding para mayor altura del botón */
+    font-size: 1.5rem; /* Hacer el texto más grande */
+  }
 }
 </style>

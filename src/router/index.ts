@@ -1,12 +1,9 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router';
 import { RouteRecordRaw } from 'vue-router';
-import TabsPage from '../views/TabsPage.vue'
 import HomePage from '../views/HomePage.vue'
 import AboutPage from '../views/AboutPage.vue'
-import ContactPage from '../views/ContactPage.vue'
 import LoginPage from '../views/LoginPage.vue'
 import RegisterPage from '../views/RegisterPage.vue'
-import CatalogPage from '@/views/CatalogPage.vue';
 import ProductDetails from '@/views/ProductDetails.vue';
 import MenCatalog from '@/views/MenCatalog.vue';
 import WomenCatalog from '@/views/WomenCatalog.vue';
@@ -17,7 +14,8 @@ import TramitarPedido from '@/views/TramitarPedido.vue';
 import { useCarritoStore } from '@/stores/carritoStore';
 import Carrito from '@/views/Carrito.vue';
 import PaymentCallback from '@/views/PaymentCallback.vue';
-import MisPedidos from '@/views/MisPedidos.vue'
+import PerfilPage from '@/views/PerfilPage.vue';
+import AdminPage from '@/views/AdminPage.vue';
 
 
 const routes: Array<RouteRecordRaw> = [
@@ -32,17 +30,12 @@ const routes: Array<RouteRecordRaw> = [
     name: 'about'
   },
   {
-    path: '/contact',
-    component: ContactPage,
-    name: 'contact'
-  },
-  {
     path: '/login',
     component: LoginPage,
     name: 'login',
     beforeEnter: (to) => {
       if (localStorage.getItem('isAuthenticated') === 'true') {
-        return { name: 'home'}
+        return { name: 'home' }
       }
     }
   },
@@ -52,7 +45,7 @@ const routes: Array<RouteRecordRaw> = [
     name: 'register',
     beforeEnter: (to) => {
       if (localStorage.getItem('isAuthenticated') === 'true') {
-        return { name: 'home'}
+        return { name: 'home' }
       }
     }
   },
@@ -95,41 +88,25 @@ const routes: Array<RouteRecordRaw> = [
     path: '/tramitarPedido',
     component: TramitarPedido,
     name: 'tramitarPedido',
-    meta: {requiresAuth: true}
+    meta: { requiresAuth: true }
   },
   {
     path: '/paymentCallback',
     component: PaymentCallback,
     name: 'paymentCallback',
-    meta: {requiresAuth: true}
+    meta: { requiresAuth: true }
   },
   {
-    path: '/cuenta/misPedidos',
-    component: MisPedidos,
-    name: 'misPedidos',
-    meta: {requiresAuth: true}
+    path: '/perfil',
+    component: PerfilPage,
+    name: 'perfil',
+    meta: { requiresAuth: true }
   },
   {
-    path: '/tabs/',
-    component: TabsPage,
-    children: [
-      {
-        path: '',
-        redirect: '/tabs/tab1'
-      },
-      {
-        path: 'tab1',
-        component: () => import('@/views/Tab1Page.vue')
-      },
-      {
-        path: 'tab2',
-        component: () => import('@/views/Tab2Page.vue')
-      },
-      {
-        path: 'tab3',
-        component: () => import('@/views/Tab3Page.vue')
-      }
-    ]
+    path: '/panelAdmin',
+    component: AdminPage,
+    name: 'panelAdmin',
+    meta: { requiresAuth: true, requiresAdmin: true }
   }
 ]
 
@@ -144,7 +121,13 @@ router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth && !isAuthenticated) {
     return next({
       name: 'login',
-      query: { redirect: to.fullPath}
+      query: { redirect: to.fullPath }
+    })
+  }
+
+  if (to.meta.requiresAdmin && localStorage.getItem('role') !== 'ADMIN') {
+    return next({
+      name: 'home'
     })
   }
 

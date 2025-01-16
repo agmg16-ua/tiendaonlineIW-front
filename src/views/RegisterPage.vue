@@ -15,36 +15,42 @@ const userStore = useUserStore();
 // Router
 const router = useRouter();
 
+// Loading
+const showLoading = ref(false);
+
 // Definir las propiedades del formulario usando ref
 let registerStep1Data = ref({})
 let registerStep2Data = ref({})
 let registerStep3Data = ref({})
 let registerStep4Data = ref({})
 
-const forms = [ RegisterStep1, RegisterStep2, RegisterStep3, RegisterStep4];
+const forms = [RegisterStep1, RegisterStep2, RegisterStep3, RegisterStep4];
 const formDataMap = [registerStep1Data, registerStep2Data, registerStep3Data, registerStep4Data];
 
 let currentFormIndex = ref(0);
 const currentFormComponent = computed(() => forms[currentFormIndex.value]);
 const currentFormData = computed(() => formDataMap[currentFormIndex.value].value);
 
-function mapDataToRegisterRequest() {
-    return new RegisterRequest(formDataMap[0].value.name, 
-        formDataMap[0].value.lastName,
-        formDataMap[0].value.birthDate,
-        formDataMap[0].value.gender,
-        formDataMap[1].value.email,
-        34,
-        Number(formDataMap[1].value.phone),
-        formDataMap[2].value.username,
-        formDataMap[2].value.password,
-        formDataMap[3].value.street,
-        Number(formDataMap[3].value.number),
-        formDataMap[3].value.city,
-        formDataMap[3].value.province,
-        Number(formDataMap[3].value.postalCode),
-        formDataMap[3].value.country
-    )
+function mapDataToRegisterData() {
+    return {
+        "nombre": formDataMap[0].value.name,
+        "apellidos": formDataMap[0].value.lastName,
+        "fechaNacimiento": formDataMap[0].value.birthDate,
+        "genero": formDataMap[0].value.gender,
+        "email": formDataMap[1].value.email,
+        "telefonoCodPais": 34,
+        "telefono": Number(formDataMap[1].value.phone),
+        "nombreUsuario": formDataMap[2].value.username,
+        "password": formDataMap[2].value.password,
+        "calle": formDataMap[3].value.street,
+        "numero": Number(formDataMap[3].value.number),
+        "piso": Number(formDataMap[3].value.floor),
+        "puerta": formDataMap[3].value.door,
+        "ciudad": formDataMap[3].value.city,
+        "provincia": formDataMap[3].value.province,
+        "cp": Number(formDataMap[3].value.postalCode),
+        "pais": formDataMap[3].value.country,
+    }
 }
 
 const previousForm = () => {
@@ -54,24 +60,30 @@ const previousForm = () => {
 };
 
 const handleRegister = async (data: any) => {
-
     formDataMap[currentFormIndex.value].value = data;
 
-    console.log('Form Data Filled:', currentFormIndex.value+1);
+    console.log('Form Data Filled:', currentFormIndex.value + 1);
 
     if (currentFormIndex.value < forms.length - 1) {
         currentFormIndex.value++;
     }
     else {
+        showLoading.value = true;
         try {
-            const registerRequest = mapDataToRegisterRequest();
+            const registerRequest = mapDataToRegisterData();
 
-            await userStore.register(registerRequest);
+            const response = await userStore.register(registerRequest);
 
-            router.push('/')
-            
+            if (response.status === 200) {
+                router.push('/')
+            } else {
+                alert('Error al registrar el usuario: ' + response.message)
+            }
+
         } catch (error) {
             console.error("ERROR:", error)
+        } finally {
+            showLoading.value = false;
         }
     }
 };
@@ -89,15 +101,12 @@ const handleRegister = async (data: any) => {
                             <ion-button v-if="currentFormIndex > 0" @click="previousForm">⬅️</ion-button>
                         </ion-col>
                     </ion-row>
-                    <Component 
-                        :is="currentFormComponent"
-                        @nextStep="handleRegister"
-                        :formData="currentFormData"
-                    />
+                    <Component :is="currentFormComponent" @nextStep="handleRegister" :formData="currentFormData" />
                 </ion-col>
             </ion-row>
         </ion-grid>
     </div>
+    <ion-loading :is-open="showLoading" message="Registrando Usuario..."></ion-loading>
 </template>
 
 <style scoped>

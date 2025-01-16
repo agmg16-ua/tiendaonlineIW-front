@@ -10,6 +10,8 @@ const route = useRoute()
 
 const userStore = useUserStore();
 
+const showLoading = ref(false)
+
 // Definir las propiedades del formulario usando ref
 let login = ref({
     email: '',
@@ -18,27 +20,30 @@ let login = ref({
 
 function mapDataToLoginRequest() {
     return new LoginRequest(
-        login.value.email, 
+        login.value.email,
         login.value.password
     );
 }
 
 const handleLogin = async () => {
+    showLoading.value = true
     try {
         console.log(userStore.isAuthenticated)
         const loginRequest = mapDataToLoginRequest();
         const response = await userStore.login(loginRequest)
-
+        showLoading.value = false
         if (response.status === 200) {
             const redirectTo = route.query.redirect || '/'
             router.push(redirectTo as string)
         } else {
+            showLoading.value = false
             console.log(response.message)
+            alert('Error al iniciar sesión' + response.message)
         }
     } catch (error) {
         console.error(error)
+        showLoading.value = false
     }
-
 
 }
 
@@ -59,8 +64,8 @@ const handleLogin = async () => {
                         </ion-row>
                         <ion-row>
                             <ion-col>
-                                <ion-input v-model="login.password" label="Password" label-placement="stacked" fill="outline"
-                                    placeholder="Enter your password" type="password" required>
+                                <ion-input v-model="login.password" label="Password" label-placement="stacked"
+                                    fill="outline" placeholder="Enter your password" type="password" required>
                                     <ion-input-password-toggle slot="end"></ion-input-password-toggle>
                                 </ion-input>
                             </ion-col>
@@ -77,16 +82,17 @@ const handleLogin = async () => {
                         </ion-row>
                     </form>
                     <ion-row>
-                            <ion-col>
-                                <ion-label>
-                                    ¿No tienes cuenta? <RouterLink to="/register">Regístrate</RouterLink>
-                                </ion-label>
-                            </ion-col>
-                        </ion-row>
+                        <ion-col>
+                            <ion-label>
+                                ¿No tienes cuenta? <RouterLink to="/register">Regístrate</RouterLink>
+                            </ion-label>
+                        </ion-col>
+                    </ion-row>
                 </ion-col>
             </ion-row>
         </ion-grid>
     </div>
+    <ion-loading :is-open="showLoading" message="Iniciando Sesión..."></ion-loading>
 </template>
 
 <style scoped>
