@@ -80,6 +80,25 @@
           </div>
         </div>
       </IonCol>
+      <!-- Filtro de Colecciones -->
+      <IonCol size="auto" class="filter-col">
+        <div>
+          <IonButton @click="mostrarColeccionFiltro = !mostrarColeccionFiltro" size="small" class="filter-button">
+            <IonIcon :icon="funnelOutline" slot="start" />
+            Colecciones
+          </IonButton>
+          <div v-if="mostrarColeccionFiltro" class="filter-options">
+            <!-- Botones para cada colección disponible -->
+            <IonButton v-for="coleccion in coleccionesDisponibles" :key="coleccion.id" size="small" @click="filtrarPorColeccion(coleccion.id)" :class="['filter-option-button', { 'active': coleccionSeleccionada === coleccion.id }]" color="transparent">
+              {{ coleccion.nombre }}
+            </IonButton>
+            <!-- Botón para limpiar el filtro de colecciones -->
+            <IonButton size="small" @click="limpiarFiltroColeccion" :class="['filter-option-button', { 'active': coleccionSeleccionada === null }]" color="transparent">
+              Ninguno
+            </IonButton>
+          </div>
+        </div>
+      </IonCol>
       <!-- Filtro de Color -->
       <IonCol size="auto" class="filter-col">
         <div>
@@ -147,8 +166,9 @@
 
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
-import { IonCard, IonCardContent, IonText, IonGrid, IonRow, IonCol, IonImg, IonRange, IonButton, IonIcon } from '@ionic/vue';
+import { IonCard, IonCardContent, IonText, IonGrid, IonRow, IonCol, IonImg, IonRange, IonButton, IonIcon, IonItem, IonInput } from '@ionic/vue';
 import { funnelOutline } from 'ionicons/icons';
+
 
 // Definir la interfaz del producto
 interface ProductoData {
@@ -198,12 +218,20 @@ const colorSeleccionado = ref<string | null>(null);  // Para el color selecciona
 const mostrarTallaFiltro = ref(false); // Para mostrar/ocultar el filtro de tallas
 const tallasDisponibles = ref<string[]>(['XS', 'S', 'M', 'L', 'XL']); // Tallas predefinidas
 const tallaSeleccionada = ref<string | null>(null); // Para almacenar la talla seleccionada
+const mostrarColeccionFiltro = ref(false); 
+const coleccionesDisponibles = ref<{ id: number; nombre: string }[]>([]); // Almacenará las colecciones únicas
+const coleccionSeleccionada = ref<number | null>(null);
 
 
 
 // Función para aplicar todos los filtros acumulativamente
 const aplicarFiltros = () => {
   let productos = [...props.listaProductos];
+
+  // Filtrar por precio (rango)
+  productos = productos.filter(producto => 
+    producto.precio >= precioRango.value.lower && producto.precio <= precioRango.value.upper
+  );
 
   // Filtrar por subcategoría
   if (subcategoriaSeleccionada.value !== null) {
@@ -224,6 +252,13 @@ const aplicarFiltros = () => {
   if (tallaSeleccionada.value) {
     productos = productos.filter(producto => 
       producto.productosTallaData.some(tallaData => tallaData.talla.talla === tallaSeleccionada.value)
+    );
+  }
+
+  // Filtrar por colección
+  if (coleccionSeleccionada.value !== null) {
+    productos = productos.filter(producto => 
+      producto.coleccionesDatas.some(coleccion => coleccion.id === coleccionSeleccionada.value)
     );
   }
 
@@ -275,6 +310,34 @@ const calcularColoresUnicos = () => {
 
   coloresDisponibles.value = Array.from(coloresSet);  // Convertimos el Set a un array
 };
+
+const calcularColeccionesUnicas = () => {
+  const coleccionesMap = new Map<number, string>();
+
+  props.listaProductos.forEach(producto => {
+    producto.coleccionesDatas.forEach(coleccion => {
+      if (!coleccionesMap.has(coleccion.id)) {
+        coleccionesMap.set(coleccion.id, coleccion.nombre);
+      }
+    });
+  });
+
+  coleccionesDisponibles.value = Array.from(coleccionesMap, ([id, nombre]) => ({ id, nombre }));
+};
+
+const filtrarPorColeccion = (idColeccion: number) => {
+  coleccionSeleccionada.value = idColeccion;
+  localStorage.setItem('coleccionSeleccionada', idColeccion.toString()); // Guardamos la selección en localStorage
+  aplicarFiltros();
+};
+
+// Función para limpiar el filtro de colección
+const limpiarFiltroColeccion = () => {
+  coleccionSeleccionada.value = null;
+  localStorage.setItem('coleccionSeleccionada', 'null'); // Limpiamos la selección en el localStorage
+  aplicarFiltros();
+};
+
 
 // Función para filtrar por subcategoría
 const filtrarPorSubcategoria = (idSubcategoria: number) => {
@@ -369,32 +432,30 @@ const aplicarFiltrosDesdeLocalStorage = () => {
 
   const savedMaterialSeleccionado = localStorage.getItem('materialSeleccionado');
   if (savedMaterialSeleccionado) {
-    // Convertir el valor de localStorage en un número
     const materialId = parseInt(savedMaterialSeleccionado, 10);
-    // Comprobar si el id del material está en la lista de materiales disponibles
     const materialExistente = materialesDisponibles.value.find(material => material.id === materialId);
-    // Si el material no existe en la lista, se pone a null
     materialSeleccionado.value = materialExistente ? materialId : null;
   }
 
+  const savedColeccionSeleccionada = localStorage.getItem('coleccionSeleccionada');
+  if (savedColeccionSeleccionada) {
+    const coleccionId = parseInt(savedColeccionSeleccionada, 10);
+    const coleccionExistente = coleccionesDisponibles.value.find(coleccion => coleccion.id === coleccionId);
+    coleccionSeleccionada.value = coleccionExistente ? coleccionId : null;
+  }
+
+
   const savedSubcategoriaSeleccionada = localStorage.getItem('subcategoriaSeleccionada');
   if (savedSubcategoriaSeleccionada) {
-    // Convertir el valor de localStorage en un número
     const subcategoriaId = parseInt(savedSubcategoriaSeleccionada, 10);
-    // Comprobar si el id de la subcategoría está en la lista de subcategorías disponibles
     const subcategoriaExistente = subcategoriasDisponibles.value.find(subcategoria => subcategoria.id === subcategoriaId);
-    // Si la subcategoría no existe en la lista, se pone a null
     subcategoriaSeleccionada.value = subcategoriaExistente ? subcategoriaId : null;
   }
 
-  // ** Agregar lógica para el filtro de color desde localStorage **
   const savedColorSeleccionado = localStorage.getItem('colorSeleccionado');
   if (savedColorSeleccionado) {
-    // Recuperar el color guardado
     const colorSeleccionadoGuardado = savedColorSeleccionado;
-    // Comprobar si el color está en la lista de colores disponibles
     const colorExistente = coloresDisponibles.value.find(color => color === colorSeleccionadoGuardado);
-    // Si el color no existe en la lista, se pone a null
     colorSeleccionado.value = colorExistente ? colorSeleccionadoGuardado : null;
   }
 };
@@ -409,6 +470,7 @@ onMounted(() => {
   calcularMaterialesUnicos();
   calcularSubcategoriasUnicas();
   calcularColoresUnicos();
+  calcularColeccionesUnicas();
   aplicarFiltrosDesdeLocalStorage();
   aplicarFiltros();
 });
@@ -502,9 +564,4 @@ onMounted(() => {
   object-fit: contain;
 }
 
-.product-name {
-  font-size: 16px;
-  font-weight: bold;
-  margin: 5px 0;
-}
 </style>
