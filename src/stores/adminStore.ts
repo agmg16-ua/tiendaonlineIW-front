@@ -154,6 +154,20 @@ export const useAdminStore = defineStore('admin', {
                 data: data,
                 message: data.message
             }
+        },
+
+        async reponerStock(dataToSend: any) {
+            const response = await fetch(productEndpoints.POSTReponerProductoEndpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(dataToSend)
+            })
+
+            return {
+                status: response.status,
+            }
         }
     }
 })
