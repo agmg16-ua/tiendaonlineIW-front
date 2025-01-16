@@ -15,6 +15,9 @@ const userStore = useUserStore();
 // Router
 const router = useRouter();
 
+// Loading
+const showLoading = ref(false);
+
 // Definir las propiedades del formulario usando ref
 let registerStep1Data = ref({})
 let registerStep2Data = ref({})
@@ -57,7 +60,6 @@ const previousForm = () => {
 };
 
 const handleRegister = async (data: any) => {
-
     formDataMap[currentFormIndex.value].value = data;
 
     console.log('Form Data Filled:', currentFormIndex.value + 1);
@@ -66,6 +68,7 @@ const handleRegister = async (data: any) => {
         currentFormIndex.value++;
     }
     else {
+        showLoading.value = true;
         try {
             const registerRequest = mapDataToRegisterData();
 
@@ -79,6 +82,8 @@ const handleRegister = async (data: any) => {
 
         } catch (error) {
             console.error("ERROR:", error)
+        } finally {
+            showLoading.value = false;
         }
     }
 };
@@ -101,6 +106,7 @@ const handleRegister = async (data: any) => {
             </ion-row>
         </ion-grid>
     </div>
+    <ion-loading :is-open="showLoading" message="Registrando Usuario..."></ion-loading>
 </template>
 
 <style scoped>
