@@ -58,7 +58,7 @@ export default class DemoControllerImplApi {
       let formParams = {
       };
 
-      let authNames = [];
+      let authNames = ['Bearer Authentication'];
       let contentTypes = [];
       let accepts = ['application/json'];
       let returnType = null;
@@ -93,7 +93,7 @@ export default class DemoControllerImplApi {
       let formParams = {
       };
 
-      let authNames = [];
+      let authNames = ['Bearer Authentication'];
       let contentTypes = [];
       let accepts = ['application/json'];
       let returnType = null;
