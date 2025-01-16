@@ -2,6 +2,16 @@
   <!-- Contenedor de filtros -->
   <IonGrid class="filter-grid">
     <IonRow class="filter-row">
+      <!-- Buscador de productos por nombre -->
+      <IonCol size="12" class="filter-col">
+        <IonItem lines="none" class="search-item custom-search">
+          <IonInput v-model="textoBusqueda" placeholder="Buscar por nombre de producto..." clear-input/>
+          <IonButton slot="end" @click="aplicarFiltroBusqueda">
+            Buscar
+          </IonButton>
+        </IonItem>
+      </IonCol>
+
       <!-- Filtro de precio -->
       <IonCol size="auto" class="filter-col">
         <div>
@@ -222,6 +232,18 @@ const mostrarColeccionFiltro = ref(false);
 const coleccionesDisponibles = ref<{ id: number; nombre: string }[]>([]); // Almacenará las colecciones únicas
 const coleccionSeleccionada = ref<number | null>(null);
 
+const textoBusqueda = ref<string>(''); // Input del buscador
+
+// Función para aplicar filtro de búsqueda
+const aplicarFiltroBusqueda = () => {
+  subcategoriaSeleccionada.value = null;
+  materialSeleccionado.value = null;
+  colorSeleccionado.value = null;
+  tallaSeleccionada.value = null;
+  coleccionSeleccionada.value = null;
+  ordenActual.value = null;
+  precioRango.value = { lower: 0, upper: 200 };  
+};
 
 
 // Función para aplicar todos los filtros acumulativamente
@@ -265,6 +287,13 @@ const aplicarFiltros = () => {
   // Aplicar ordenación si está seleccionada
   if (ordenActual.value) {
     productos.sort((a, b) => ordenActual.value === 'asc' ? a.precio - b.precio : b.precio - a.precio);
+  }
+
+  // Verifica que el texto de búsqueda no esté vacío antes de aplicar el filtro
+  if (textoBusqueda.value.trim() !== '') {
+    productos = productos.filter(producto =>
+      producto.nombre.toLowerCase().includes(textoBusqueda.value.toLowerCase())
+    );
   }
 
   productosFiltrados.value = productos;
@@ -562,6 +591,21 @@ onMounted(() => {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
+}
+
+.product-name {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 5px 0;
+  white-space: nowrap; /* Evita que el texto pase a la siguiente línea */
+  overflow: hidden; /* Oculta el contenido que excede el ancho */
+  text-overflow: ellipsis; /* Muestra los puntos suspensivos (...) */
+}
+
+
+.search-item{
+  margin-top: 10px;
+  border-radius: 5px;   
 }
 
 </style>
