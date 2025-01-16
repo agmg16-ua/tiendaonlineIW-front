@@ -77,7 +77,7 @@
         <div>
           <IonButton @click="mostrarSubcategoriaFiltro = !mostrarSubcategoriaFiltro" size="small" class="filter-button">
             <IonIcon :icon="funnelOutline" slot="start" />
-            Categoría      
+            Tipo de Prenda      
           </IonButton>
           <div v-if="mostrarSubcategoriaFiltro" class="filter-options">
             <IonButton v-for="subcategoria in subcategoriasDisponibles" :key="subcategoria.id" size="small"
