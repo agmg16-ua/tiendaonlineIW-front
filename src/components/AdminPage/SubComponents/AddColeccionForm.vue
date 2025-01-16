@@ -5,7 +5,7 @@ import { useAdminStore } from '@/stores/store'
 
 const adminStore = useAdminStore()
 
-const emit = defineEmits(["closePopup"]);
+const emit = defineEmits(["closePopup", "created"]);
 
 
 const coleccionData = ref({
@@ -16,7 +16,10 @@ const saveColeccion = async () => {
 
     const response = await adminStore.saveNewColeccion(coleccionData.value)
 
-    emit('closePopup')
+    if (response.status === 200) {
+        emit('created')
+    }
+
 }
 
 

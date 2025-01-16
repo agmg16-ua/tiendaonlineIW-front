@@ -127,11 +127,13 @@ export const useAdminStore = defineStore('admin', {
                 body: dataToSend
             })
 
-            console.log(response)
-
             const data = await response.json()
 
-            console.log(data)
+            return {
+                status: response.status,
+                data: data,
+                message: data.message
+            }
         }
     }
 })

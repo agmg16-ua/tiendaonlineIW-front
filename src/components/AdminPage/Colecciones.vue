@@ -20,6 +20,18 @@ onMounted(async () => {
     }
 })
 
+const created = async () => {
+    const response = await adminStore.fetchColecciones()
+
+    if (response.status === 200) {
+        colecciones.value = response.data
+    } else {
+        alert('Error al cargar las colecciones' + response.message)
+    }
+
+    showAddColeccion.value = false
+}
+
 
 </script>
 
@@ -47,6 +59,6 @@ onMounted(async () => {
     </ion-card>
 
     <ion-modal :is-open="showAddColeccion" @ionModalDidDismiss="showAddColeccion = false">
-        <AddColeccionForm @closePopup="showAddColeccion = false" />
+        <AddColeccionForm @closePopup="showAddColeccion = false" @created="created" />
     </ion-modal>
 </template>
