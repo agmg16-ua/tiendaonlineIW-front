@@ -14,8 +14,6 @@ onMounted(async () => {
 
     if (response.status === 200) {
         usuarios.value = response.data
-
-        console.log(usuarios.value)
     }
 
 })

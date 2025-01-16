@@ -117,18 +117,19 @@ export const useAdminStore = defineStore('admin', {
         },
 
         async saveNewColeccion(coleccion: any) {
+            console.log(coleccion)
+            const dataToSend = JSON.stringify(coleccion)
             const response = await fetch(POSTColeccionEndpoint, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
-                body: JSON.stringify({
-                    nombre: coleccion.nombre
-                })
+                body: dataToSend
             })
 
-            const data = response.json()
+            console.log(response)
+
+            const data = await response.json()
 
             console.log(data)
         }
